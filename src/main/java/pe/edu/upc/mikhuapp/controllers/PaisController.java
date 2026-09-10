@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.PaisDTO;
 import pe.edu.upc.mikhuapp.entities.Pais;
+import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 
 import java.net.URI;
@@ -69,17 +70,17 @@ public class PaisController {
     @GetMapping("/{id}")
     public ResponseEntity<PaisDTO> buscar_pais_id(@PathVariable Long id){
         Pais p = pS.listID(id)
-                .orElseThrow(()->new);
+                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
         PaisDTO responseDTO = modelMapper.map(p, PaisDTO.class);
         return ResponseEntity.ok(responseDTO);
     }
 
 
     // ELIMINAR PAIS
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         Pais p = pS.listID(id)
-                .orElseThrow(()->new  ); // Falta agregar validacion
+                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
         pS.delete(p.getId_Pais());
         return ResponseEntity.noContent().build();
     }
