@@ -3,15 +3,14 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pe.edu.upc.mikhuapp.dtos.PaisDTOInsert;
+import pe.edu.upc.mikhuapp.dtos.PaisDTO;
 import pe.edu.upc.mikhuapp.entities.Pais;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pais")
@@ -29,11 +28,11 @@ public class PaisController {
 
     // REGISTRAR NUEVO PAIS
     @PostMapping
-    public ResponseEntity<PaisDTOInsert> registrar(@Validated PaisDTOInsert dto){ // Falta @RequestBody
+    public ResponseEntity<PaisDTO> registrar(@Validated @RequestBody PaisDTO dto){
         Pais nuevo_pais = modelMapper.map(dto, Pais.class);
         pS.insert(nuevo_pais);
 
-        PaisDTOInsert responseDTO = modelMapper.map(nuevo_pais, PaisDTOInsert.class);
+        PaisDTO responseDTO = modelMapper.map(nuevo_pais, PaisDTO.class);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{/id}")
@@ -44,7 +43,44 @@ public class PaisController {
                 .body(responseDTO);
     }
 
+    // LISTAR PAISES
+    @GetMapping
+    public ResponseEntity<List<PaisDTO>> listar_paises(){
+        List<PaisDTO> lista_paises = pS.list()
+                .stream()
+                .map(p -> modelMapper.map(p, PaisDTO.class))
+                .toList();
+        return ResponseEntity.ok(lista_paises);
+    }
+
     // ACTUALIZAR PAIS
+    @PutMapping("/{id}")
+    public ResponseEntity<PaisDTO> actualizar_pais(@PathVariable("id") long id, @Validated @RequestBody PaisDTO dto){
+
+        // AGREGAR VALIDACION DE ID valido
+        Pais pais = modelMapper.map(dto, Pais.class);
+        pais.setId_Pais(id);
+        pS.update(pais);
+        PaisDTO responseDTO = modelMapper.map(pais, PaisDTO.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    // CONSULTAR PAIS POR ID
+    @GetMapping("/{id}")
+    public ResponseEntity<PaisDTO> buscar_pais_id(@PathVariable Long id){
+        Pais p = pS.listID(id)
+                .orElseThrow(()->new);
+        PaisDTO responseDTO = modelMapper.map(p, PaisDTO.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+
 
     // ELIMINAR PAIS
+    @DeleteMapping
+    public ResponseEntity<Void> eliminar(@PathVariable Long id){
+        Pais p = pS.listID(id)
+                .orElseThrow(()->new  ); // Falta agregar validacion
+        pS.delete(p.getId_Pais());
+        return ResponseEntity.noContent().build();
+    }
 }

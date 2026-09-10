@@ -1,9 +1,8 @@
 package pe.edu.upc.mikhuapp.dtos;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 
-public class PaisDTOInsert {
+public class PaisDTO {
     private Long Id_Pais;
     @NotBlank(message = "El codigo del pais no puede estar vacio")
     private String Cod_Pais;
