@@ -17,10 +17,10 @@ public class Usuario {
     private String Contrasena;
 
     @Column(name="Nom_Usuario", length = 40, nullable = false)
-    public String Nom_Usuario;
+    private String Nom_Usuario;
 
     @Column(name="Ape_Pat_Usuario", length = 15, nullable = false)
-    public String Ape_Pat_Usuario;
+    private String Ape_Pat_Usuario;
 
     @Column(name="Edad", nullable = false)
     private int Edad;
@@ -37,6 +37,7 @@ public class Usuario {
     private Pais pais;
 
     // Constructores
+
     public Usuario() {
     }
 
