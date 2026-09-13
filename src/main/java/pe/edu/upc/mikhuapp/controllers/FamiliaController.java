@@ -9,7 +9,6 @@ import pe.edu.upc.mikhuapp.dtos.FamiliaDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.FamiliaDTOList;
 import pe.edu.upc.mikhuapp.entities.Familia;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.repositories.IFamiliaRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 
 import java.net.URI;
