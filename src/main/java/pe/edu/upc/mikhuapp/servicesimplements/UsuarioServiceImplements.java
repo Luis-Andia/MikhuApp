@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.servicesimplements;
 
+import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Usuario;
 import pe.edu.upc.mikhuapp.repositories.IUsuarioRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
@@ -7,6 +8,7 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UsuarioServiceImplements implements IUsuarioService {
     private final IUsuarioRepository uR;
 
