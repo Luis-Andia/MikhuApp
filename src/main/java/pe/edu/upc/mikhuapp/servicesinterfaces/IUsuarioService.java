@@ -11,4 +11,5 @@ public interface IUsuarioService {
     public Optional<Usuario> listId(Long id); // Buscar usuario por ID
     public void insert(Usuario u); // Insertar un usuario
     public void delete(Long id); // Eliminar un usuario
+    public Usuario update(Usuario u);
 }

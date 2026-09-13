@@ -36,4 +36,9 @@ public class UsuarioServiceImplements implements IUsuarioService {
     public void delete(Long id) {
         uR.deleteById(id);
     }
+
+    @Override
+    public Usuario update(Usuario u) {
+        return uR.save(u);
+    }
 }

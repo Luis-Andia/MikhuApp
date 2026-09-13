@@ -2,11 +2,15 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pe.edu.upc.mikhuapp.dtos.UsuarioDTO;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.mikhuapp.dtos.UsuarioDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.UsuarioDTOList;
+import pe.edu.upc.mikhuapp.entities.Familia;
+import pe.edu.upc.mikhuapp.entities.Pais;
+import pe.edu.upc.mikhuapp.entities.Rol;
+import pe.edu.upc.mikhuapp.entities.Usuario;
+import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRolService;
@@ -44,4 +48,25 @@ public class UsuarioController {
     }
 
     //
+    //
+    // ACTUALIZAR USUARIO
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UsuarioDTOInsert dto){
+
+
+        Familia familia = fS.listid(dto.getIdFamilia())
+                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
+        Pais pais = pS.listid(dto.getIdPais())
+                .orElseThrow(()->new ResourceNotFoundException("No existe el rol"));
+        Rol rol = rS.listid(dto.getIdRol())
+                .orElseThrow(()->new ResourceNotFoundException("No existe el rol"));
+
+        Usuario usuario = modelMapper.map(dto, Usuario.class);
+        usuario.setIdUsuario(id);
+        uS.update(usuario);
+
+        UsuarioDTOInsert responseDTO = modelMapper.map(usuario, UsuarioDTOInsert.class);
+        return ResponseEntity.ok(responseDTO);
+
+    }
 }

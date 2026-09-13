@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface IPaisService {
     public void insert(Pais p);
     public List<Pais> list();
-    public Optional<Pais> listID(Long id);
+    public Optional<Pais> listid(Long id);
     public Pais update(Pais p);
     public void delete(Long id);
 }

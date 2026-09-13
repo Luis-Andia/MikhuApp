@@ -27,7 +27,7 @@ public class PaisServiceImplements implements IPaisService {
     }
 
     @Override
-    public Optional<Pais> listID(Long id) {
+    public Optional<Pais> listid(Long id) {
         return pR.findById(id);
     }
 

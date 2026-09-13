@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
-public class UsuarioDTO {
+public class UsuarioDTOInsert {
     private Long idUsuario;
 
     @NotNull(message = "Id de Rol obligatorio")

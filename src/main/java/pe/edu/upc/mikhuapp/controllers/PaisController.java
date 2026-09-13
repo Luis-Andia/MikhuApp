@@ -69,7 +69,7 @@ public class PaisController {
     // CONSULTAR PAIS POR ID
     @GetMapping("/{id}")
     public ResponseEntity<PaisDTO> buscar_pais_id(@PathVariable Long id){
-        Pais p = pS.listID(id)
+        Pais p = pS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
         PaisDTO responseDTO = modelMapper.map(p, PaisDTO.class);
         return ResponseEntity.ok(responseDTO);
@@ -79,7 +79,7 @@ public class PaisController {
     // ELIMINAR PAIS
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
-        Pais p = pS.listID(id)
+        Pais p = pS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
         pS.delete(p.getIdPais());
         return ResponseEntity.noContent().build();
