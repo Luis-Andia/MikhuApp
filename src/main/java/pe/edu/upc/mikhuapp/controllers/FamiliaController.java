@@ -56,7 +56,7 @@ public class FamiliaController {
 
     // CONSULTAR familia por ID
     @GetMapping("/{id}")
-    public ResponseEntity<FamiliaDTOList> buscar_id(@PathVariable Long id){
+    public ResponseEntity<FamiliaDTOList> buscarid(@PathVariable Long id){
         Familia familia = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
         FamiliaDTOList responseDTO = modelMapper.map(familia, FamiliaDTOList.class);
@@ -65,7 +65,7 @@ public class FamiliaController {
 
     // ACTUALIZAR FAMILIA
     @PutMapping("/{id}")
-    public ResponseEntity<FamiliaDTOInsert> actualizar_familia (@PathVariable("id") Long id, @Validated @RequestBody FamiliaDTOInsert dto){
+    public ResponseEntity<FamiliaDTOInsert> actualizarfamilia(@PathVariable("id") Long id, @Validated @RequestBody FamiliaDTOInsert dto){
         Familia familia = modelMapper.map(dto, Familia.class);
         familia.setIdFamilia(id);
         fS.update(familia);

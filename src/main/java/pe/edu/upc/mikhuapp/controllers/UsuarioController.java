@@ -48,12 +48,19 @@ public class UsuarioController {
     }
 
     //
-    //
+    // CONSULTAR USUARIO por ID
+    public ResponseEntity<UsuarioDTOList> buscarid(@PathVariable("id") Long id){
+        Usuario usuario = uS.listId(id)
+                .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
+        UsuarioDTOList responseDTO = modelMapper.map(usuario, UsuarioDTOList.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UsuarioDTOInsert dto){
-
-
+        Usuario usuario = uS.listId(id)
+                .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
         Familia familia = fS.listid(dto.getIdFamilia())
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
         Pais pais = pS.listid(dto.getIdPais())
@@ -61,11 +68,14 @@ public class UsuarioController {
         Rol rol = rS.listid(dto.getIdRol())
                 .orElseThrow(()->new ResourceNotFoundException("No existe el rol"));
 
-        Usuario usuario = modelMapper.map(dto, Usuario.class);
-        usuario.setIdUsuario(id);
-        uS.update(usuario);
+        Usuario usuario_actualizado = modelMapper.map(dto, Usuario.class);
+        usuario_actualizado.setIdUsuario(id);
+        usuario_actualizado.setFamilia(familia);
+        usuario_actualizado.setPais(pais);
+        usuario_actualizado.setRol(rol);
 
-        UsuarioDTOInsert responseDTO = modelMapper.map(usuario, UsuarioDTOInsert.class);
+        uS.update(usuario_actualizado);
+        UsuarioDTOInsert responseDTO = modelMapper.map(usuario_actualizado, UsuarioDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
 
     }
