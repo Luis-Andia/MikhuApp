@@ -8,47 +8,47 @@ public class Familia {
     // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id_Familia;
+    private Long idFamilia;
 
-    @Column(name="Nom_Familia", length = 30, nullable = false)
-    private String Nom_Familia;
+    @Column(name="NomFamilia", length = 30, nullable = false)
+    private String nomFamilia;
 
-    @Column(name="Contrasena_Familia", length = 20, nullable = false)
-    private String Contrasena_Familia;
+    @Column(name="ContrasenaFamilia", length = 20, nullable = false)
+    private String contrasenaFamilia;
 
     // Constructores
     public Familia() {
     }
 
-    public Familia(Long id_Familia, String nom_Familia, String contrasena_Familia) {
-        Id_Familia = id_Familia;
-        Nom_Familia = nom_Familia;
-        Contrasena_Familia = contrasena_Familia;
+    public Familia(Long idFamilia, String nomFamilia, String contrasenaFamilia) {
+        this.idFamilia = idFamilia;
+        this.nomFamilia = nomFamilia;
+        this.contrasenaFamilia = contrasenaFamilia;
     }
 
     // Getters and Setters
 
-    public Long getId_Familia() {
-        return Id_Familia;
+    public Long getIdFamilia() {
+        return idFamilia;
     }
 
-    public void setId_Familia(Long id_Familia) {
-        Id_Familia = id_Familia;
+    public void setIdFamilia(Long idFamilia) {
+        this.idFamilia = idFamilia;
     }
 
-    public String getNom_Familia() {
-        return Nom_Familia;
+    public String getNomFamilia() {
+        return nomFamilia;
     }
 
-    public void setNom_Familia(String nom_Familia) {
-        Nom_Familia = nom_Familia;
+    public void setNomFamilia(String nomFamilia) {
+        this.nomFamilia = nomFamilia;
     }
 
-    public String getContrasena_Familia() {
-        return Contrasena_Familia;
+    public String getContrasenaFamilia() {
+        return contrasenaFamilia;
     }
 
-    public void setContrasena_Familia(String contrasena_Familia) {
-        Contrasena_Familia = contrasena_Familia;
+    public void setContrasenaFamilia(String contrasenaFamilia) {
+        this.contrasenaFamilia = contrasenaFamilia;
     }
 }

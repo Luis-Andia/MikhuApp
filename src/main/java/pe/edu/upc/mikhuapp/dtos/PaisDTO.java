@@ -3,33 +3,33 @@ package pe.edu.upc.mikhuapp.dtos;
 import jakarta.validation.constraints.NotBlank;
 
 public class PaisDTO {
-    private Long Id_Pais;
+    private Long idPais;
     @NotBlank(message = "El codigo del pais no puede estar vacio")
-    private String Cod_Pais;
+    private String codPais;
     @NotBlank(message = "El nombre del pais no puede estar vacio")
-    private String Nom_Pais;
+    private String nomPais;
 
-    public Long getId_Pais() {
-        return Id_Pais;
+    public Long getIdPais() {
+        return idPais;
     }
 
-    public void setId_Pais(Long id_Pais) {
-        Id_Pais = id_Pais;
+    public void setIdPais(Long idPais) {
+        this.idPais = idPais;
     }
 
-    public String getCod_Pais() {
-        return Cod_Pais;
+    public String getCodPais() {
+        return codPais;
     }
 
-    public void setCod_Pais(String cod_Pais) {
-        Cod_Pais = cod_Pais;
+    public void setCodPais(String codPais) {
+        this.codPais = codPais;
     }
 
-    public String getNom_Pais() {
-        return Nom_Pais;
+    public String getNomPais() {
+        return nomPais;
     }
 
-    public void setNom_Pais(String nom_Pais) {
-        Nom_Pais = nom_Pais;
+    public void setNomPais(String nomPais) {
+        this.nomPais = nomPais;
     }
 }

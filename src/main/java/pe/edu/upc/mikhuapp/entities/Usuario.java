@@ -7,33 +7,33 @@ import jakarta.persistence.*;
 public class Usuario {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long Id_Usuario;
+    private Long idUsuario;
 
     @ManyToOne
-    @JoinColumn(name="Id_Rol")
+    @JoinColumn(name="idRol")
     private Rol rol;
 
-    @Column(name="Contrasena", length = 20, nullable = false)
-    private String Contrasena;
+    @Column(name="contrasena", length = 20, nullable = false)
+    private String contrasena;
 
-    @Column(name="Nom_Usuario", length = 40, nullable = false)
-    private String Nom_Usuario;
+    @Column(name="nomUsuario", length = 40, nullable = false)
+    private String nomUsuario;
 
-    @Column(name="Ape_Pat_Usuario", length = 15, nullable = false)
-    private String Ape_Pat_Usuario;
+    @Column(name="apePatUsuario", length = 15, nullable = false)
+    private String apePatUsuario;
 
-    @Column(name="Edad", nullable = false)
-    private int Edad;
+    @Column(name="edad", nullable = false)
+    private int edad;
 
-    @Column(name="Correo", length = 30, nullable = false)
-    private String Correo;
+    @Column(name="correo", length = 30, nullable = false)
+    private String correo;
 
     @ManyToOne
-    @JoinColumn(name="Id_Familia")
+    @JoinColumn(name="idFamilia")
     private Familia familia;
 
     @ManyToOne
-    @JoinColumn(name="Id_Pais")
+    @JoinColumn(name="idPais")
     private Pais pais;
 
     // Constructores
@@ -41,25 +41,26 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id_Usuario, Rol rol, String contrasena, String nom_Usuario, String ape_Pat_Usuario, int edad, String correo, Familia familia, Pais pais) {
-        Id_Usuario = id_Usuario;
+    public Usuario(Long idUsuario, Rol rol, String contrasena, String nomUsuario, String apePatUsuario, int edad, String correo, Familia familia, Pais pais) {
+        this.idUsuario = idUsuario;
         this.rol = rol;
-        Contrasena = contrasena;
-        Nom_Usuario = nom_Usuario;
-        Ape_Pat_Usuario = ape_Pat_Usuario;
-        Edad = edad;
-        Correo = correo;
+        this.contrasena = contrasena;
+        this.nomUsuario = nomUsuario;
+        this.apePatUsuario = apePatUsuario;
+        this.edad = edad;
+        this.correo = correo;
         this.familia = familia;
         this.pais = pais;
     }
+
     // Get an SET
 
-    public Long getId_Usuario() {
-        return Id_Usuario;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_Usuario(Long id_Usuario) {
-        Id_Usuario = id_Usuario;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Rol getRol() {
@@ -71,43 +72,43 @@ public class Usuario {
     }
 
     public String getContrasena() {
-        return Contrasena;
+        return contrasena;
     }
 
     public void setContrasena(String contrasena) {
-        Contrasena = contrasena;
+        this.contrasena = contrasena;
     }
 
-    public String getNom_Usuario() {
-        return Nom_Usuario;
+    public String getNomUsuario() {
+        return nomUsuario;
     }
 
-    public void setNom_Usuario(String nom_Usuario) {
-        Nom_Usuario = nom_Usuario;
+    public void setNomUsuario(String nomUsuario) {
+        this.nomUsuario = nomUsuario;
     }
 
-    public String getApe_Pat_Usuario() {
-        return Ape_Pat_Usuario;
+    public String getApePatUsuario() {
+        return apePatUsuario;
     }
 
-    public void setApe_Pat_Usuario(String ape_Pat_Usuario) {
-        Ape_Pat_Usuario = ape_Pat_Usuario;
+    public void setApePatUsuario(String apePatUsuario) {
+        this.apePatUsuario = apePatUsuario;
     }
 
     public int getEdad() {
-        return Edad;
+        return edad;
     }
 
     public void setEdad(int edad) {
-        Edad = edad;
+        this.edad = edad;
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
 
     public void setCorreo(String correo) {
-        Correo = correo;
+        this.correo = correo;
     }
 
     public Familia getFamilia() {

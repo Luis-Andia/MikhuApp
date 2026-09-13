@@ -37,7 +37,7 @@ public class PaisController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{/id}")
-                .buildAndExpand(nuevo_pais.getId_Pais())
+                .buildAndExpand(nuevo_pais.getIdPais())
                 .toUri();
         return ResponseEntity
                 .created(location)
@@ -60,7 +60,7 @@ public class PaisController {
 
         // AGREGAR VALIDACION DE ID valido
         Pais pais = modelMapper.map(dto, Pais.class);
-        pais.setId_Pais(id);
+        pais.setIdPais(id);
         pS.update(pais);
         PaisDTO responseDTO = modelMapper.map(pais, PaisDTO.class);
         return ResponseEntity.ok(responseDTO);
@@ -81,7 +81,7 @@ public class PaisController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         Pais p = pS.listID(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
-        pS.delete(p.getId_Pais());
+        pS.delete(p.getIdPais());
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package pe.edu.upc.mikhuapp.entities;
 
 import jakarta.persistence.*;
+import org.jspecify.annotations.Nullable;
 
 @Entity
 @Table(name="Pais")
@@ -8,47 +9,50 @@ public class Pais {
     // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id_Pais;
+    private Long idPais;
 
-    @Column(name="Cod_Pais", length = 5, nullable = false)
-    private String Cod_Pais;
+    @Column(name="codPais", length = 5, nullable = false)
+    private String codPais;
 
-    @Column(name="Nom_Pais", length = 40, nullable = false)
-    private String Nom_Pais;
+    @Column(name="nomPais", length = 40, nullable = false)
+    private String nomPais;
 
     // Constructor vacio
     public Pais() {
     }
 
     // Constructor de los atributos
-    public Pais(Long id_Pais, String cod_Pais, String nom_Pais) {
-        Id_Pais = id_Pais;
-        Cod_Pais = cod_Pais;
-        Nom_Pais = nom_Pais;
+
+
+    public Pais(Long idPais, String codPais, String nomPais) {
+        this.idPais = idPais;
+        this.codPais = codPais;
+        this.nomPais = nomPais;
     }
 
     // Getter and Setter
-    public Long getId_Pais() {
-        return Id_Pais;
+
+    public Long getIdPais() {
+        return idPais;
     }
 
-    public void setId_Pais(Long id_Pais) {
-        Id_Pais = id_Pais;
+    public void setIdPais(Long idPais) {
+        this.idPais = idPais;
     }
 
-    public String getCod_Pais() {
-        return Cod_Pais;
+    public String getCodPais() {
+        return codPais;
     }
 
-    public void setCod_Pais(String cod_Pais) {
-        Cod_Pais = cod_Pais;
+    public void setCodPais(String codPais) {
+        this.codPais = codPais;
     }
 
-    public String getNom_Pais() {
-        return Nom_Pais;
+    public String getNomPais() {
+        return nomPais;
     }
 
-    public void setNom_Pais(String nom_Pais) {
-        Nom_Pais = nom_Pais;
+    public void setNomPais(String nomPais) {
+        this.nomPais = nomPais;
     }
 }

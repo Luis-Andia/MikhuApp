@@ -5,94 +5,95 @@ import jakarta.validation.constraints.NotNull;
 
 
 public class UsuarioDTO {
-    private Long Id_Usuario;
+    private Long idUsuario;
 
     @NotNull(message = "Id de Rol obligatorio")
-    private Long Id_Rol;
+    private Long idRol;
     @NotBlank(message = "Contraseña obligatoria")
-    private String Contrasena;
+    private String contrasena;
     @NotBlank(message = "Nombre de usuario obligatorio")
-    public String Nom_Usuario;
+    public String nomUsuario;
     @NotBlank(message = "Apellido paterno obligatorio")
-    public String Ape_Pat_Usuario;
+    public String apePatUsuario;
     @NotNull(message = "Edad obligatoria")
-    private int Edad;
+    private int edad;
     @NotNull(message = "Correo obligatorio")
-    private String Correo;
+    private String correo;
     @NotNull(message = "Id de Familia obligatorio")
-    private Long Id_Familia;
+    private Long idFamilia;
     @NotNull(message = "Id de Pais obligatorio")
-    private Long Id_Pais;
+    private Long idPais;
 
-    public Long getId_Usuario() {
-        return Id_Usuario;
+    // Get and set
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_Usuario(Long id_Usuario) {
-        Id_Usuario = id_Usuario;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Long getId_Rol() {
-        return Id_Rol;
+    public Long getIdRol() {
+        return idRol;
     }
 
-    public void setId_Rol(Long id_Rol) {
-        Id_Rol = id_Rol;
+    public void setIdRol(Long idRol) {
+        this.idRol = idRol;
     }
 
     public String getContrasena() {
-        return Contrasena;
+        return contrasena;
     }
 
     public void setContrasena(String contrasena) {
-        Contrasena = contrasena;
+        this.contrasena = contrasena;
     }
 
-    public String getNom_Usuario() {
-        return Nom_Usuario;
+    public String getNomUsuario() {
+        return nomUsuario;
     }
 
-    public void setNom_Usuario(String nom_Usuario) {
-        Nom_Usuario = nom_Usuario;
+    public void setNomUsuario(String nomUsuario) {
+        this.nomUsuario = nomUsuario;
     }
 
-    public String getApe_Pat_Usuario() {
-        return Ape_Pat_Usuario;
+    public String getApePatUsuario() {
+        return apePatUsuario;
     }
 
-    public void setApe_Pat_Usuario(String ape_Pat_Usuario) {
-        Ape_Pat_Usuario = ape_Pat_Usuario;
+    public void setApePatUsuario(String apePatUsuario) {
+        this.apePatUsuario = apePatUsuario;
     }
 
     public int getEdad() {
-        return Edad;
+        return edad;
     }
 
     public void setEdad(int edad) {
-        Edad = edad;
+        this.edad = edad;
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
 
     public void setCorreo(String correo) {
-        Correo = correo;
+        this.correo = correo;
     }
 
-    public Long getId_Familia() {
-        return Id_Familia;
+    public Long getIdFamilia() {
+        return idFamilia;
     }
 
-    public void setId_Familia(Long id_Familia) {
-        Id_Familia = id_Familia;
+    public void setIdFamilia(Long idFamilia) {
+        this.idFamilia = idFamilia;
     }
 
-    public Long getId_Pais() {
-        return Id_Pais;
+    public Long getIdPais() {
+        return idPais;
     }
 
-    public void setId_Pais(Long id_Pais) {
-        Id_Pais = id_Pais;
+    public void setIdPais(Long idPais) {
+        this.idPais = idPais;
     }
 }

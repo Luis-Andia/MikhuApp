@@ -3,22 +3,22 @@ package pe.edu.upc.mikhuapp.dtos;
 import jakarta.persistence.Column;
 
 public class FamiliaDTOList {
-    private Long Id_Familia;
-    private String Nom_Familia;
+    private Long idFamilia;
+    private String nomFamilia;
 
-    public Long getId_Familia() {
-        return Id_Familia;
+    public Long getIdFamilia() {
+        return idFamilia;
     }
 
-    public void setId_Familia(Long id_Familia) {
-        Id_Familia = id_Familia;
+    public void setIdFamilia(Long idFamilia) {
+        this.idFamilia = idFamilia;
     }
 
-    public String getNom_Familia() {
-        return Nom_Familia;
+    public String getNomFamilia() {
+        return nomFamilia;
     }
 
-    public void setNom_Familia(String nom_Familia) {
-        Nom_Familia = nom_Familia;
+    public void setNomFamilia(String nomFamilia) {
+        this.nomFamilia = nomFamilia;
     }
 }

@@ -46,7 +46,7 @@ public class RolController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{/id}")
-                .buildAndExpand(nuevo_rol.getId_Rol())
+                .buildAndExpand(nuevo_rol.getIdRol())
                 .toUri();
 
         return ResponseEntity.created(location).body(responseDTO);

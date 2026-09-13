@@ -49,7 +49,7 @@ public class FamiliaController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{/id}")
-                .buildAndExpand(nueva_familia.getId_Familia())
+                .buildAndExpand(nueva_familia.getIdFamilia())
                 .toUri();
         return ResponseEntity.created(location).body(responseDTO);
     }
@@ -67,7 +67,7 @@ public class FamiliaController {
     @PutMapping("/{id}")
     public ResponseEntity<FamiliaDTOInsert> actualizar_familia (@PathVariable("id") Long id, @Validated @RequestBody FamiliaDTOInsert dto){
         Familia familia = modelMapper.map(dto, Familia.class);
-        familia.setId_Familia(id);
+        familia.setIdFamilia(id);
         fS.update(familia);
         FamiliaDTOInsert responseDTO = modelMapper.map(familia, FamiliaDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
