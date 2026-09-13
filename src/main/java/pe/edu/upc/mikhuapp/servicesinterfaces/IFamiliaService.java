@@ -9,4 +9,5 @@ public interface IFamiliaService {
     public List<Familia> list();
     public Familia insert(Familia f);
     public Optional<Familia> listid(Long id);
+    public Familia update(Familia f);
 }

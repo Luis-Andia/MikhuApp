@@ -32,4 +32,9 @@ public class FamiliaServiceImplements implements IFamiliaService {
     public Optional<Familia> listid(Long id) {
         return fR.findById(id);
     }
+
+    @Override
+    public Familia update(Familia f) {
+        return fR.save(f);
+    }
 }

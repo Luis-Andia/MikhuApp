@@ -63,5 +63,15 @@ public class FamiliaController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    // ACTUALIZAR FAMILIA
+    @PutMapping("/{id}")
+    public ResponseEntity<FamiliaDTOInsert> actualizar_familia (@PathVariable("id") Long id, @Validated @RequestBody FamiliaDTOInsert dto){
+        Familia familia = modelMapper.map(dto, Familia.class);
+        familia.setId_Familia(id);
+        fS.update(familia);
+        FamiliaDTOInsert responseDTO = modelMapper.map(familia, FamiliaDTOInsert.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+
 
 }
