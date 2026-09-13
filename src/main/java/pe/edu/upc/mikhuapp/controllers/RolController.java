@@ -5,28 +5,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriBuilder;
 import pe.edu.upc.mikhuapp.dtos.RolDTO;
 import pe.edu.upc.mikhuapp.entities.Rol;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRolService;
-import tools.jackson.databind.cfg.MapperBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/rol")
 public class RolController {
     private final IRolService rS;
     private final ModelMapper modelMapper;
-    private final MapperBuilder mapperBuilder;
 
-    public RolController(IRolService rS, ModelMapper modelMapper, MapperBuilder mapperBuilder) {
+    public RolController(IRolService rS, ModelMapper modelMapper) {
         this.rS = rS;
         this.modelMapper = modelMapper;
-        this.mapperBuilder = mapperBuilder;
     }
 
     // Metodos
