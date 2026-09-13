@@ -11,7 +11,7 @@ public class Usuario {
 
     @ManyToOne
     @JoinColumn(name="Id_Rol")
-    private Rol Id_Rol;
+    private Rol rol;
 
     @Column(name="Contrasena", length = 20, nullable = false)
     private String Contrasena;
@@ -30,28 +30,27 @@ public class Usuario {
 
     @ManyToOne
     @JoinColumn(name="Id_Familia")
-    private Familia Id_Familia;
+    private Familia familia;
 
     @ManyToOne
     @JoinColumn(name="Id_Pais")
-    private Pais Id_Pais;
+    private Pais pais;
 
     // Constructores
     public Usuario() {
     }
 
-    public Usuario(Long id_Usuario, Rol id_Rol, String contrasena, String nom_Usuario, String ape_Pat_Usuario, int edad, String correo, Familia id_Familia, Pais id_Pais) {
+    public Usuario(Long id_Usuario, Rol rol, String contrasena, String nom_Usuario, String ape_Pat_Usuario, int edad, String correo, Familia familia, Pais pais) {
         Id_Usuario = id_Usuario;
-        Id_Rol = id_Rol;
+        this.rol = rol;
         Contrasena = contrasena;
         Nom_Usuario = nom_Usuario;
         Ape_Pat_Usuario = ape_Pat_Usuario;
         Edad = edad;
         Correo = correo;
-        Id_Familia = id_Familia;
-        Id_Pais = id_Pais;
+        this.familia = familia;
+        this.pais = pais;
     }
-
     // Get an SET
 
     public Long getId_Usuario() {
@@ -62,12 +61,12 @@ public class Usuario {
         Id_Usuario = id_Usuario;
     }
 
-    public Rol getId_Rol() {
-        return Id_Rol;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setId_Rol(Rol id_Rol) {
-        Id_Rol = id_Rol;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     public String getContrasena() {
@@ -110,19 +109,19 @@ public class Usuario {
         Correo = correo;
     }
 
-    public Familia getId_Familia() {
-        return Id_Familia;
+    public Familia getFamilia() {
+        return familia;
     }
 
-    public void setId_Familia(Familia id_Familia) {
-        Id_Familia = id_Familia;
+    public void setFamilia(Familia familia) {
+        this.familia = familia;
     }
 
-    public Pais getId_Pais() {
-        return Id_Pais;
+    public Pais getPais() {
+        return pais;
     }
 
-    public void setId_Pais(Pais id_Pais) {
-        Id_Pais = id_Pais;
+    public void setPais(Pais pais) {
+        this.pais = pais;
     }
 }
