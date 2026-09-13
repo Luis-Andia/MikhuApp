@@ -25,7 +25,7 @@ public class Usuario {
     @Column(name="Edad", nullable = false)
     private int Edad;
 
-    @Column(name="Id_Rol", length = 30, nullable = false)
+    @Column(name="Correo", length = 30, nullable = false)
     private String Correo;
 
     @ManyToOne
