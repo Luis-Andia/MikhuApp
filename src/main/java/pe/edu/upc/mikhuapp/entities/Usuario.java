@@ -9,8 +9,9 @@ public class Usuario {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long Id_Usuario;
 
-    @Column(name="Id_Rol", nullable = false)
-    private int Id_Rol;
+    @ManyToOne
+    @JoinColumn(name="Id_Rol")
+    private Rol Id_Rol;
 
     @Column(name="Contrasena", length = 20, nullable = false)
     private String Contrasena;
@@ -27,18 +28,19 @@ public class Usuario {
     @Column(name="Id_Rol", length = 30, nullable = false)
     private String Correo;
 
-    @Column(name="Id_Familia", nullable = true)
-    private int Id_Familia;
+    @ManyToOne
+    @JoinColumn(name="Id_Familia")
+    private Familia Id_Familia;
 
-    @Column(name="Id_Pais", nullable = false)
-    private int Id_Pais;
+    @ManyToOne
+    @JoinColumn(name="Id_Pais")
+    private Pais Id_Pais;
 
-    // Constructor vacio
+    // Constructores
     public Usuario() {
     }
 
-    // Constructor de los atributos de la clase
-    public Usuario(long id_Usuario, int id_Rol, String contrasena, String nom_Usuario, String ape_Pat_Usuario, int edad, String correo, int id_Familia, int id_Pais) {
+    public Usuario(Long id_Usuario, Rol id_Rol, String contrasena, String nom_Usuario, String ape_Pat_Usuario, int edad, String correo, Familia id_Familia, Pais id_Pais) {
         Id_Usuario = id_Usuario;
         Id_Rol = id_Rol;
         Contrasena = contrasena;
@@ -50,20 +52,21 @@ public class Usuario {
         Id_Pais = id_Pais;
     }
 
-    // Get y Set
-    public long getId_Usuario() {
+    // Get an SET
+
+    public Long getId_Usuario() {
         return Id_Usuario;
     }
 
-    public void setId_Usuario(long id_Usuario) {
+    public void setId_Usuario(Long id_Usuario) {
         Id_Usuario = id_Usuario;
     }
 
-    public int getId_Rol() {
+    public Rol getId_Rol() {
         return Id_Rol;
     }
 
-    public void setId_Rol(int id_Rol) {
+    public void setId_Rol(Rol id_Rol) {
         Id_Rol = id_Rol;
     }
 
@@ -107,19 +110,19 @@ public class Usuario {
         Correo = correo;
     }
 
-    public int getId_Familia() {
+    public Familia getId_Familia() {
         return Id_Familia;
     }
 
-    public void setId_Familia(int id_Familia) {
+    public void setId_Familia(Familia id_Familia) {
         Id_Familia = id_Familia;
     }
 
-    public int getId_Pais() {
+    public Pais getId_Pais() {
         return Id_Pais;
     }
 
-    public void setId_Pais(int id_Pais) {
+    public void setId_Pais(Pais id_Pais) {
         Id_Pais = id_Pais;
     }
 }
