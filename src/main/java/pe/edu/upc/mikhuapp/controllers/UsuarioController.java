@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.UsuarioDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.UsuarioDTOList;
 import pe.edu.upc.mikhuapp.entities.Familia;
@@ -16,6 +17,7 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRolService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -47,8 +49,23 @@ public class UsuarioController {
         return ResponseEntity.ok(lista_usuarios);
     }
 
-    //
+    // INSERTAR nuevo USUARIO
+    @PostMapping
+    public ResponseEntity<UsuarioDTOInsert> insertar(@Validated @RequestBody UsuarioDTOInsert usuario){
+        Usuario nuevo_usuario = modelMapper.map(usuario, Usuario.class);
+        uS.insert(nuevo_usuario);
+        UsuarioDTOInsert responseDTO = modelMapper.map(nuevo_usuario, UsuarioDTOInsert.class);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{/id}")
+                .buildAndExpand(nuevo_usuario.getIdUsuario())
+                .toUri();
+        return ResponseEntity.created(location).body(responseDTO);
+    }
+
     // CONSULTAR USUARIO por ID
+    @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTOList> buscarid(@PathVariable("id") Long id){
         Usuario usuario = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
