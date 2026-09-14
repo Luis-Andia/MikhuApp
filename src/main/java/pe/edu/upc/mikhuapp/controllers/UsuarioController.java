@@ -51,17 +51,51 @@ public class UsuarioController {
 
     // INSERTAR nuevo USUARIO
     @PostMapping
-    public ResponseEntity<UsuarioDTOInsert> insertar(@Validated @RequestBody UsuarioDTOInsert usuario){
-        Usuario nuevo_usuario = modelMapper.map(usuario, Usuario.class);
+    public ResponseEntity<UsuarioDTOInsert> insertar(
+            @Validated @RequestBody UsuarioDTOInsert usuario){
+
+        Rol rol = rS.listid(usuario.getIdRol())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "No existe el rol con el id: "
+                                        + usuario.getIdRol()
+                        ));
+
+        Familia familia = fS.listid(usuario.getIdFamilia())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "No existe la familia con el id: "
+                                        + usuario.getIdFamilia()
+                        ));
+
+        Pais pais = pS.listid(usuario.getIdPais())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "No existe el pais con el id: "
+                                        + usuario.getIdPais()
+                        ));
+
+        Usuario nuevo_usuario =
+                modelMapper.map(usuario, Usuario.class);
+
+        nuevo_usuario.setRol(rol);
+        nuevo_usuario.setFamilia(familia);
+        nuevo_usuario.setPais(pais);
+
         uS.insert(nuevo_usuario);
-        UsuarioDTOInsert responseDTO = modelMapper.map(nuevo_usuario, UsuarioDTOInsert.class);
+
+        UsuarioDTOInsert responseDTO =
+                modelMapper.map(nuevo_usuario, UsuarioDTOInsert.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("{/id}")
+                .path("/{id}")
                 .buildAndExpand(nuevo_usuario.getIdUsuario())
                 .toUri();
-        return ResponseEntity.created(location).body(responseDTO);
+
+        return ResponseEntity
+                .created(location)
+                .body(responseDTO);
     }
 
     // CONSULTAR USUARIO por ID
