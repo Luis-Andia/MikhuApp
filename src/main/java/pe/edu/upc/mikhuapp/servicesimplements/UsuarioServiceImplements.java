@@ -41,4 +41,9 @@ public class UsuarioServiceImplements implements IUsuarioService {
     public Usuario update(Usuario u) {
         return uR.save(u);
     }
+
+    @Override
+    public List<Usuario> listarIntegrantes(Long idFamilia) {
+        return uR.findByFamilia_idFamilia(idFamilia);
+    }
 }

@@ -12,4 +12,5 @@ public interface IUsuarioService {
     public void insert(Usuario u); // Insertar un usuario
     public void delete(Long id); // Eliminar un usuario
     public Usuario update(Usuario u);
+    public List<Usuario> listarIntegrantes(Long idFamilia);
 }

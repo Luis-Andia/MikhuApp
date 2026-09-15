@@ -130,4 +130,13 @@ public class UsuarioController {
         return ResponseEntity.ok(responseDTO);
 
     }
+
+    @GetMapping("/IntegrantesFamilia/{idFamilia}")
+    public ResponseEntity<List<UsuarioDTOList>> listarIntegrantes(@PathVariable long idFamilia){
+        List<UsuarioDTOList> lista_usuarios = uS.list()
+                .stream()
+                .map(u->modelMapper.map(u, UsuarioDTOList.class))
+                .toList();
+        return ResponseEntity.ok(lista_usuarios);
+    }
 }

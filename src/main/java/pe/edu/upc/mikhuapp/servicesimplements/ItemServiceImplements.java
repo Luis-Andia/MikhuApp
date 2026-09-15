@@ -6,6 +6,7 @@ import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.repositories.IItemRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +29,20 @@ public class ItemServiceImplements implements IItemService {
     @Override
     public Optional<Item> listid(Long id) {
         return itemRepository.findById(id);
+    }
+
+    @Override
+    public List<Item> listarVencidos(LocalDate fechaActual) {
+        return itemRepository.findByfechaVencimientoBefore(fechaActual);
+    }
+
+    @Override
+    public List<Item> listarProximosVencer(LocalDate fechaActual, LocalDate fechaLimite){
+        return itemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite);
+    }
+
+    @Override
+    public List<Item> listarAlimentoBajoStock() {
+        return itemRepository.findAlimentosBajoStock();
     }
 }

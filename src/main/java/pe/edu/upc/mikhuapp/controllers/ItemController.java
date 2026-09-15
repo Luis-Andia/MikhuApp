@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.controllers;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.validation.annotation.Validated;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,13 @@ import pe.edu.upc.mikhuapp.entities.Familia;
 import pe.edu.upc.mikhuapp.entities.Ingrediente;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
+import pe.edu.upc.mikhuapp.repositories.IItemRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,6 +37,8 @@ public class ItemController {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private IItemRepository iItemRepository;
 
     @GetMapping
     public ResponseEntity<List<ItemDTOList>> list() {
@@ -90,4 +95,41 @@ public class ItemController {
 
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("/Vencidos")
+    public ResponseEntity <List<ItemDTOList>>listarVencidos() {
+        LocalDate fechaActual = LocalDate.now();
+
+        List<ItemDTOList> lista = iItemRepository.findByfechaVencimientoBefore(fechaActual)
+                .stream()
+                .map(item->modelMapper.map(item, ItemDTOList.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/ProximosVencer")
+    public ResponseEntity <List<ItemDTOList>> listarProximosVencer() {
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaLimite = fechaActual.plusDays(3);
+
+        List<ItemDTOList> lista = iItemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite)
+                .stream()
+                .map(item->modelMapper.map(item, ItemDTOList.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/bajoStock")
+    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
+        List<ItemDTOList> lista = iItemRepository.findAlimentosBajoStock()
+                .stream()
+                .map(item->modelMapper.map(item, ItemDTOList.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+
 }
