@@ -1,15 +1,15 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
-import pe.edu.upc.mikhuapp.entities.HistorialConsumo;
+import pe.edu.upc.mikhuapp.entities.Consumption;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IHistorialConsumoService {
 
-    HistorialConsumo insert(HistorialConsumo historialConsumo);
+    Consumption insert(Consumption consumption);
 
-    List<HistorialConsumo> list();
+    List<Consumption> list();
 
-    Optional<HistorialConsumo> listid(Long id);
+    Optional<Consumption> listid(Long id);
 }

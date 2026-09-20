@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.PaisDTO;
-import pe.edu.upc.mikhuapp.entities.Pais;
+import pe.edu.upc.mikhuapp.entities.Country;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 
@@ -30,14 +30,14 @@ public class PaisController {
     // REGISTRAR NUEVO PAIS
     @PostMapping
     public ResponseEntity<PaisDTO> registrar(@Validated @RequestBody PaisDTO dto){
-        Pais nuevo_pais = modelMapper.map(dto, Pais.class);
-        pS.insert(nuevo_pais);
+        Country nuevo_country = modelMapper.map(dto, Country.class);
+        pS.insert(nuevo_country);
 
-        PaisDTO responseDTO = modelMapper.map(nuevo_pais, PaisDTO.class);
+        PaisDTO responseDTO = modelMapper.map(nuevo_country, PaisDTO.class);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{/id}")
-                .buildAndExpand(nuevo_pais.getIdPais())
+                .buildAndExpand(nuevo_country.getIdCountry())
                 .toUri();
         return ResponseEntity
                 .created(location)
@@ -59,17 +59,17 @@ public class PaisController {
     public ResponseEntity<PaisDTO> actualizar_pais(@PathVariable("id") long id, @Validated @RequestBody PaisDTO dto){
 
         // AGREGAR VALIDACION DE ID valido
-        Pais pais = modelMapper.map(dto, Pais.class);
-        pais.setIdPais(id);
-        pS.update(pais);
-        PaisDTO responseDTO = modelMapper.map(pais, PaisDTO.class);
+        Country country = modelMapper.map(dto, Country.class);
+        country.setIdCountry(id);
+        pS.update(country);
+        PaisDTO responseDTO = modelMapper.map(country, PaisDTO.class);
         return ResponseEntity.ok(responseDTO);
     }
 
     // CONSULTAR PAIS POR ID
     @GetMapping("/{id}")
     public ResponseEntity<PaisDTO> buscar_pais_id(@PathVariable Long id){
-        Pais p = pS.listid(id)
+        Country p = pS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
         PaisDTO responseDTO = modelMapper.map(p, PaisDTO.class);
         return ResponseEntity.ok(responseDTO);
@@ -79,9 +79,9 @@ public class PaisController {
     // ELIMINAR PAIS
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
-        Pais p = pS.listid(id)
+        Country p = pS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
-        pS.delete(p.getIdPais());
+        pS.delete(p.getIdCountry());
         return ResponseEntity.noContent().build();
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.mikhuapp.dtos.*;
-import pe.edu.upc.mikhuapp.repositories.IRecetaRepository;
+import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecetaService;
@@ -26,7 +26,7 @@ public class RecetaController {
     private ModelMapper modelMapper;
 
     @Autowired
-    private IRecetaRepository iRecetaRepository;
+    private IRecipeRepository iRecipeRepository;
 
     @Autowired
     private IRecetaService iRecetaService;

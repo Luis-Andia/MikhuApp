@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.UsuarioDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.UsuarioDTOList;
-import pe.edu.upc.mikhuapp.entities.Familia;
-import pe.edu.upc.mikhuapp.entities.Pais;
+import pe.edu.upc.mikhuapp.entities.Family;
+import pe.edu.upc.mikhuapp.entities.Country;
 import pe.edu.upc.mikhuapp.entities.Role;
 import pe.edu.upc.mikhuapp.entities.Users;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
@@ -19,7 +19,6 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -62,14 +61,14 @@ public class UsuarioController {
                                         + usuario.getIdRol()
                         ));
 
-        Familia familia = fS.listid(usuario.getIdFamilia())
+        Family family = fS.listid(usuario.getIdFamilia())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "No existe la familia con el id: "
                                         + usuario.getIdFamilia()
                         ));
 
-        Pais pais = pS.listid(usuario.getIdPais())
+        Country country = pS.listid(usuario.getIdPais())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "No existe el pais con el id: "
@@ -80,8 +79,8 @@ public class UsuarioController {
                 modelMapper.map(usuario, Users.class);
 
         nuevo_users.setRoles(List.of(role)); // VERIFICAR
-        nuevo_users.setFamilia(familia);
-        nuevo_users.setPais(pais);
+        nuevo_users.setFamilia(family);
+        nuevo_users.setPais(country);
 
         uS.insert(nuevo_users);
 
@@ -113,15 +112,15 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UsuarioDTOInsert dto){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        Familia familia = fS.listid(dto.getIdFamilia())
+        Family family = fS.listid(dto.getIdFamilia())
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        Pais pais = pS.listid(dto.getIdPais())
+        Country country = pS.listid(dto.getIdPais())
                 .orElseThrow(()->new ResourceNotFoundException("No existe el rol"));
 
         Users users_actualizado = modelMapper.map(dto, Users.class);
         users_actualizado.setIdUsuario(id);
-        users_actualizado.setFamilia(familia);
-        users_actualizado.setPais(pais);
+        users_actualizado.setFamilia(family);
+        users_actualizado.setPais(country);
         uS.update(users_actualizado);
         UsuarioDTOInsert responseDTO = modelMapper.map(users_actualizado, UsuarioDTOInsert.class);
         return ResponseEntity.ok(responseDTO);

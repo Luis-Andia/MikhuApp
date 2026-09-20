@@ -1,7 +1,7 @@
 package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
-import pe.edu.upc.mikhuapp.entities.Familia;
+import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.repositories.IFamiliaRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 
@@ -17,22 +17,22 @@ public class FamiliaServiceImplements implements IFamiliaService {
     }
 
     @Override
-    public List<Familia> list() {
+    public List<Family> list() {
         return fR.findAll();
     }
 
     @Override
-    public Familia insert(Familia f) {
+    public Family insert(Family f) {
         return fR.save(f);
     }
 
     @Override
-    public Optional<Familia> listid(Long id) {
+    public Optional<Family> listid(Long id) {
         return fR.findById(id);
     }
 
     @Override
-    public Familia update(Familia f) {
+    public Family update(Family f) {
         return fR.save(f);
     }
 }

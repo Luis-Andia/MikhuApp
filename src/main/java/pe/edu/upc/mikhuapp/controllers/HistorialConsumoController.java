@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pe.edu.upc.mikhuapp.dtos.HistorialConsumoDTO;
-import pe.edu.upc.mikhuapp.entities.HistorialConsumo;
+import pe.edu.upc.mikhuapp.entities.Consumption;
 import pe.edu.upc.mikhuapp.entities.Item;
-import pe.edu.upc.mikhuapp.entities.Receta;
+import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IHistorialConsumoService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
@@ -44,7 +44,7 @@ public class HistorialConsumoController {
                             modelMapper.map(historial, HistorialConsumoDTO.class);
 
                     dto.setIdItem(historial.getItem().getIdItem());
-                    dto.setIdReceta(historial.getReceta().getIdReceta());
+                    dto.setIdReceta(historial.getReceta().getIdRecipe());
 
                     return dto;
                 }).toList();
@@ -60,29 +60,29 @@ public class HistorialConsumoController {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Item no encontrado"));
 
-        Receta receta = recetaService.listid(dto.getIdReceta())
+        Recipe recipe = recetaService.listid(dto.getIdReceta())
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Receta no encontrada"));
 
-        HistorialConsumo historial =
-                modelMapper.map(dto, HistorialConsumo.class);
+        Consumption historial =
+                modelMapper.map(dto, Consumption.class);
 
         historial.setItem(item);
-        historial.setReceta(receta);
+        historial.setReceta(recipe);
 
-        HistorialConsumo historialRegistrado =
+        Consumption historialRegistrado =
                 historialConsumoService.insert(historial);
 
         HistorialConsumoDTO response =
                 modelMapper.map(historialRegistrado, HistorialConsumoDTO.class);
 
         response.setIdItem(item.getIdItem());
-        response.setIdReceta(receta.getIdReceta());
+        response.setIdReceta(recipe.getIdRecipe());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(historialRegistrado.getIdConsumo())
+                .buildAndExpand(historialRegistrado.getIdConsumption())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
@@ -92,7 +92,7 @@ public class HistorialConsumoController {
     public ResponseEntity<HistorialConsumoDTO> listId(
             @PathVariable Long id) {
 
-        HistorialConsumo historial = historialConsumoService.listid(id)
+        Consumption historial = historialConsumoService.listid(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Consumo no encontrado"));
 
@@ -100,7 +100,7 @@ public class HistorialConsumoController {
                 modelMapper.map(historial, HistorialConsumoDTO.class);
 
         dto.setIdItem(historial.getItem().getIdItem());
-        dto.setIdReceta(historial.getReceta().getIdReceta());
+        dto.setIdReceta(historial.getReceta().getIdRecipe());
 
         return ResponseEntity.ok(dto);
     }

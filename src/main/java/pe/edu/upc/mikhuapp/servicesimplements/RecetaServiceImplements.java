@@ -2,8 +2,8 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.edu.upc.mikhuapp.entities.Receta;
-import pe.edu.upc.mikhuapp.repositories.IRecetaRepository;
+import pe.edu.upc.mikhuapp.entities.Recipe;
+import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecetaService;
 
 import java.util.List;
@@ -13,20 +13,20 @@ import java.util.Optional;
 public class RecetaServiceImplements implements IRecetaService {
 
     @Autowired
-    private IRecetaRepository recetaRepository;
+    private IRecipeRepository recetaRepository;
 
     @Override
-    public Receta insert(Receta receta) {
-        return recetaRepository.save(receta);
+    public Recipe insert(Recipe recipe) {
+        return recetaRepository.save(recipe);
     }
 
     @Override
-    public List<Receta> list() {
+    public List<Recipe> list() {
         return recetaRepository.findAll();
     }
 
     @Override
-    public Optional<Receta> listid(Long id) {
+    public Optional<Recipe> listid(Long id) {
         return recetaRepository.findById(id);
     }
 }

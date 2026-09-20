@@ -1,13 +1,13 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
-import pe.edu.upc.mikhuapp.entities.Familia;
+import pe.edu.upc.mikhuapp.entities.Family;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IFamiliaService {
-    public List<Familia> list();
-    public Familia insert(Familia f);
-    public Optional<Familia> listid(Long id);
-    public Familia update(Familia f);
+    public List<Family> list();
+    public Family insert(Family f);
+    public Optional<Family> listid(Long id);
+    public Family update(Family f);
 }

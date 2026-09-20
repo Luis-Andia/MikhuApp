@@ -1,16 +1,15 @@
 package pe.edu.upc.mikhuapp.dtos;
 
-import jakarta.persistence.*;
-import pe.edu.upc.mikhuapp.entities.Dificultad;
-import pe.edu.upc.mikhuapp.entities.Pais;
+import pe.edu.upc.mikhuapp.entities.Difficulty;
+import pe.edu.upc.mikhuapp.entities.Country;
 
 public class RecetaDTOList {
 
     private Long idReceta;
     private String nomReceta;
-    private Pais pais;
+    private Country country;
     private Integer calorias;
-    private Dificultad dificultad;
+    private Difficulty difficulty;
     private byte[] imagen;
 
     public Long getIdReceta() {
@@ -29,12 +28,12 @@ public class RecetaDTOList {
         this.nomReceta = nomReceta;
     }
 
-    public Pais getPais() {
-        return pais;
+    public Country getPais() {
+        return country;
     }
 
-    public void setPais(Pais pais) {
-        this.pais = pais;
+    public void setPais(Country country) {
+        this.country = country;
     }
 
     public Integer getCalorias() {
@@ -45,12 +44,12 @@ public class RecetaDTOList {
         this.calorias = calorias;
     }
 
-    public Dificultad getDificultad() {
-        return dificultad;
+    public Difficulty getDificultad() {
+        return difficulty;
     }
 
-    public void setDificultad(Dificultad dificultad) {
-        this.dificultad = dificultad;
+    public void setDificultad(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     public byte[] getImagen() {

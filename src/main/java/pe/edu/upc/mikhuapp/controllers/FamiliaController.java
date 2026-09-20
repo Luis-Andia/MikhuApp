@@ -7,11 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.FamiliaDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.FamiliaDTOList;
-import pe.edu.upc.mikhuapp.entities.Familia;
+import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 
-import javax.swing.text.StyledEditorKit;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -43,15 +42,15 @@ public class FamiliaController {
     // INSERTAR
     @PostMapping
     public ResponseEntity<FamiliaDTOInsert> insertar(@Validated @RequestBody FamiliaDTOInsert familia){
-        Familia nueva_familia = modelMapper.map(familia, Familia.class);
-        fS.insert(nueva_familia);
+        Family nueva_family = modelMapper.map(familia, Family.class);
+        fS.insert(nueva_family);
 
-        FamiliaDTOInsert responseDTO = modelMapper.map(nueva_familia, FamiliaDTOInsert.class);
+        FamiliaDTOInsert responseDTO = modelMapper.map(nueva_family, FamiliaDTOInsert.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{/id}")
-                .buildAndExpand(nueva_familia.getIdFamilia())
+                .buildAndExpand(nueva_family.getIdFamily())
                 .toUri();
         return ResponseEntity.created(location).body(responseDTO);
     }
@@ -59,26 +58,26 @@ public class FamiliaController {
     // CONSULTAR familia por ID
     @GetMapping("/{id}")
     public ResponseEntity<FamiliaDTOList> buscarid(@PathVariable Long id){
-        Familia familia = fS.listid(id)
+        Family family = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        FamiliaDTOList responseDTO = modelMapper.map(familia, FamiliaDTOList.class);
+        FamiliaDTOList responseDTO = modelMapper.map(family, FamiliaDTOList.class);
         return ResponseEntity.ok(responseDTO);
     }
 
     // ACTUALIZAR FAMILIA
     @PutMapping
     public ResponseEntity<FamiliaDTOInsert> actualizarfamilia(@Validated @RequestBody FamiliaDTOInsert dto){
-        Optional<Familia> existente = fS.listid(dto.getIdFamilia());
+        Optional<Family> existente = fS.listid(dto.getIdFamilia());
         if (existente.isEmpty()) {
             throw new ResourceNotFoundException("No existe la familia");
         }
-        Familia familia = existente.get();
+        Family family = existente.get();
 
-        familia.setNomFamilia(dto.getNomFamilia());
-        familia.setContrasenaFamilia(dto.getContrasenaFamilia());
+        family.setNomFamily(dto.getNomFamilia());
+        family.setPasswordFamily(dto.getContrasenaFamilia());
 
-        fS.update(familia);
-        FamiliaDTOInsert responseDTO = modelMapper.map(familia, FamiliaDTOInsert.class);
+        fS.update(family);
+        FamiliaDTOInsert responseDTO = modelMapper.map(family, FamiliaDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
     }
 }

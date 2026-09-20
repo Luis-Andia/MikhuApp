@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.IngredienteDTO;
-import pe.edu.upc.mikhuapp.entities.Ingrediente;
+import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
 
@@ -36,16 +36,16 @@ public class IngredienteController {
     @PostMapping
     public ResponseEntity<IngredienteDTO> insert(@Validated @RequestBody IngredienteDTO dto) {
 
-        Ingrediente ingrediente = modelMapper.map(dto, Ingrediente.class);
+        Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
 
-        Ingrediente ingredienteRegistrado = ingredienteService.insert(ingrediente);
+        Ingredient ingredientRegistrado = ingredienteService.insert(ingredient);
 
-        IngredienteDTO response = modelMapper.map(ingredienteRegistrado, IngredienteDTO.class);
+        IngredienteDTO response = modelMapper.map(ingredientRegistrado, IngredienteDTO.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(ingredienteRegistrado.getIdIngrediente())
+                .buildAndExpand(ingredientRegistrado.getIdIngrediente())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
@@ -54,10 +54,10 @@ public class IngredienteController {
     @GetMapping("/{id}")
     public ResponseEntity<IngredienteDTO> listId(@PathVariable Long id) {
 
-        Ingrediente ingrediente = ingredienteService.listid(id)
+        Ingredient ingredient = ingredienteService.listid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
-        IngredienteDTO dto = modelMapper.map(ingrediente, IngredienteDTO.class);
+        IngredienteDTO dto = modelMapper.map(ingredient, IngredienteDTO.class);
 
         return ResponseEntity.ok(dto);
     }

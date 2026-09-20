@@ -14,11 +14,11 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name="idFamilia")
-    private Familia familia;
+    private Family family;
 
     @ManyToOne
     @JoinColumn(name="idIngrediente")
-    private Ingrediente ingrediente;
+    private Ingredient ingredient;
 
     @Column(name="Cantidad_Disposicion", nullable = false)
     private Float cantidadDisposicion;
@@ -37,12 +37,12 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long idItem, Familia familia, Ingrediente ingrediente,
+    public Item(Long idItem, Family family, Ingredient ingredient,
                 Float cantidadDisposicion, LocalDate fechaCompra,
                 LocalDate fechaVencimiento, Integer stockMinimo) {
         this.idItem = idItem;
-        this.familia = familia;
-        this.ingrediente = ingrediente;
+        this.family = family;
+        this.ingredient = ingredient;
         this.cantidadDisposicion = cantidadDisposicion;
         this.fechaCompra = fechaCompra;
         this.fechaVencimiento = fechaVencimiento;
@@ -58,20 +58,20 @@ public class Item {
         this.idItem = idItem;
     }
 
-    public Familia getFamilia() {
-        return familia;
+    public Family getFamilia() {
+        return family;
     }
 
-    public void setFamilia(Familia familia) {
-        this.familia = familia;
+    public void setFamilia(Family family) {
+        this.family = family;
     }
 
-    public Ingrediente getIngrediente() {
-        return ingrediente;
+    public Ingredient getIngrediente() {
+        return ingredient;
     }
 
-    public void setIngrediente(Ingrediente ingrediente) {
-        this.ingrediente = ingrediente;
+    public void setIngrediente(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     public Float getCantidadDisposicion() {

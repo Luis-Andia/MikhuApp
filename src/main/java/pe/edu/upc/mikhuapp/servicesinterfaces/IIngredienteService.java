@@ -1,15 +1,15 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
-import pe.edu.upc.mikhuapp.entities.Ingrediente;
+import pe.edu.upc.mikhuapp.entities.Ingredient;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IIngredienteService {
 
-    List<Ingrediente> list();
+    List<Ingredient> list();
 
-    Ingrediente insert(Ingrediente ingrediente);
+    Ingredient insert(Ingredient ingredient);
 
-    Optional<Ingrediente> listid(Long id);
+    Optional<Ingredient> listid(Long id);
 }

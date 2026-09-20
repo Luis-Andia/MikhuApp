@@ -2,7 +2,7 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.edu.upc.mikhuapp.entities.Ingrediente;
+import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.repositories.IIngredienteRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
 
@@ -16,17 +16,17 @@ public class IngredienteServiceImplements implements IIngredienteService {
     private IIngredienteRepository ingredienteRepository;
 
     @Override
-    public List<Ingrediente> list() {
+    public List<Ingredient> list() {
         return ingredienteRepository.findAll();
     }
 
     @Override
-    public Ingrediente insert(Ingrediente ingrediente) {
-        return ingredienteRepository.save(ingrediente);
+    public Ingredient insert(Ingredient ingredient) {
+        return ingredienteRepository.save(ingredient);
     }
 
     @Override
-    public Optional<Ingrediente> listid(Long id) {
+    public Optional<Ingredient> listid(Long id) {
         return ingredienteRepository.findById(id);
     }
 }

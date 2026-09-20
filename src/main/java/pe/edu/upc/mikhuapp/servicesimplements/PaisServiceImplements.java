@@ -1,7 +1,7 @@
 package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
-import pe.edu.upc.mikhuapp.entities.Pais;
+import pe.edu.upc.mikhuapp.entities.Country;
 import pe.edu.upc.mikhuapp.repositories.IPaisRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 
@@ -17,22 +17,22 @@ public class PaisServiceImplements implements IPaisService {
     }
 
     @Override
-    public void insert(Pais p) {
+    public void insert(Country p) {
         pR.save(p);
     }
 
     @Override
-    public List<Pais> list() {
+    public List<Country> list() {
         return pR.findAll();
     }
 
     @Override
-    public Optional<Pais> listid(Long id) {
+    public Optional<Country> listid(Long id) {
         return pR.findById(id);
     }
 
     @Override
-    public Pais update(Pais p) {
+    public Country update(Country p) {
         return pR.save(p);
     }
 

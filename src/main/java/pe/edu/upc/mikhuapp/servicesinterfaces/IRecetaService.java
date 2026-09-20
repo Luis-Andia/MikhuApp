@@ -1,15 +1,15 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
-import pe.edu.upc.mikhuapp.entities.Receta;
+import pe.edu.upc.mikhuapp.entities.Recipe;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IRecetaService {
 
-    Receta insert(Receta receta);
+    Recipe insert(Recipe recipe);
 
-    List<Receta> list();
+    List<Recipe> list();
 
-    Optional<Receta> listid(Long id);
+    Optional<Recipe> listid(Long id);
 }

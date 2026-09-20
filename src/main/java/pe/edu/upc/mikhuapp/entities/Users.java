@@ -42,18 +42,18 @@ public class Users implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="idFamilia")
-    private Familia familia;
+    private Family family;
 
     @ManyToOne
     @JoinColumn(name="idPais")
-    private Pais pais;
+    private Country country;
 
     // Constructores
 
     public Users() {
     }
 
-    public Users(Long idUsuario, List<Role> roles, String contrasena, String nomUsuario, String apePatUsuario, int edad, String correo, Boolean enabled, Familia familia, Pais pais) {
+    public Users(Long idUsuario, List<Role> roles, String contrasena, String nomUsuario, String apePatUsuario, int edad, String correo, Boolean enabled, Family family, Country country) {
         this.idUsuario = idUsuario;
         this.roles = roles;
         this.contrasena = contrasena;
@@ -62,8 +62,8 @@ public class Users implements Serializable {
         this.edad = edad;
         this.correo = correo;
         this.enabled = enabled;
-        this.familia = familia;
-        this.pais = pais;
+        this.family = family;
+        this.country = country;
     }
     // Get an SET
 
@@ -131,19 +131,19 @@ public class Users implements Serializable {
         this.enabled = enabled;
     }
 
-    public Familia getFamilia() {
-        return familia;
+    public Family getFamilia() {
+        return family;
     }
 
-    public void setFamilia(Familia familia) {
-        this.familia = familia;
+    public void setFamilia(Family family) {
+        this.family = family;
     }
 
-    public Pais getPais() {
-        return pais;
+    public Country getPais() {
+        return country;
     }
 
-    public void setPais(Pais pais) {
-        this.pais = pais;
+    public void setPais(Country country) {
+        this.country = country;
     }
 }
