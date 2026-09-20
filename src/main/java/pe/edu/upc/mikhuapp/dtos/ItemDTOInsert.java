@@ -9,10 +9,10 @@ public class ItemDTOInsert {
     private Long idItem;
 
     @NotNull(message = "Id de Familia obligatorio")
-    private Long idFamilia;
+    private Long idFamily;
 
     @NotNull(message = "Id de Ingrediente obligatorio")
-    private Long idIngrediente;
+    private Long idIngredient;
 
     @NotNull(message = "Cantidad disponible obligatoria")
     private Float cantidadDisposicion;
@@ -35,20 +35,20 @@ public class ItemDTOInsert {
         this.idItem = idItem;
     }
 
-    public Long getIdFamilia() {
-        return idFamilia;
+    public Long getIdFamily() {
+        return idFamily;
     }
 
-    public void setIdFamilia(Long idFamilia) {
-        this.idFamilia = idFamilia;
+    public void setIdFamily(Long idFamily) {
+        this.idFamily = idFamily;
     }
 
-    public Long getIdIngrediente() {
-        return idIngrediente;
+    public Long getIdIngredient() {
+        return idIngredient;
     }
 
-    public void setIdIngrediente(Long idIngrediente) {
-        this.idIngrediente = idIngrediente;
+    public void setIdIngredient(Long idIngredient) {
+        this.idIngredient = idIngredient;
     }
 
     public Float getCantidadDisposicion() {

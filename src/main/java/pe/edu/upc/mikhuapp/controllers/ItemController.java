@@ -44,8 +44,8 @@ public class ItemController {
         List<ItemDTOList> lista = itemService.list().stream()
                 .map(item -> {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-                    dto.setIdFamilia(item.getFamilia().getIdFamily());
-                    dto.setIdIngrediente(item.getIngrediente().getIdIngrediente());
+                    dto.setIdFamily(item.getFamilia().getIdFamily());
+                    dto.setIdIngredient(item.getIngrediente().getIdIngrediente());
                     return dto;
                 })
                 .toList();
@@ -56,10 +56,10 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<ItemDTOList> insert(@Validated @RequestBody ItemDTOInsert dto) {
 
-        Family family = familiaService.listid(dto.getIdFamilia())
+        Family family = familiaService.listid(dto.getIdFamily())
                 .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
 
-        Ingredient ingredient = ingredienteService.listid(dto.getIdIngrediente())
+        Ingredient ingredient = ingredienteService.listid(dto.getIdIngredient())
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
         Item item = modelMapper.map(dto, Item.class);
@@ -70,8 +70,8 @@ public class ItemController {
         Item itemRegistrado = itemService.insert(item);
 
         ItemDTOList response = modelMapper.map(itemRegistrado, ItemDTOList.class);
-        response.setIdFamilia(family.getIdFamily());
-        response.setIdIngrediente(ingredient.getIdIngrediente());
+        response.setIdFamily(family.getIdFamily());
+        response.setIdIngredient(ingredient.getIdIngrediente());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -89,8 +89,8 @@ public class ItemController {
                 .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
 
         ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-        dto.setIdFamilia(item.getFamilia().getIdFamily());
-        dto.setIdIngrediente(item.getIngrediente().getIdIngrediente());
+        dto.setIdFamily(item.getFamilia().getIdFamily());
+        dto.setIdIngredient(item.getIngrediente().getIdIngrediente());
 
         return ResponseEntity.ok(dto);
     }

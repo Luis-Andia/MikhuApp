@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.FamiliaDTOInsert;
-import pe.edu.upc.mikhuapp.dtos.FamiliaDTOList;
+import pe.edu.upc.mikhuapp.dtos.FamilyDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
@@ -31,10 +31,10 @@ public class FamiliaController {
 
     // LISTAR
     @GetMapping
-    public ResponseEntity<List<FamiliaDTOList>> listar(){
-        List<FamiliaDTOList> lista_familias = fS.list()
+    public ResponseEntity<List<FamilyDTOList>> listar(){
+        List<FamilyDTOList> lista_familias = fS.list()
                 .stream()
-                .map(f -> modelMapper.map(f, FamiliaDTOList.class))
+                .map(f -> modelMapper.map(f, FamilyDTOList.class))
                 .toList();
         return ResponseEntity.ok(lista_familias);
     }
@@ -57,10 +57,10 @@ public class FamiliaController {
 
     // CONSULTAR familia por ID
     @GetMapping("/{id}")
-    public ResponseEntity<FamiliaDTOList> buscarid(@PathVariable Long id){
+    public ResponseEntity<FamilyDTOList> buscarid(@PathVariable Long id){
         Family family = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        FamiliaDTOList responseDTO = modelMapper.map(family, FamiliaDTOList.class);
+        FamilyDTOList responseDTO = modelMapper.map(family, FamilyDTOList.class);
         return ResponseEntity.ok(responseDTO);
     }
 

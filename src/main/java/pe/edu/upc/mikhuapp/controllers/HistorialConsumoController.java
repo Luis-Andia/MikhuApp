@@ -44,7 +44,7 @@ public class HistorialConsumoController {
                             modelMapper.map(historial, HistorialConsumoDTO.class);
 
                     dto.setIdItem(historial.getItem().getIdItem());
-                    dto.setIdReceta(historial.getReceta().getIdRecipe());
+                    dto.setIdReceta(historial.getRecipe().getIdRecipe());
 
                     return dto;
                 }).toList();
@@ -68,7 +68,7 @@ public class HistorialConsumoController {
                 modelMapper.map(dto, Consumption.class);
 
         historial.setItem(item);
-        historial.setReceta(recipe);
+        historial.setRecipe(recipe);
 
         Consumption historialRegistrado =
                 historialConsumoService.insert(historial);
@@ -100,7 +100,7 @@ public class HistorialConsumoController {
                 modelMapper.map(historial, HistorialConsumoDTO.class);
 
         dto.setIdItem(historial.getItem().getIdItem());
-        dto.setIdReceta(historial.getReceta().getIdRecipe());
+        dto.setIdReceta(historial.getRecipe().getIdRecipe());
 
         return ResponseEntity.ok(dto);
     }

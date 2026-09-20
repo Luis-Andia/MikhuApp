@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pe.edu.upc.mikhuapp.dtos.IngredienteDTO;
+import pe.edu.upc.mikhuapp.dtos.IngredientDTO;
 import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
@@ -25,22 +25,22 @@ public class IngredienteController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<IngredienteDTO>> list() {
-        List<IngredienteDTO> lista = ingredienteService.list().stream()
-                .map(ingrediente -> modelMapper.map(ingrediente, IngredienteDTO.class))
+    public ResponseEntity<List<IngredientDTO>> list() {
+        List<IngredientDTO> lista = ingredienteService.list().stream()
+                .map(ingrediente -> modelMapper.map(ingrediente, IngredientDTO.class))
                 .toList();
 
         return ResponseEntity.ok(lista);
     }
 
     @PostMapping
-    public ResponseEntity<IngredienteDTO> insert(@Validated @RequestBody IngredienteDTO dto) {
+    public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
 
         Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
 
         Ingredient ingredientRegistrado = ingredienteService.insert(ingredient);
 
-        IngredienteDTO response = modelMapper.map(ingredientRegistrado, IngredienteDTO.class);
+        IngredientDTO response = modelMapper.map(ingredientRegistrado, IngredientDTO.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -52,12 +52,12 @@ public class IngredienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IngredienteDTO> listId(@PathVariable Long id) {
+    public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
         Ingredient ingredient = ingredienteService.listid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
-        IngredienteDTO dto = modelMapper.map(ingredient, IngredienteDTO.class);
+        IngredientDTO dto = modelMapper.map(ingredient, IngredientDTO.class);
 
         return ResponseEntity.ok(dto);
     }
