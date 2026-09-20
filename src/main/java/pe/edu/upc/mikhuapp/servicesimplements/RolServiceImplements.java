@@ -2,7 +2,7 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pe.edu.upc.mikhuapp.entities.Rol;
+import pe.edu.upc.mikhuapp.entities.Role;
 import pe.edu.upc.mikhuapp.repositories.IRolRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRolService;
 
@@ -18,17 +18,17 @@ public class RolServiceImplements implements IRolService {
     }
 
     @Override
-    public List<Rol> list() {
+    public List<Role> list() {
         return rR.findAll();
     }
 
     @Override
-    public void insert(Rol r) {
+    public void insert(Role r) {
         rR.save(r);
     }
 
     @Override
-    public Optional<Rol> listid(Long id) {
+    public Optional<Role> listid(Long id) {
         return rR.findById(id);
     }
 }

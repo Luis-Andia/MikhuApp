@@ -9,7 +9,7 @@ import pe.edu.upc.mikhuapp.dtos.UsuarioDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.UsuarioDTOList;
 import pe.edu.upc.mikhuapp.entities.Familia;
 import pe.edu.upc.mikhuapp.entities.Pais;
-import pe.edu.upc.mikhuapp.entities.Rol;
+import pe.edu.upc.mikhuapp.entities.Role;
 import pe.edu.upc.mikhuapp.entities.Users;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
@@ -55,13 +55,12 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTOInsert> insertar(
             @Validated @RequestBody UsuarioDTOInsert usuario){
 
-        Optional<Rol> roles = rS.listid(usuario.getIdRol());
-        if (roles.isEmpty()) {
-            throw new ResourceNotFoundException(
-                    "No existe el rol con el id: "
-                            + usuario.getIdRol()
-            );
-        }
+        Role role = rS.listid(usuario.getIdRol())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "No existe el rol con el id: "
+                                        + usuario.getIdRol()
+                        ));
 
         Familia familia = fS.listid(usuario.getIdFamilia())
                 .orElseThrow(() ->
@@ -80,7 +79,7 @@ public class UsuarioController {
         Users nuevo_users =
                 modelMapper.map(usuario, Users.class);
 
-        nuevo_users.setRoles(roles.stream().toList()); // VERIFICAR
+        nuevo_users.setRoles(List.of(role)); // VERIFICAR
         nuevo_users.setFamilia(familia);
         nuevo_users.setPais(pais);
 

@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.RolDTO;
-import pe.edu.upc.mikhuapp.entities.Rol;
+import pe.edu.upc.mikhuapp.entities.Role;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRolService;
 
@@ -39,7 +39,7 @@ public class RolController {
     // Insertar
     @PostMapping
     public ResponseEntity<RolDTO> insertar(@Validated @RequestBody RolDTO dto){
-        Rol nuevo_rol = modelMapper.map(dto, Rol.class);
+        Role nuevo_rol = modelMapper.map(dto, Role.class);
         rS.insert(nuevo_rol);
         RolDTO responseDTO = modelMapper.map(nuevo_rol, RolDTO.class);
 
@@ -55,7 +55,7 @@ public class RolController {
     // Consultar por ID
     @GetMapping("/{id}")
     public ResponseEntity<RolDTO> buscar_rol_id(@PathVariable Long id){
-        Rol rol = rS.listid(id)
+        Role rol = rS.listid(id)
                 .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
         RolDTO responseDTO = modelMapper.map(rol,RolDTO.class);
         return ResponseEntity.ok(responseDTO);

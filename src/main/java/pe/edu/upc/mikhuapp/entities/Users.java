@@ -13,11 +13,13 @@ public class Users implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idUsuario;
 
-    @OneToMany(mappedBy = "user",
-    fetch = FetchType.EAGER,
-    cascade = CascadeType.ALL,
-    orphanRemoval = true)
-    private List<Rol> roles = new ArrayList<>();
+    @OneToMany(
+            mappedBy = "user",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Role> roles = new ArrayList<>();
 
     @Column(name="contrasena", length = 20, nullable = false)
     private String contrasena;
@@ -51,6 +53,18 @@ public class Users implements Serializable {
     public Users() {
     }
 
+    public Users(Long idUsuario, List<Role> roles, String contrasena, String nomUsuario, String apePatUsuario, int edad, String correo, Boolean enabled, Familia familia, Pais pais) {
+        this.idUsuario = idUsuario;
+        this.roles = roles;
+        this.contrasena = contrasena;
+        this.nomUsuario = nomUsuario;
+        this.apePatUsuario = apePatUsuario;
+        this.edad = edad;
+        this.correo = correo;
+        this.enabled = enabled;
+        this.familia = familia;
+        this.pais = pais;
+    }
     // Get an SET
 
     public Long getIdUsuario() {
@@ -61,11 +75,11 @@ public class Users implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public List<Rol> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Rol> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
