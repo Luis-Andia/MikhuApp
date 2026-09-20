@@ -11,8 +11,10 @@ import pe.edu.upc.mikhuapp.entities.Familia;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 
+import javax.swing.text.StyledEditorKit;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/familia")
@@ -64,14 +66,19 @@ public class FamiliaController {
     }
 
     // ACTUALIZAR FAMILIA
-    @PutMapping("/{id}")
-    public ResponseEntity<FamiliaDTOInsert> actualizarfamilia(@PathVariable("id") Long id, @Validated @RequestBody FamiliaDTOInsert dto){
-        Familia familia = modelMapper.map(dto, Familia.class);
-        familia.setIdFamilia(id);
+    @PutMapping
+    public ResponseEntity<FamiliaDTOInsert> actualizarfamilia(@Validated @RequestBody FamiliaDTOInsert dto){
+        Optional<Familia> existente = fS.listid(dto.getIdFamilia());
+        if (existente.isEmpty()) {
+            throw new ResourceNotFoundException("No existe la familia");
+        }
+        Familia familia = existente.get();
+
+        familia.setNomFamilia(dto.getNomFamilia());
+        familia.setContrasenaFamilia(dto.getContrasenaFamilia());
+
         fS.update(familia);
         FamiliaDTOInsert responseDTO = modelMapper.map(familia, FamiliaDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
     }
-
-
 }

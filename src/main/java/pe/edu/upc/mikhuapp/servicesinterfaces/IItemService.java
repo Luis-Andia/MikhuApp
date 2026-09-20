@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface   IItemService {
 
-    List<Item> list();
+    public List<Item> list();
 
-    Item insert(Item item);
+    public Item insert(Item item);
 
-    Optional<Item> listid(Long id);
+    public Optional<Item> listid(Long id);
 
     public List<Item> listarVencidos(LocalDate fechaActual);
 
