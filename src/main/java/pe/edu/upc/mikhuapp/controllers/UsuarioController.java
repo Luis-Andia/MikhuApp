@@ -10,7 +10,7 @@ import pe.edu.upc.mikhuapp.dtos.UsuarioDTOList;
 import pe.edu.upc.mikhuapp.entities.Familia;
 import pe.edu.upc.mikhuapp.entities.Pais;
 import pe.edu.upc.mikhuapp.entities.Rol;
-import pe.edu.upc.mikhuapp.entities.Usuario;
+import pe.edu.upc.mikhuapp.entities.Users;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
@@ -19,6 +19,7 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -54,12 +55,13 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTOInsert> insertar(
             @Validated @RequestBody UsuarioDTOInsert usuario){
 
-        Rol rol = rS.listid(usuario.getIdRol())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "No existe el rol con el id: "
-                                        + usuario.getIdRol()
-                        ));
+        Optional<Rol> roles = rS.listid(usuario.getIdRol());
+        if (roles.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No existe el rol con el id: "
+                            + usuario.getIdRol()
+            );
+        }
 
         Familia familia = fS.listid(usuario.getIdFamilia())
                 .orElseThrow(() ->
@@ -75,22 +77,22 @@ public class UsuarioController {
                                         + usuario.getIdPais()
                         ));
 
-        Usuario nuevo_usuario =
-                modelMapper.map(usuario, Usuario.class);
+        Users nuevo_users =
+                modelMapper.map(usuario, Users.class);
 
-        nuevo_usuario.setRol(rol);
-        nuevo_usuario.setFamilia(familia);
-        nuevo_usuario.setPais(pais);
+        nuevo_users.setRoles(roles.stream().toList()); // VERIFICAR
+        nuevo_users.setFamilia(familia);
+        nuevo_users.setPais(pais);
 
-        uS.insert(nuevo_usuario);
+        uS.insert(nuevo_users);
 
         UsuarioDTOInsert responseDTO =
-                modelMapper.map(nuevo_usuario, UsuarioDTOInsert.class);
+                modelMapper.map(nuevo_users, UsuarioDTOInsert.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(nuevo_usuario.getIdUsuario())
+                .buildAndExpand(nuevo_users.getIdUsuario())
                 .toUri();
 
         return ResponseEntity
@@ -101,36 +103,32 @@ public class UsuarioController {
     // CONSULTAR USUARIO por ID
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTOList> buscarid(@PathVariable("id") Long id){
-        Usuario usuario = uS.listId(id)
+        Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        UsuarioDTOList responseDTO = modelMapper.map(usuario, UsuarioDTOList.class);
+        UsuarioDTOList responseDTO = modelMapper.map(users, UsuarioDTOList.class);
         return ResponseEntity.ok(responseDTO);
     }
 
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UsuarioDTOInsert dto){
-        Usuario usuario = uS.listId(id)
+        Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
         Familia familia = fS.listid(dto.getIdFamilia())
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
         Pais pais = pS.listid(dto.getIdPais())
                 .orElseThrow(()->new ResourceNotFoundException("No existe el rol"));
-        Rol rol = rS.listid(dto.getIdRol())
-                .orElseThrow(()->new ResourceNotFoundException("No existe el rol"));
 
-        Usuario usuario_actualizado = modelMapper.map(dto, Usuario.class);
-        usuario_actualizado.setIdUsuario(id);
-        usuario_actualizado.setFamilia(familia);
-        usuario_actualizado.setPais(pais);
-        usuario_actualizado.setRol(rol);
-
-        uS.update(usuario_actualizado);
-        UsuarioDTOInsert responseDTO = modelMapper.map(usuario_actualizado, UsuarioDTOInsert.class);
+        Users users_actualizado = modelMapper.map(dto, Users.class);
+        users_actualizado.setIdUsuario(id);
+        users_actualizado.setFamilia(familia);
+        users_actualizado.setPais(pais);
+        uS.update(users_actualizado);
+        UsuarioDTOInsert responseDTO = modelMapper.map(users_actualizado, UsuarioDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
 
     }
-
+    //
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
     public ResponseEntity<List<UsuarioDTOList>> listarIntegrantes(@PathVariable long idFamilia){
         List<UsuarioDTOList> lista_usuarios = uS.list()
@@ -139,4 +137,8 @@ public class UsuarioController {
                 .toList();
         return ResponseEntity.ok(lista_usuarios);
     }
+
+    // ELIMINAR USUARIO de una familia
+    // @PutMapping("/eliminarfamilia/{id}")
+    // public
 }

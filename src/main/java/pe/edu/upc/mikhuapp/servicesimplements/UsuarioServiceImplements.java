@@ -1,8 +1,8 @@
 package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
-import pe.edu.upc.mikhuapp.entities.Usuario;
-import pe.edu.upc.mikhuapp.repositories.IUsuarioRepository;
+import pe.edu.upc.mikhuapp.entities.Users;
+import pe.edu.upc.mikhuapp.repositories.IUsersRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
 
 import java.util.List;
@@ -10,25 +10,25 @@ import java.util.Optional;
 
 @Service
 public class UsuarioServiceImplements implements IUsuarioService {
-    private final IUsuarioRepository uR;
+    private final IUsersRepository uR;
 
 
-    public UsuarioServiceImplements(IUsuarioRepository uR) {
+    public UsuarioServiceImplements(IUsersRepository uR) {
         this.uR = uR;
     }
 
     @Override
-    public List<Usuario> list() {
+    public List<Users> list() {
         return uR.findAll();
     }
 
     @Override
-    public Optional<Usuario> listId(Long id) {
+    public Optional<Users> listId(Long id) {
         return uR.findById(id);
     }
 
     @Override
-    public void insert(Usuario u) {
+    public void insert(Users u) {
         uR.save(u);
     }
 
@@ -38,12 +38,12 @@ public class UsuarioServiceImplements implements IUsuarioService {
     }
 
     @Override
-    public Usuario update(Usuario u) {
+    public Users update(Users u) {
         return uR.save(u);
     }
 
     @Override
-    public List<Usuario> listarIntegrantes(Long idFamilia) {
+    public List<Users> listarIntegrantes(Long idFamilia) {
         return uR.findByFamilia_idFamilia(idFamilia);
     }
 }

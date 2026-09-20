@@ -2,16 +2,22 @@ package pe.edu.upc.mikhuapp.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name="Usuario")
-public class Usuario {
+@Table(name="users", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+public class Users implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idUsuario;
 
-    @ManyToOne
-    @JoinColumn(name="idRol")
-    private Rol rol;
+    @OneToMany(mappedBy = "user",
+    fetch = FetchType.EAGER,
+    cascade = CascadeType.ALL,
+    orphanRemoval = true)
+    private List<Rol> roles = new ArrayList<>();
 
     @Column(name="contrasena", length = 20, nullable = false)
     private String contrasena;
@@ -28,6 +34,10 @@ public class Usuario {
     @Column(name="correo", length = 30, nullable = false)
     private String correo;
 
+    // Nueva columna
+    @Column(nullable = false)
+    private Boolean enabled = true;
+
     @ManyToOne
     @JoinColumn(name="idFamilia")
     private Familia familia;
@@ -38,19 +48,7 @@ public class Usuario {
 
     // Constructores
 
-    public Usuario() {
-    }
-
-    public Usuario(Long idUsuario, Rol rol, String contrasena, String nomUsuario, String apePatUsuario, int edad, String correo, Familia familia, Pais pais) {
-        this.idUsuario = idUsuario;
-        this.rol = rol;
-        this.contrasena = contrasena;
-        this.nomUsuario = nomUsuario;
-        this.apePatUsuario = apePatUsuario;
-        this.edad = edad;
-        this.correo = correo;
-        this.familia = familia;
-        this.pais = pais;
+    public Users() {
     }
 
     // Get an SET
@@ -63,12 +61,12 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public Rol getRol() {
-        return rol;
+    public List<Rol> getRoles() {
+        return roles;
     }
 
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
     }
 
     public String getContrasena() {
@@ -109,6 +107,14 @@ public class Usuario {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Familia getFamilia() {

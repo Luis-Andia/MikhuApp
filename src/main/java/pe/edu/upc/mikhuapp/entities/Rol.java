@@ -9,19 +9,20 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRol;
 
-    @Column(name="nomRol", length = 30, nullable = false)
-    private String nomRol;
+    @Column(name="Rol", length = 30, nullable = false)
+    private String Rol;
 
     // Constructores
     public Rol() {
     }
 
-    public Rol(Long idRol, String nomRol) {
+    public Rol(Long idRol, String rol) {
         this.idRol = idRol;
-        this.nomRol = nomRol;
+        Rol = rol;
     }
 
-    // Get and set
+    // Getters and Setters
+
     public Long getIdRol() {
         return idRol;
     }
@@ -30,11 +31,11 @@ public class Rol {
         this.idRol = idRol;
     }
 
-    public String getNomRol() {
-        return nomRol;
+    public String getRol() {
+        return Rol;
     }
 
-    public void setNomRol(String nomRol) {
-        this.nomRol = nomRol;
+    public void setRol(String rol) {
+        Rol = rol;
     }
 }
