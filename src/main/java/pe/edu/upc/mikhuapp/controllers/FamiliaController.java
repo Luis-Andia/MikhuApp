@@ -73,5 +73,17 @@ public class FamiliaController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    // ELIMINAR INTEGRANTE DE FAMILIA
+    @DeleteMapping("/{id}/familia/{idFamilia}")
+    public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id, @PathVariable Long idFamilia){
+        Familia familia = fS.listid(id)
+                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
+
+        familia.setIdFamilia(idFamilia);
+        fS.update(familia);
+
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

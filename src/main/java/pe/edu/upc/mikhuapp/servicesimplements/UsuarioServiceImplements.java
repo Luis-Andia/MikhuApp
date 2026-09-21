@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Usuario;
+import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.repositories.IUsuarioRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
 

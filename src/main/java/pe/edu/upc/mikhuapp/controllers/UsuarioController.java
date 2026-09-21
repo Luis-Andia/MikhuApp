@@ -107,6 +107,17 @@ public class UsuarioController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    //ELIMINAR USUARIO
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar_usuario(@PathVariable("id") Long id) {
+        Usuario usuario = uS.listId(id)
+                .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
+
+        uS.delete(usuario.getIdUsuario());
+
+        return ResponseEntity.noContent().build();
+    }
+
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UsuarioDTOInsert dto){
