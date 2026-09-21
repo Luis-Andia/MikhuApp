@@ -9,17 +9,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.IngredientDTO;
 import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredientService;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/ingredientes")
-public class IngredienteController {
+public class IngredientController {
 
     @Autowired
-    private IIngredienteService ingredienteService;
+    private IIngredientService ingredienteService;
 
     @Autowired
     private ModelMapper modelMapper;

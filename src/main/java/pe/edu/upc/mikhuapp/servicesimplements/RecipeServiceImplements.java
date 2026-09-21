@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IRecetaService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RecipeServiceImplements implements IRecetaService {
+public class RecipeServiceImplements implements IRecipeService {
 
     @Autowired
     private IRecipeRepository recetaRepository;

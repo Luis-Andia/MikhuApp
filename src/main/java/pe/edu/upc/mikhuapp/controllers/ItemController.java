@@ -13,8 +13,8 @@ import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.repositories.IItemRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredientService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
 
 import java.net.URI;
@@ -29,10 +29,10 @@ public class ItemController {
     private IItemService itemService;
 
     @Autowired
-    private IFamiliaService familiaService;
+    private IFamilyService familiaService;
 
     @Autowired
-    private IIngredienteService ingredienteService;
+    private IIngredientService ingredienteService;
 
     @Autowired
     private ModelMapper modelMapper;

@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Consumption;
 import pe.edu.upc.mikhuapp.repositories.IConsumptionRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IHistorialConsumoService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IConsumptionService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ConsumptionServiceImplements implements IHistorialConsumoService {
+public class ConsumptionServiceImplements implements IConsumptionService {
 
     @Autowired
     private IConsumptionRepository historialConsumoRepository;

@@ -3,13 +3,13 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Users;
 import pe.edu.upc.mikhuapp.repositories.IUsersRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IUserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImplements implements IUsuarioService {
+public class UserServiceImplements implements IUserService {
     private final IUsersRepository uR;
 
 

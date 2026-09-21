@@ -5,7 +5,7 @@ import pe.edu.upc.mikhuapp.entities.Recipe;
 import java.util.List;
 import java.util.Optional;
 
-public interface IRecetaService {
+public interface IRecipeService {
 
     Recipe insert(Recipe recipe);
 

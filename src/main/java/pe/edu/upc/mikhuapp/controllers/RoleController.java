@@ -8,18 +8,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.RolDTO;
 import pe.edu.upc.mikhuapp.entities.Role;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IRolService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IRoleService;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/rol")
-public class RolController {
-    private final IRolService rS;
+public class RoleController {
+    private final IRoleService rS;
     private final ModelMapper modelMapper;
 
-    public RolController(IRolService rS, ModelMapper modelMapper) {
+    public RoleController(IRoleService rS, ModelMapper modelMapper) {
         this.rS = rS;
         this.modelMapper = modelMapper;
     }

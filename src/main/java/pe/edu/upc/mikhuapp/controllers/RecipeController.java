@@ -6,21 +6,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.mikhuapp.dtos.*;
 import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IRecetaService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/recetas")
-public class RecetaController {
+public class RecipeController {
 
     @Autowired
-    private IRecetaService recetaService;
+    private IRecipeService recetaService;
 
     @Autowired
-    private IPaisService paisService;
+    private ICountryService paisService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -29,14 +29,14 @@ public class RecetaController {
     private IRecipeRepository iRecipeRepository;
 
     @Autowired
-    private IRecetaService iRecetaService;
+    private IRecipeService iRecipeService;
     @Autowired
-    private IFamiliaService iFamiliaService;
+    private IFamilyService iFamilyService;
 
     //HU23 LISTAR RECETAS
     @GetMapping("/listarReceta")
     public ResponseEntity<List<RecetaDTOList>> listarReceta() {
-        List<RecetaDTOList> lista =iRecetaService.list()
+        List<RecetaDTOList> lista = iRecipeService.list()
                 .stream()
                 .map(receta->modelMapper.map(receta, RecetaDTOList.class))
                 .toList();

@@ -6,7 +6,7 @@ import pe.edu.upc.mikhuapp.entities.Users;
 import java.util.List;
 import java.util.Optional;
 
-public interface IUsuarioService {
+public interface IUserService {
     public List<Users> list(); // Listar usuarios
     public Optional<Users> listId(Long id); // Buscar usuario por ID
     public void insert(Users u); // Insertar un usuario

@@ -12,24 +12,24 @@ import pe.edu.upc.mikhuapp.entities.Country;
 import pe.edu.upc.mikhuapp.entities.Role;
 import pe.edu.upc.mikhuapp.entities.Users;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IRolService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IUsuarioService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IRoleService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IUserService;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")
-public class UsuarioController {
-    private final IUsuarioService uS;
-    private final IRolService rS;
-    private final IPaisService pS;
-    private final IFamiliaService fS;
+public class UserController {
+    private final IUserService uS;
+    private final IRoleService rS;
+    private final ICountryService pS;
+    private final IFamilyService fS;
     private final ModelMapper modelMapper;
 
-    public UsuarioController(IUsuarioService uS, IRolService rS, IPaisService pS, IFamiliaService fS, ModelMapper modelMapper) {
+    public UserController(IUserService uS, IRoleService rS, ICountryService pS, IFamilyService fS, ModelMapper modelMapper) {
         this.uS = uS;
         this.rS = rS;
         this.pS = pS;

@@ -5,7 +5,7 @@ import pe.edu.upc.mikhuapp.entities.Ingredient;
 import java.util.List;
 import java.util.Optional;
 
-public interface IIngredienteService {
+public interface IIngredientService {
 
     List<Ingredient> list();
 

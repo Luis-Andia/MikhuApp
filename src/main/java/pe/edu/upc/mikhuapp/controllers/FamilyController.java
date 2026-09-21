@@ -9,7 +9,7 @@ import pe.edu.upc.mikhuapp.dtos.FamiliaDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.FamilyDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
 
 import java.net.URI;
 import java.util.List;
@@ -17,12 +17,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/familia")
-public class FamiliaController {
+public class FamilyController {
     // Inyecciones
-    private final IFamiliaService fS;
+    private final IFamilyService fS;
     private final ModelMapper modelMapper;
 
-    public FamiliaController(IFamiliaService fS, ModelMapper modelMapper) {
+    public FamilyController(IFamilyService fS, ModelMapper modelMapper) {
         this.fS = fS;
         this.modelMapper = modelMapper;
     }

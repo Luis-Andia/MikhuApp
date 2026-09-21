@@ -8,19 +8,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.CountryDTO;
 import pe.edu.upc.mikhuapp.entities.Country;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/pais")
-public class PaisController {
+public class CountryController {
     // Inyecciones
-    private final IPaisService pS;
+    private final ICountryService pS;
     private final ModelMapper modelMapper;
 
-    public PaisController(IPaisService pS, ModelMapper modelMapper) {
+    public CountryController(ICountryService pS, ModelMapper modelMapper) {
         this.pS = pS;
         this.modelMapper = modelMapper;
     }

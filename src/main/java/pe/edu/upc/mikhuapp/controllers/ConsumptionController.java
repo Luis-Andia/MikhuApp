@@ -12,25 +12,25 @@ import pe.edu.upc.mikhuapp.entities.Consumption;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IHistorialConsumoService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IConsumptionService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IRecetaService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/historial-consumo")
-public class HistorialConsumoController {
+public class ConsumptionController {
 
     @Autowired
-    private IHistorialConsumoService historialConsumoService;
+    private IConsumptionService historialConsumoService;
 
     @Autowired
     private IItemService itemService;
 
     @Autowired
-    private IRecetaService recetaService;
+    private IRecipeService recetaService;
 
     @Autowired
     private ModelMapper modelMapper;

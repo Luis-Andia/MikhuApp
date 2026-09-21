@@ -3,13 +3,13 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.repositories.IFamilyRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FamilyServiceImplements implements IFamiliaService {
+public class FamilyServiceImplements implements IFamilyService {
     private final IFamilyRepository fR;
 
     public FamilyServiceImplements(IFamilyRepository fR) {
