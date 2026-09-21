@@ -2,17 +2,17 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Family;
-import pe.edu.upc.mikhuapp.repositories.IFamiliaRepository;
+import pe.edu.upc.mikhuapp.repositories.IFamilyRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FamiliaServiceImplements implements IFamiliaService {
-    private final IFamiliaRepository fR;
+public class FamilyServiceImplements implements IFamiliaService {
+    private final IFamilyRepository fR;
 
-    public FamiliaServiceImplements(IFamiliaRepository fR) {
+    public FamilyServiceImplements(IFamilyRepository fR) {
         this.fR = fR;
     }
 

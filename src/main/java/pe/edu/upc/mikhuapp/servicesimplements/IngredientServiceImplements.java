@@ -3,17 +3,17 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Ingredient;
-import pe.edu.upc.mikhuapp.repositories.IIngredienteRepository;
+import pe.edu.upc.mikhuapp.repositories.IIngredientRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IngredienteServiceImplements implements IIngredienteService {
+public class IngredientServiceImplements implements IIngredienteService {
 
     @Autowired
-    private IIngredienteRepository ingredienteRepository;
+    private IIngredientRepository ingredienteRepository;
 
     @Override
     public List<Ingredient> list() {

@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RolServiceImplements implements IRolService {
+public class RoleServiceImplements implements IRolService {
     private final IRoleRepository rR;
 
-    public RolServiceImplements(IRoleRepository rR) {
+    public RoleServiceImplements(IRoleRepository rR) {
         this.rR = rR;
     }
 

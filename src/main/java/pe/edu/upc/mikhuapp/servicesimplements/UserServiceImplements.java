@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioServiceImplements implements IUsuarioService {
+public class UserServiceImplements implements IUsuarioService {
     private final IUsersRepository uR;
 
 
-    public UsuarioServiceImplements(IUsersRepository uR) {
+    public UserServiceImplements(IUsersRepository uR) {
         this.uR = uR;
     }
 

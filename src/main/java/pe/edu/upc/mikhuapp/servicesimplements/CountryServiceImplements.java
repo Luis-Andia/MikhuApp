@@ -2,17 +2,17 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Country;
-import pe.edu.upc.mikhuapp.repositories.IPaisRepository;
+import pe.edu.upc.mikhuapp.repositories.ICountryRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IPaisService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PaisServiceImplements implements IPaisService {
-    private final IPaisRepository pR;
+public class CountryServiceImplements implements IPaisService {
+    private final ICountryRepository pR;
 
-    public PaisServiceImplements(IPaisRepository pR) {
+    public CountryServiceImplements(ICountryRepository pR) {
         this.pR = pR;
     }
 
