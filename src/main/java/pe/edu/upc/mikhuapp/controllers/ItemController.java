@@ -1,6 +1,5 @@
 package pe.edu.upc.mikhuapp.controllers;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.validation.annotation.Validated;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOList;
-import pe.edu.upc.mikhuapp.entities.Familia;
-import pe.edu.upc.mikhuapp.entities.Ingrediente;
+import pe.edu.upc.mikhuapp.entities.Family;
+import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.repositories.IItemRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IFamiliaService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredienteService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredientService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
 
 import java.net.URI;
@@ -30,10 +29,10 @@ public class ItemController {
     private IItemService itemService;
 
     @Autowired
-    private IFamiliaService familiaService;
+    private IFamilyService familiaService;
 
     @Autowired
-    private IIngredienteService ingredienteService;
+    private IIngredientService ingredienteService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -45,8 +44,8 @@ public class ItemController {
         List<ItemDTOList> lista = itemService.list().stream()
                 .map(item -> {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-                    dto.setIdFamilia(item.getFamilia().getIdFamilia());
-                    dto.setIdIngrediente(item.getIngrediente().getIdIngrediente());
+                    dto.setIdFamily(item.getFamilia().getIdFamily());
+                    dto.setIdIngredient(item.getIngrediente().getIdIngrediente());
                     return dto;
                 })
                 .toList();
@@ -57,22 +56,22 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<ItemDTOList> insert(@Validated @RequestBody ItemDTOInsert dto) {
 
-        Familia familia = familiaService.listid(dto.getIdFamilia())
+        Family family = familiaService.listid(dto.getIdFamily())
                 .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
 
-        Ingrediente ingrediente = ingredienteService.listid(dto.getIdIngrediente())
+        Ingredient ingredient = ingredienteService.listid(dto.getIdIngredient())
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
         Item item = modelMapper.map(dto, Item.class);
 
-        item.setFamilia(familia);
-        item.setIngrediente(ingrediente);
+        item.setFamilia(family);
+        item.setIngrediente(ingredient);
 
         Item itemRegistrado = itemService.insert(item);
 
         ItemDTOList response = modelMapper.map(itemRegistrado, ItemDTOList.class);
-        response.setIdFamilia(familia.getIdFamilia());
-        response.setIdIngrediente(ingrediente.getIdIngrediente());
+        response.setIdFamily(family.getIdFamily());
+        response.setIdIngredient(ingredient.getIdIngrediente());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -90,8 +89,8 @@ public class ItemController {
                 .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
 
         ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-        dto.setIdFamilia(item.getFamilia().getIdFamilia());
-        dto.setIdIngrediente(item.getIngrediente().getIdIngrediente());
+        dto.setIdFamily(item.getFamilia().getIdFamily());
+        dto.setIdIngredient(item.getIngrediente().getIdIngrediente());
 
         return ResponseEntity.ok(dto);
     }
