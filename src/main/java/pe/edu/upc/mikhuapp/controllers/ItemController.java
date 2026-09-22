@@ -24,21 +24,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 public class ItemController {
+    private final IItemService itemService;
+    private final IFamilyService familiaService;
+    private final IIngredientService ingredienteService;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private IItemService itemService;
+    public ItemController(IItemService itemService, IFamilyService familiaService, IIngredientService ingredienteService, ModelMapper modelMapper) {
+        this.itemService = itemService;
+        this.familiaService = familiaService;
+        this.ingredienteService = ingredienteService;
+        this.modelMapper = modelMapper;
+    }
 
-    @Autowired
-    private IFamilyService familiaService;
-
-    @Autowired
-    private IIngredientService ingredienteService;
-
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private IItemRepository iItemRepository;
-
+    // LISTAR ITEM
     @GetMapping
     public ResponseEntity<List<ItemDTOList>> list() {
         List<ItemDTOList> lista = itemService.list().stream()
@@ -53,6 +51,7 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
+    // INSERTAR ITEM
     @PostMapping
     public ResponseEntity<ItemDTOList> insert(@Validated @RequestBody ItemDTOInsert dto) {
 
@@ -95,6 +94,7 @@ public class ItemController {
         return ResponseEntity.ok(dto);
     }
 
+    // LISTAR ITEMS VENCIDOS
     @GetMapping("/Vencidos")
     public ResponseEntity <List<ItemDTOList>>listarVencidos() {
         LocalDate fechaActual = LocalDate.now();

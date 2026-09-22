@@ -80,4 +80,16 @@ public class FamilyController {
         FamilyDTOInsert responseDTO = modelMapper.map(family, FamilyDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
     }
+
+    // ELIMINAR INTEGRANTE DE FAMILIA
+    @DeleteMapping("/{id}/familia/{idFamilia}")
+    public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id, @PathVariable Long idFamilia){
+        Family familia = fS.listid(id)
+                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
+
+        familia.setIdFamily(idFamilia);
+        fS.update(familia);
+
+        return ResponseEntity.noContent().build();
+    }
 }

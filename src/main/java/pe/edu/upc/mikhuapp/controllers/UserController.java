@@ -135,8 +135,4 @@ public class UserController {
                 .toList();
         return ResponseEntity.ok(lista_usuarios);
     }
-
-    // ELIMINAR USUARIO de una familia
-    // @PutMapping("/eliminarfamilia/{id}")
-    // public
 }

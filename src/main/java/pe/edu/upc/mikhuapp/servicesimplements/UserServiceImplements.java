@@ -12,7 +12,6 @@ import java.util.Optional;
 public class UserServiceImplements implements IUserService {
     private final IUsersRepository uR;
 
-
     public UserServiceImplements(IUsersRepository uR) {
         this.uR = uR;
     }
