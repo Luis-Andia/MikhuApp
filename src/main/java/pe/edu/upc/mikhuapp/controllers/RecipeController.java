@@ -35,10 +35,10 @@ public class RecipeController {
 
     //HU23 LISTAR RECETAS
     @GetMapping("/listarReceta")
-    public ResponseEntity<List<RecetaDTOList>> listarReceta() {
-        List<RecetaDTOList> lista = iRecipeService.list()
+    public ResponseEntity<List<RecipeDTOList>> listarReceta() {
+        List<RecipeDTOList> lista = iRecipeService.list()
                 .stream()
-                .map(receta->modelMapper.map(receta, RecetaDTOList.class))
+                .map(receta->modelMapper.map(receta, RecipeDTOList.class))
                 .toList();
         return ResponseEntity.ok(lista);
     }

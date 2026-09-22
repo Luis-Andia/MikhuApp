@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pe.edu.upc.mikhuapp.dtos.RolDTO;
+import pe.edu.upc.mikhuapp.dtos.RoleDTO;
 import pe.edu.upc.mikhuapp.entities.Role;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRoleService;
@@ -28,20 +28,20 @@ public class RoleController {
 
     // Listar
     @GetMapping
-    public ResponseEntity<List<RolDTO>> list(){
-        List<RolDTO> lista_roles = rS.list()
+    public ResponseEntity<List<RoleDTO>> list(){
+        List<RoleDTO> lista_roles = rS.list()
                 .stream()
-                .map(r -> modelMapper.map(r,RolDTO.class))
+                .map(r -> modelMapper.map(r, RoleDTO.class))
                 .toList();
         return ResponseEntity.ok(lista_roles);
     }
 
     // Insertar
     @PostMapping
-    public ResponseEntity<RolDTO> insertar(@Validated @RequestBody RolDTO dto){
+    public ResponseEntity<RoleDTO> insertar(@Validated @RequestBody RoleDTO dto){
         Role nuevo_rol = modelMapper.map(dto, Role.class);
         rS.insert(nuevo_rol);
-        RolDTO responseDTO = modelMapper.map(nuevo_rol, RolDTO.class);
+        RoleDTO responseDTO = modelMapper.map(nuevo_rol, RoleDTO.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -54,10 +54,10 @@ public class RoleController {
 
     // Consultar por ID
     @GetMapping("/{id}")
-    public ResponseEntity<RolDTO> buscar_rol_id(@PathVariable Long id){
+    public ResponseEntity<RoleDTO> buscar_rol_id(@PathVariable Long id){
         Role rol = rS.listid(id)
                 .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
-        RolDTO responseDTO = modelMapper.map(rol,RolDTO.class);
+        RoleDTO responseDTO = modelMapper.map(rol, RoleDTO.class);
         return ResponseEntity.ok(responseDTO);
     }
 }

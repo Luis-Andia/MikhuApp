@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        Users user = usersRepository.findByNomUsuario(username)
+        Users user = usersRepository.findByNomUser(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 "Usuario no encontrado: " + username
@@ -38,8 +38,8 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .toList();
 
         return User.builder()
-                .username(user.getNomUsuario())
-                .password(user.getContrasena())
+                .username(user.getNomUser())
+                .password(user.getPassword())
                 .authorities(authorities)
                 .disabled(!Boolean.TRUE.equals(user.getEnabled()))
                 .build();

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public class HistorialConsumoDTO {
+public class ConsumptionDTO {
 
     private Long idConsumo;
 

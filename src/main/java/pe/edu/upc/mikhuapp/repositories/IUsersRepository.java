@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface IUsersRepository extends JpaRepository<Users,Long> {
-    List<Users> findByFamilia_idFamilia(Long idFamilia);
+    List<Users> findByFamily_idFamily(Long idFamily);
 
-    Optional<Users> findByNomUsuario(String nomUsuario);
+    Optional<Users> findByNomUser(String nomUser);
 }

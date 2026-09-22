@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pe.edu.upc.mikhuapp.dtos.FamiliaDTOInsert;
+import pe.edu.upc.mikhuapp.dtos.FamilyDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.FamilyDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
@@ -41,11 +41,11 @@ public class FamilyController {
 
     // INSERTAR
     @PostMapping
-    public ResponseEntity<FamiliaDTOInsert> insertar(@Validated @RequestBody FamiliaDTOInsert familia){
+    public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
         Family nueva_family = modelMapper.map(familia, Family.class);
         fS.insert(nueva_family);
 
-        FamiliaDTOInsert responseDTO = modelMapper.map(nueva_family, FamiliaDTOInsert.class);
+        FamilyDTOInsert responseDTO = modelMapper.map(nueva_family, FamilyDTOInsert.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -66,7 +66,7 @@ public class FamilyController {
 
     // ACTUALIZAR FAMILIA
     @PutMapping
-    public ResponseEntity<FamiliaDTOInsert> actualizarfamilia(@Validated @RequestBody FamiliaDTOInsert dto){
+    public ResponseEntity<FamilyDTOInsert> actualizarfamilia(@Validated @RequestBody FamilyDTOInsert dto){
         Optional<Family> existente = fS.listid(dto.getIdFamilia());
         if (existente.isEmpty()) {
             throw new ResourceNotFoundException("No existe la familia");
@@ -77,7 +77,7 @@ public class FamilyController {
         family.setPasswordFamily(dto.getContrasenaFamilia());
 
         fS.update(family);
-        FamiliaDTOInsert responseDTO = modelMapper.map(family, FamiliaDTOInsert.class);
+        FamilyDTOInsert responseDTO = modelMapper.map(family, FamilyDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
     }
 }

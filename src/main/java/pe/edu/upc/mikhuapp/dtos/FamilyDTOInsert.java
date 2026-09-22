@@ -2,7 +2,7 @@ package pe.edu.upc.mikhuapp.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class FamiliaDTOInsert {
+public class FamilyDTOInsert {
 
     private Long idFamilia;
 

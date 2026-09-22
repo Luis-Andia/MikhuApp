@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import pe.edu.upc.mikhuapp.dtos.HistorialConsumoDTO;
+import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
 import pe.edu.upc.mikhuapp.entities.Consumption;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.entities.Recipe;
@@ -36,12 +36,12 @@ public class ConsumptionController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<HistorialConsumoDTO>> list() {
+    public ResponseEntity<List<ConsumptionDTO>> list() {
 
-        List<HistorialConsumoDTO> lista = historialConsumoService.list().stream()
+        List<ConsumptionDTO> lista = historialConsumoService.list().stream()
                 .map(historial -> {
-                    HistorialConsumoDTO dto =
-                            modelMapper.map(historial, HistorialConsumoDTO.class);
+                    ConsumptionDTO dto =
+                            modelMapper.map(historial, ConsumptionDTO.class);
 
                     dto.setIdItem(historial.getItem().getIdItem());
                     dto.setIdReceta(historial.getRecipe().getIdRecipe());
@@ -53,8 +53,8 @@ public class ConsumptionController {
     }
 
     @PostMapping
-    public ResponseEntity<HistorialConsumoDTO> insert(
-            @Validated @RequestBody HistorialConsumoDTO dto) {
+    public ResponseEntity<ConsumptionDTO> insert(
+            @Validated @RequestBody ConsumptionDTO dto) {
 
         Item item = itemService.listid(dto.getIdItem())
                 .orElseThrow(() ->
@@ -73,8 +73,8 @@ public class ConsumptionController {
         Consumption historialRegistrado =
                 historialConsumoService.insert(historial);
 
-        HistorialConsumoDTO response =
-                modelMapper.map(historialRegistrado, HistorialConsumoDTO.class);
+        ConsumptionDTO response =
+                modelMapper.map(historialRegistrado, ConsumptionDTO.class);
 
         response.setIdItem(item.getIdItem());
         response.setIdReceta(recipe.getIdRecipe());
@@ -89,15 +89,15 @@ public class ConsumptionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HistorialConsumoDTO> listId(
+    public ResponseEntity<ConsumptionDTO> listId(
             @PathVariable Long id) {
 
         Consumption historial = historialConsumoService.listid(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Consumo no encontrado"));
 
-        HistorialConsumoDTO dto =
-                modelMapper.map(historial, HistorialConsumoDTO.class);
+        ConsumptionDTO dto =
+                modelMapper.map(historial, ConsumptionDTO.class);
 
         dto.setIdItem(historial.getItem().getIdItem());
         dto.setIdReceta(historial.getRecipe().getIdRecipe());

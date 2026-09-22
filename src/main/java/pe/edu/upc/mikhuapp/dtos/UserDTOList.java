@@ -1,9 +1,6 @@
 package pe.edu.upc.mikhuapp.dtos;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-public class UsuarioDTOList {
+public class UserDTOList {
     private Long idUsuario;
     private Long idRol;
     public String nomUsuario;

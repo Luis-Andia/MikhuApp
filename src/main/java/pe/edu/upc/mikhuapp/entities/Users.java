@@ -11,7 +11,7 @@ import java.util.List;
 public class Users implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long idUsuario;
+    private Long idUser;
 
     @OneToMany(
             mappedBy = "user",
@@ -21,31 +21,31 @@ public class Users implements Serializable {
     )
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name="contrasena", length = 20, nullable = false)
-    private String contrasena;
+    @Column(name="password", length = 20, nullable = false)
+    private String password;
 
-    @Column(name="nomUsuario", length = 40, nullable = false)
-    private String nomUsuario;
+    @Column(name="nomUser", length = 40, nullable = false)
+    private String nomUser;
 
-    @Column(name="apePatUsuario", length = 15, nullable = false)
-    private String apePatUsuario;
+    @Column(name="lastNameUser", length = 15, nullable = false)
+    private String lastNameUser;
 
-    @Column(name="edad", nullable = false)
-    private int edad;
+    @Column(name="age", nullable = false)
+    private int age;
 
-    @Column(name="correo", length = 30, nullable = false)
-    private String correo;
+    @Column(name="email", length = 30, nullable = false)
+    private String email;
 
     // Nueva columna
     @Column(nullable = false)
     private Boolean enabled = true;
 
     @ManyToOne
-    @JoinColumn(name="idFamilia")
+    @JoinColumn(name="idFamily")
     private Family family;
 
     @ManyToOne
-    @JoinColumn(name="idPais")
+    @JoinColumn(name="idCountry")
     private Country country;
 
     // Constructores
@@ -53,26 +53,26 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(Long idUsuario, List<Role> roles, String contrasena, String nomUsuario, String apePatUsuario, int edad, String correo, Boolean enabled, Family family, Country country) {
-        this.idUsuario = idUsuario;
+    public Users(Long idUser, List<Role> roles, String password, String nomUser, String lastNameUser, int age, String email, Boolean enabled, Family family, Country country) {
+        this.idUser = idUser;
         this.roles = roles;
-        this.contrasena = contrasena;
-        this.nomUsuario = nomUsuario;
-        this.apePatUsuario = apePatUsuario;
-        this.edad = edad;
-        this.correo = correo;
+        this.password = password;
+        this.nomUser = nomUser;
+        this.lastNameUser = lastNameUser;
+        this.age = age;
+        this.email = email;
         this.enabled = enabled;
         this.family = family;
         this.country = country;
     }
     // Get an SET
 
-    public Long getIdUsuario() {
-        return idUsuario;
+    public Long getIdUser() {
+        return idUser;
     }
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public List<Role> getRoles() {
@@ -83,44 +83,44 @@ public class Users implements Serializable {
         this.roles = roles;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getNomUsuario() {
-        return nomUsuario;
+    public String getNomUser() {
+        return nomUser;
     }
 
-    public void setNomUsuario(String nomUsuario) {
-        this.nomUsuario = nomUsuario;
+    public void setNomUser(String nomUser) {
+        this.nomUser = nomUser;
     }
 
-    public String getApePatUsuario() {
-        return apePatUsuario;
+    public String getLastNameUser() {
+        return lastNameUser;
     }
 
-    public void setApePatUsuario(String apePatUsuario) {
-        this.apePatUsuario = apePatUsuario;
+    public void setLastNameUser(String lastNameUser) {
+        this.lastNameUser = lastNameUser;
     }
 
-    public int getEdad() {
-        return edad;
+    public int getAge() {
+        return age;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Boolean getEnabled() {
@@ -131,19 +131,19 @@ public class Users implements Serializable {
         this.enabled = enabled;
     }
 
-    public Family getFamilia() {
+    public Family getFamily() {
         return family;
     }
 
-    public void setFamilia(Family family) {
+    public void setFamily(Family family) {
         this.family = family;
     }
 
-    public Country getPais() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setPais(Country country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 }

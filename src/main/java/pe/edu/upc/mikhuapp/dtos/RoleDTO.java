@@ -3,7 +3,7 @@ package pe.edu.upc.mikhuapp.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class RolDTO {
+public class RoleDTO {
     private Long idRol;
 
     @NotBlank(message = "El nombre del rol es obligatorio")

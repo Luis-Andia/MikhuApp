@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pe.edu.upc.mikhuapp.dtos.UsuarioDTOInsert;
-import pe.edu.upc.mikhuapp.dtos.UsuarioDTOList;
+import pe.edu.upc.mikhuapp.dtos.UserDTOInsert;
+import pe.edu.upc.mikhuapp.dtos.UserDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.entities.Country;
 import pe.edu.upc.mikhuapp.entities.Role;
@@ -41,18 +41,18 @@ public class UserController {
 
     // Listar usuarios
     @GetMapping
-    public ResponseEntity<List<UsuarioDTOList>> listar(){
-        List<UsuarioDTOList> lista_usuarios = uS.list()
+    public ResponseEntity<List<UserDTOList>> listar(){
+        List<UserDTOList> lista_usuarios = uS.list()
                 .stream()
-                .map(u->modelMapper.map(u, UsuarioDTOList.class))
+                .map(u->modelMapper.map(u, UserDTOList.class))
                 .toList();
         return ResponseEntity.ok(lista_usuarios);
     }
 
     // INSERTAR nuevo USUARIO
     @PostMapping
-    public ResponseEntity<UsuarioDTOInsert> insertar(
-            @Validated @RequestBody UsuarioDTOInsert usuario){
+    public ResponseEntity<UserDTOInsert> insertar(
+            @Validated @RequestBody UserDTOInsert usuario){
 
         Role role = rS.listid(usuario.getIdRol())
                 .orElseThrow(() ->
@@ -79,18 +79,18 @@ public class UserController {
                 modelMapper.map(usuario, Users.class);
 
         nuevo_users.setRoles(List.of(role)); // VERIFICAR
-        nuevo_users.setFamilia(family);
-        nuevo_users.setPais(country);
+        nuevo_users.setFamily(family);
+        nuevo_users.setCountry(country);
 
         uS.insert(nuevo_users);
 
-        UsuarioDTOInsert responseDTO =
-                modelMapper.map(nuevo_users, UsuarioDTOInsert.class);
+        UserDTOInsert responseDTO =
+                modelMapper.map(nuevo_users, UserDTOInsert.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(nuevo_users.getIdUsuario())
+                .buildAndExpand(nuevo_users.getIdUser())
                 .toUri();
 
         return ResponseEntity
@@ -100,38 +100,38 @@ public class UserController {
 
     // CONSULTAR USUARIO por ID
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTOList> buscarid(@PathVariable("id") Long id){
+    public ResponseEntity<UserDTOList> buscarid(@PathVariable("id") Long id){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        UsuarioDTOList responseDTO = modelMapper.map(users, UsuarioDTOList.class);
+        UserDTOList responseDTO = modelMapper.map(users, UserDTOList.class);
         return ResponseEntity.ok(responseDTO);
     }
 
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UsuarioDTOInsert dto){
+    public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
         Family family = fS.listid(dto.getIdFamilia())
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
         Country country = pS.listid(dto.getIdPais())
-                .orElseThrow(()->new ResourceNotFoundException("No existe el rol"));
+                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
 
         Users users_actualizado = modelMapper.map(dto, Users.class);
-        users_actualizado.setIdUsuario(id);
-        users_actualizado.setFamilia(family);
-        users_actualizado.setPais(country);
+        users_actualizado.setIdUser(id);
+        users_actualizado.setFamily(family);
+        users_actualizado.setCountry(country);
         uS.update(users_actualizado);
-        UsuarioDTOInsert responseDTO = modelMapper.map(users_actualizado, UsuarioDTOInsert.class);
+        UserDTOInsert responseDTO = modelMapper.map(users_actualizado, UserDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
 
     }
     //
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
-    public ResponseEntity<List<UsuarioDTOList>> listarIntegrantes(@PathVariable long idFamilia){
-        List<UsuarioDTOList> lista_usuarios = uS.list()
+    public ResponseEntity<List<UserDTOList>> listarIntegrantes(@PathVariable long idFamilia){
+        List<UserDTOList> lista_usuarios = uS.list()
                 .stream()
-                .map(u->modelMapper.map(u, UsuarioDTOList.class))
+                .map(u->modelMapper.map(u, UserDTOList.class))
                 .toList();
         return ResponseEntity.ok(lista_usuarios);
     }

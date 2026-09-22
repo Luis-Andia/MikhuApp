@@ -3,7 +3,7 @@ package pe.edu.upc.mikhuapp.dtos;
 import pe.edu.upc.mikhuapp.entities.Difficulty;
 import pe.edu.upc.mikhuapp.entities.Country;
 
-public class RecetaDTOList {
+public class RecipeDTOList {
 
     private Long idReceta;
     private String nomReceta;
