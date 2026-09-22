@@ -130,5 +130,15 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar_item(@PathVariable("id") Long id) {
+        Item item = itemService.listid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
+
+        itemService.delete(item.getIdItem());
+
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

@@ -20,4 +20,6 @@ public interface   IItemService {
     public List<Item> listarProximosVencer(LocalDate fechaActual, LocalDate fechaLimite);
 
     public List<Item> listarAlimentoBajoStock();
+
+    public void delete(Long id);
 }

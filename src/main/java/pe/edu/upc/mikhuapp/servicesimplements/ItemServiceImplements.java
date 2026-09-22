@@ -45,4 +45,9 @@ public class ItemServiceImplements implements IItemService {
     public List<Item> listarAlimentoBajoStock() {
         return itemRepository.findAlimentosBajoStock();
     }
+
+    @Override
+    public void delete(Long id) {
+        itemRepository.deleteById(id);
+    }
 }
