@@ -9,6 +9,7 @@ public class UsuarioDTOList {
     public String nomUsuario;
     public String apePatUsuario;
     private String correo;
+    private int edad;
     private Long idFamilia;
     private Long idPais;
 
@@ -52,6 +53,10 @@ public class UsuarioDTOList {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    public int getEdad() { return edad; }
+
+    public void setEdad(int edad) { this.edad = edad; }
 
     public Long getIdFamilia() {
         return idFamilia;

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pe.edu.upc.mikhuapp.dtos.HistorialConsumoDTO;
+import pe.edu.upc.mikhuapp.dtos.HistorialConsumoResponseDTO;
 import pe.edu.upc.mikhuapp.entities.HistorialConsumo;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.entities.Receta;
@@ -36,14 +37,17 @@ public class HistorialConsumoController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<HistorialConsumoDTO>> list() {
+    public ResponseEntity<List<HistorialConsumoResponseDTO>> list() {
 
-        List<HistorialConsumoDTO> lista = historialConsumoService.list().stream()
+        List<HistorialConsumoResponseDTO> lista = historialConsumoService.list().stream()
                 .map(historial -> {
-                    HistorialConsumoDTO dto =
-                            modelMapper.map(historial, HistorialConsumoDTO.class);
+                    HistorialConsumoResponseDTO dto =
+                            modelMapper.map(historial, HistorialConsumoResponseDTO.class);
 
                     dto.setIdItem(historial.getItem().getIdItem());
+                    dto.setNombreIngrediente(
+                            historial.getItem().getIngrediente().getNomIngrediente()
+                    );
                     dto.setIdReceta(historial.getReceta().getIdReceta());
 
                     return dto;
@@ -53,7 +57,7 @@ public class HistorialConsumoController {
     }
 
     @PostMapping
-    public ResponseEntity<HistorialConsumoDTO> insert(
+    public ResponseEntity<HistorialConsumoResponseDTO> insert(
             @Validated @RequestBody HistorialConsumoDTO dto) {
 
         Item item = itemService.listid(dto.getIdItem())
@@ -73,10 +77,13 @@ public class HistorialConsumoController {
         HistorialConsumo historialRegistrado =
                 historialConsumoService.insert(historial);
 
-        HistorialConsumoDTO response =
-                modelMapper.map(historialRegistrado, HistorialConsumoDTO.class);
+        HistorialConsumoResponseDTO response =
+                modelMapper.map(historialRegistrado, HistorialConsumoResponseDTO.class);
 
         response.setIdItem(item.getIdItem());
+        response.setNombreIngrediente(
+                item.getIngrediente().getNomIngrediente()
+        );
         response.setIdReceta(receta.getIdReceta());
 
         URI location = ServletUriComponentsBuilder
@@ -89,19 +96,51 @@ public class HistorialConsumoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HistorialConsumoDTO> listId(
+    public ResponseEntity<HistorialConsumoResponseDTO> listId(
             @PathVariable Long id) {
 
         HistorialConsumo historial = historialConsumoService.listid(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Consumo no encontrado"));
 
-        HistorialConsumoDTO dto =
-                modelMapper.map(historial, HistorialConsumoDTO.class);
+        HistorialConsumoResponseDTO dto =
+                modelMapper.map(historial, HistorialConsumoResponseDTO.class);
 
         dto.setIdItem(historial.getItem().getIdItem());
+        dto.setNombreIngrediente(
+                historial.getItem().getIngrediente().getNomIngrediente()
+        );
         dto.setIdReceta(historial.getReceta().getIdReceta());
 
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/familia/{idFamilia}")
+    public ResponseEntity<List<HistorialConsumoResponseDTO>> listarPorFamilia(
+            @PathVariable Long idFamilia) {
+
+        List<HistorialConsumoResponseDTO> lista = historialConsumoService
+                .listarPorFamilia(idFamilia)
+                .stream()
+                .map(historial -> {
+                    HistorialConsumoResponseDTO dto =
+                            modelMapper.map(historial, HistorialConsumoResponseDTO.class);
+
+                    dto.setIdItem(historial.getItem().getIdItem());
+                    dto.setNombreIngrediente(
+                            historial.getItem().getIngrediente().getNomIngrediente()
+                    );
+                    dto.setIdReceta(historial.getReceta().getIdReceta());
+
+                    return dto;
+                })
+                .toList();
+
+        if (lista.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No se encontró historial de consumo para la familia: " + idFamilia);
+        }
+
+        return ResponseEntity.ok(lista);
     }
 }

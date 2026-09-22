@@ -15,6 +15,10 @@ public interface   IItemService {
 
     Optional<Item> listid(Long id);
 
+    List<Item> buscarPorNombre(String nombre);
+
+    List<Item> listarDisponiblesPorFamilia(Long idFamilia);
+
     public List<Item> listarVencidos(LocalDate fechaActual);
 
     public List<Item> listarProximosVencer(LocalDate fechaActual, LocalDate fechaLimite);

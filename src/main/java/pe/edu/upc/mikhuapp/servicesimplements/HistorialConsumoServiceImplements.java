@@ -29,4 +29,9 @@ public class HistorialConsumoServiceImplements implements IHistorialConsumoServi
     public Optional<HistorialConsumo> listid(Long id) {
         return historialConsumoRepository.findById(id);
     }
+
+    @Override
+    public List<HistorialConsumo> listarPorFamilia(Long idFamilia) {
+        return historialConsumoRepository.findByItem_Familia_IdFamilia(idFamilia);
+    }
 }

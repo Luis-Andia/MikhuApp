@@ -20,4 +20,10 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
             WHERE i.cantidadDisposicion <= i.stockMinimo
     """)
     List<Item> findAlimentosBajoStock();
+    // HU16 Buscar ítem por nombre
+    List<Item> findByIngrediente_NomIngredienteContainingIgnoreCase(String nombre);
+
+    // HU22 Obtener ingredientes disponibles de una familia
+    List<Item> findByFamilia_IdFamiliaAndCantidadDisposicionGreaterThan(
+            Long idFamilia, Float cantidadMinima);
 }

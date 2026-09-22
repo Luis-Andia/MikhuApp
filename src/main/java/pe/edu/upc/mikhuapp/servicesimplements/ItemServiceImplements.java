@@ -32,6 +32,16 @@ public class ItemServiceImplements implements IItemService {
     }
 
     @Override
+    public List<Item> buscarPorNombre(String nombre) {
+        return itemRepository.findByIngrediente_NomIngredienteContainingIgnoreCase(nombre);
+    }
+
+    @Override
+    public List<Item> listarDisponiblesPorFamilia(Long idFamilia) {
+        return itemRepository.findByFamilia_IdFamiliaAndCantidadDisposicionGreaterThan(idFamilia, 0F);
+    }
+
+    @Override
     public List<Item> listarVencidos(LocalDate fechaActual) {
         return itemRepository.findByfechaVencimientoBefore(fechaActual);
     }

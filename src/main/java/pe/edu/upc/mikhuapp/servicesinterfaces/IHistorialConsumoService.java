@@ -12,4 +12,6 @@ public interface IHistorialConsumoService {
     List<HistorialConsumo> list();
 
     Optional<HistorialConsumo> listid(Long id);
+
+    List<HistorialConsumo> listarPorFamilia(Long idFamilia);
 }

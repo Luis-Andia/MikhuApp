@@ -96,6 +96,26 @@ public class ItemController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/buscar/{nombre}")
+    public ResponseEntity<List<ItemDTOList>> buscarPorNombre(@PathVariable String nombre) {
+
+        List<ItemDTOList> lista = itemService.buscarPorNombre(nombre)
+                .stream()
+                .map(item -> {
+                    ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
+                    dto.setIdFamilia(item.getFamilia().getIdFamilia());
+                    dto.setIdIngrediente(item.getIngrediente().getIdIngrediente());
+                    return dto;
+                })
+                .toList();
+
+        if (lista.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron items con el nombre: " + nombre);
+        }
+
+        return ResponseEntity.ok(lista);
+    }
+
     @GetMapping("/Vencidos")
     public ResponseEntity <List<ItemDTOList>>listarVencidos() {
         LocalDate fechaActual = LocalDate.now();

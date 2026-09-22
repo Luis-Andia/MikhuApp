@@ -50,4 +50,15 @@ public class RecetaController {
                 .toList();
         return ResponseEntity.ok(lista);
     }
+
+    // HU22 - Consultar recetas personalizadas
+    @GetMapping("/personalizadas/{idFamilia}")
+    public ResponseEntity<List<RecetaSugeridaDTO>> buscarRecetasPersonalizadas(
+            @PathVariable Long idFamilia) {
+
+        List<RecetaSugeridaDTO> recetas =
+                recetaService.buscarRecetasPersonalizadas(idFamilia);
+
+        return ResponseEntity.ok(recetas);
+    }
 }

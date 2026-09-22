@@ -1,22 +1,13 @@
 package pe.edu.upc.mikhuapp.dtos;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 
-public class HistorialConsumoDTO {
+public class HistorialConsumoResponseDTO {
 
     private Long idConsumo;
-
-    @NotNull(message = "Id de Item obligatorio")
     private Long idItem;
-
     private String nombreIngrediente;
-
-    @NotNull(message = "Id de Receta obligatorio")
     private Long idReceta;
-
-    @NotNull(message = "Fecha de consumo obligatoria")
     private LocalDateTime fechaConsumo;
 
     public Long getIdConsumo() {
