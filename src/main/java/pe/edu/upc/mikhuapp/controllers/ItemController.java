@@ -97,7 +97,7 @@ public class ItemController {
     public ResponseEntity <List<ItemDTOList>>listarVencidos() {
         LocalDate fechaActual = LocalDate.now();
 
-        List<ItemDTOList> lista = itemService.findByfechaVencimientoBefore(fechaActual)
+        List<ItemDTOList> lista = itemService.listarVencidos(fechaActual)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();

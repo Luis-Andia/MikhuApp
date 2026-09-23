@@ -12,4 +12,5 @@ public interface IUsersRepository extends JpaRepository<Users,Long> {
     List<Users> findByFamily_idFamily(Long idFamily);
 
     Optional<Users> findByNomUser(String nomUser);
+
 }

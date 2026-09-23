@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/historial-consumo")
 public class ConsumptionController {
+
     private final IConsumptionService cS;
     private final IItemService iS;
     private final IRecipeService rS;
