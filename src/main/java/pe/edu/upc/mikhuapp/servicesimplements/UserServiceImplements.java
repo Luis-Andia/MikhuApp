@@ -10,39 +10,40 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImplements implements IUserService {
-    private final IUsersRepository uR;
 
-    public UserServiceImplements(IUsersRepository uR) {
-        this.uR = uR;
+    private final IUsersRepository userRepository;
+
+    public UserServiceImplements(IUsersRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public List<Users> list() {
-        return uR.findAll();
+        return userRepository.findAll();
     }
 
     @Override
-    public Optional<Users> listId(Long id) {
-        return uR.findById(id);
+    public Optional<Users> findById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public void insert(Users u) {
-        uR.save(u);
+    public void insert(Users user) {
+        userRepository.save(user);
     }
 
     @Override
     public void delete(Long id) {
-        uR.deleteById(id);
+        userRepository.deleteById(id);
     }
 
     @Override
-    public Users update(Users u) {
-        return uR.save(u);
+    public Users update(Users user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public List<Users> listarIntegrantes(Long idFamily) {
-        return uR.findByFamily_idFamily(idFamily);
+    public List<Users> listFamilyMembers(Long familyId) {
+        return userRepository.findByFamily_IdFamily(familyId);
     }
 }

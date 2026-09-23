@@ -7,11 +7,11 @@ public class ItemDTOList {
     private Long idItem;
     private Long idFamily;
     private Long idIngredient;
-    private Float cantidadDisposicion;
-    private LocalDate fechaCompra;
-    private LocalDate fechaVencimiento;
-    private Integer stockMinimo;
-
+    private String ingredientName;
+    private Float availableQuantity;
+    private LocalDate purchaseDate;
+    private LocalDate expirationDate;
+    private Integer minimumStock;
 
     public Long getIdItem() {
         return idItem;
@@ -37,35 +37,43 @@ public class ItemDTOList {
         this.idIngredient = idIngredient;
     }
 
-    public Float getCantidadDisposicion() {
-        return cantidadDisposicion;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setCantidadDisposicion(Float cantidadDisposicion) {
-        this.cantidadDisposicion = cantidadDisposicion;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
+    public Float getAvailableQuantity() {
+        return availableQuantity;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
+    public void setAvailableQuantity(Float availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Integer getMinimumStock() {
+        return minimumStock;
+    }
+
+    public void setMinimumStock(Integer minimumStock) {
+        this.minimumStock = minimumStock;
     }
 }

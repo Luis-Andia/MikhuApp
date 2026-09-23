@@ -7,10 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username")
+        }
+)
 public class Users implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
 
     @OneToMany(
@@ -21,51 +27,58 @@ public class Users implements Serializable {
     )
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name="password", length = 20, nullable = false)
+    @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Column(name="nomUser", length = 40, nullable = false)
-    private String nomUser;
+    @Column(name = "nomUser", length = 40, nullable = false)
+    private String username;
 
-    @Column(name="lastNameUser", length = 15, nullable = false)
-    private String lastNameUser;
+    @Column(name = "lastNameUser", length = 15, nullable = false)
+    private String lastName;
 
-    @Column(name="age", nullable = false)
+    @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name="email", length = 30, nullable = false)
+    @Column(name = "email", length = 30, nullable = false)
     private String email;
 
-    // Nueva columna
     @Column(nullable = false)
     private Boolean enabled = true;
 
     @ManyToOne
-    @JoinColumn(name="idFamily")
+    @JoinColumn(name = "idFamily")
     private Family family;
 
     @ManyToOne
-    @JoinColumn(name="idCountry")
+    @JoinColumn(name = "idCountry")
     private Country country;
-
-    // Constructores
 
     public Users() {
     }
 
-    public Users(Long idUser, List<Role> roles, String password, String nomUser, String lastNameUser, int age, String email, Boolean enabled, Family family, Country country) {
+    public Users(
+            Long idUser,
+            List<Role> roles,
+            String password,
+            String username,
+            String lastName,
+            int age,
+            String email,
+            Boolean enabled,
+            Family family,
+            Country country) {
+
         this.idUser = idUser;
         this.roles = roles;
         this.password = password;
-        this.nomUser = nomUser;
-        this.lastNameUser = lastNameUser;
+        this.username = username;
+        this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.enabled = enabled;
         this.family = family;
         this.country = country;
     }
-    // Get an SET
 
     public Long getIdUser() {
         return idUser;
@@ -91,20 +104,20 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    public String getNomUser() {
-        return nomUser;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNomUser(String nomUser) {
-        this.nomUser = nomUser;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getLastNameUser() {
-        return lastNameUser;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastNameUser(String lastNameUser) {
-        this.lastNameUser = lastNameUser;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getAge() {

@@ -4,38 +4,37 @@ import jakarta.validation.constraints.NotBlank;
 
 public class FamilyDTOInsert {
 
-    private Long idFamilia;
+    private Long idFamily;
 
-    @NotBlank(message = "El nombre es obligatorio")
-    private String nomFamilia;
+    @NotBlank(message = "Family name is required")
+    private String familyName;
 
-    @NotBlank(message = "La contraseña es obligatoria")
-    private String contrasenaFamilia;
-
+    @NotBlank(message = "Family password is required")
+    private String familyPassword;
 
     // Get and set
 
-    public Long getIdFamilia() {
-        return idFamilia;
+    public Long getIdFamily() {
+        return idFamily;
     }
 
-    public void setIdFamilia(Long idFamilia) {
-        this.idFamilia = idFamilia;
+    public void setIdFamily(Long idFamily) {
+        this.idFamily = idFamily;
     }
 
-    public String getNomFamilia() {
-        return nomFamilia;
+    public String getFamilyName() {
+        return familyName;
     }
 
-    public void setNomFamilia(String nomFamilia) {
-        this.nomFamilia = nomFamilia;
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
     }
 
-    public String getContrasenaFamilia() {
-        return contrasenaFamilia;
+    public String getFamilyPassword() {
+        return familyPassword;
     }
 
-    public void setContrasenaFamilia(String contrasenaFamilia) {
-        this.contrasenaFamilia = contrasenaFamilia;
+    public void setFamilyPassword(String familyPassword) {
+        this.familyPassword = familyPassword;
     }
 }

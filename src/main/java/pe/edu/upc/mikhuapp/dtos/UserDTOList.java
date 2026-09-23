@@ -1,68 +1,69 @@
 package pe.edu.upc.mikhuapp.dtos;
 
 public class UserDTOList {
-    private Long idUsuario;
-    private Long idRol;
-    public String nomUsuario;
-    public String apePatUsuario;
-    private String correo;
-    private Long idFamilia;
-    private Long idPais;
+
+    private Long idUser;
+    private Long idRole;
+    public String username;
+    public String lastName;
+    private String email;
+    private Long idFamily;
+    private Long idCountry;
 
     // Get and set
-    public Long getIdUsuario() {
-        return idUsuario;
+    public Long getIdUser() {
+        return idUser;
     }
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
-    public Long getIdRol() {
-        return idRol;
+    public Long getIdRole() {
+        return idRole;
     }
 
-    public void setIdRol(Long idRol) {
-        this.idRol = idRol;
+    public void setIdRole(Long idRole) {
+        this.idRole = idRole;
     }
 
-    public String getNomUsuario() {
-        return nomUsuario;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNomUsuario(String nomUsuario) {
-        this.nomUsuario = nomUsuario;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getApePatUsuario() {
-        return apePatUsuario;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setApePatUsuario(String apePatUsuario) {
-        this.apePatUsuario = apePatUsuario;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Long getIdFamilia() {
-        return idFamilia;
+    public Long getIdFamily() {
+        return idFamily;
     }
 
-    public void setIdFamilia(Long idFamilia) {
-        this.idFamilia = idFamilia;
+    public void setIdFamily(Long idFamily) {
+        this.idFamily = idFamily;
     }
 
-    public Long getIdPais() {
-        return idPais;
+    public Long getIdCountry() {
+        return idCountry;
     }
 
-    public void setIdPais(Long idPais) {
-        this.idPais = idPais;
+    public void setIdCountry(Long idCountry) {
+        this.idCountry = idCountry;
     }
 }

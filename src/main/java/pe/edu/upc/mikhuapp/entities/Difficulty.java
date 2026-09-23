@@ -12,17 +12,16 @@ public class Difficulty {
     private Long idDifficulty;
 
     @Column(name="Nivel_dificultad", length = 20, nullable = false)
-    private String difficultylevel;
+    private String difficultyLevel;
 
     // Constructores
     public Difficulty() {
     }
 
-    public Difficulty(Long idDifficulty, String difficultylevel) {
+    public Difficulty(Long idDifficulty, String difficultyLevel) {
         this.idDifficulty = idDifficulty;
-        this.difficultylevel = difficultylevel;
+        this.difficultyLevel = difficultyLevel;
     }
-
 
     public Long getIdDifficulty() {
         return idDifficulty;
@@ -32,11 +31,11 @@ public class Difficulty {
         this.idDifficulty = idDifficulty;
     }
 
-    public String getDifficultylevel() {
-        return difficultylevel;
+    public String getDifficultyLevel() {
+        return difficultyLevel;
     }
 
-    public void setDifficultylevel(String difficultylevel) {
-        this.difficultylevel = difficultylevel;
+    public void setDifficultyLevel(String difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
     }
 }

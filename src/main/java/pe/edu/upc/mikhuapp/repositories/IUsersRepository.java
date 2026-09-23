@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IUsersRepository extends JpaRepository<Users,Long> {
-    List<Users> findByFamily_idFamily(Long idFamily);
+public interface IUsersRepository extends JpaRepository<Users, Long> {
 
-    Optional<Users> findByNomUser(String nomUser);
+    List<Users> findByFamily_IdFamily(Long idFamily);
+
+    Optional<Users> findByUsername(String username);
 }

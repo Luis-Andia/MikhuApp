@@ -15,49 +15,59 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ingredientes")
+@RequestMapping("/ingredients")
 public class IngredientController {
 
     @Autowired
-    private IIngredientService ingredienteService;
+    private IIngredientService ingredientService;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @GetMapping
     public ResponseEntity<List<IngredientDTO>> list() {
-        List<IngredientDTO> lista = ingredienteService.list().stream()
-                .map(ingrediente -> modelMapper.map(ingrediente, IngredientDTO.class))
+
+        List<IngredientDTO> ingredientList = ingredientService.list().stream()
+                .map(ingredient ->
+                        modelMapper.map(ingredient, IngredientDTO.class))
                 .toList();
 
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(ingredientList);
     }
 
     @PostMapping
-    public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
+    public ResponseEntity<IngredientDTO> insert(
+            @Validated @RequestBody IngredientDTO dto) {
 
-        Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
+        Ingredient ingredient =
+                modelMapper.map(dto, Ingredient.class);
 
-        Ingredient ingredientRegistrado = ingredienteService.insert(ingredient);
+        Ingredient registeredIngredient =
+                ingredientService.insert(ingredient);
 
-        IngredientDTO response = modelMapper.map(ingredientRegistrado, IngredientDTO.class);
+        IngredientDTO response =
+                modelMapper.map(registeredIngredient, IngredientDTO.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(ingredientRegistrado.getIdIngrediente())
+                .buildAndExpand(registeredIngredient.getIdIngredient())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
+    public ResponseEntity<IngredientDTO> findById(
+            @PathVariable Long id) {
 
-        Ingredient ingredient = ingredienteService.listid(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
+        Ingredient ingredient = ingredientService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Ingredient not found"));
 
-        IngredientDTO dto = modelMapper.map(ingredient, IngredientDTO.class);
+        IngredientDTO dto =
+                modelMapper.map(ingredient, IngredientDTO.class);
 
         return ResponseEntity.ok(dto);
     }

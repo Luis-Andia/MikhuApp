@@ -10,24 +10,25 @@ import java.util.Optional;
 
 @Service
 public class RoleServiceImplements implements IRoleService {
-    private final IRoleRepository rR;
 
-    public RoleServiceImplements(IRoleRepository rR) {
-        this.rR = rR;
+    private final IRoleRepository roleRepository;
+
+    public RoleServiceImplements(IRoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public List<Role> list() {
-        return rR.findAll();
+        return roleRepository.findAll();
     }
 
     @Override
-    public void insert(Role r) {
-        rR.save(r);
+    public void insert(Role role) {
+        roleRepository.save(role);
     }
 
     @Override
-    public Optional<Role> listid(Long id) {
-        return rR.findById(id);
+    public Optional<Role> findById(Long id) {
+        return roleRepository.findById(id);
     }
 }

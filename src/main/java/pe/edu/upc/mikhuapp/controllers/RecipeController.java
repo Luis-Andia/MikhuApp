@@ -4,42 +4,50 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.mikhuapp.dtos.*;
-import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
-import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
-import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
+import pe.edu.upc.mikhuapp.dtos.RecipeDTOList;
+import pe.edu.upc.mikhuapp.dtos.RecipeSuggestionDTO;
+import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/recetas")
+@RequestMapping("/recipes")
 public class RecipeController {
 
     @Autowired
-    private IRecipeService recetaService;
-
-    @Autowired
-    private ICountryService paisService;
+    private IRecipeService recipeService;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private IRecipeRepository iRecipeRepository;
+    // HU23 LISTAR RECETAS
+    @GetMapping
+    public ResponseEntity<List<RecipeDTOList>> listRecipes() {
 
-    @Autowired
-    private IRecipeService iRecipeService;
-    @Autowired
-    private IFamilyService iFamilyService;
-
-    //HU23 LISTAR RECETAS
-    @GetMapping("/listarReceta")
-    public ResponseEntity<List<RecipeDTOList>> listarReceta() {
-        List<RecipeDTOList> lista = iRecipeService.list()
+        List<RecipeDTOList> recipeList = recipeService.list()
                 .stream()
-                .map(receta->modelMapper.map(receta, RecipeDTOList.class))
+                .map(recipe ->
+                        modelMapper.map(recipe, RecipeDTOList.class))
                 .toList();
-        return ResponseEntity.ok(lista);
+
+        return ResponseEntity.ok(recipeList);
+    }
+
+    // HU22 CONSULTAR RECETAS PERSONALIZADAS
+    @GetMapping("/personalized/{idFamily}")
+    public ResponseEntity<List<RecipeSuggestionDTO>> findPersonalizedRecipes(
+            @PathVariable Long idFamily) {
+
+        List<RecipeSuggestionDTO> recipes =
+                recipeService.findPersonalizedRecipes(idFamily);
+
+        if (recipes.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No personalized recipes were found for family: "
+                            + idFamily);
+        }
+
+        return ResponseEntity.ok(recipes);
     }
 }

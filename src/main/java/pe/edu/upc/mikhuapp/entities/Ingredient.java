@@ -8,34 +8,34 @@ public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idIngrediente;
+    private Long idIngredient;
 
     @Column(name = "nomIngrediente", length = 40, nullable = false)
-    private String nomIngrediente;
+    private String ingredientName;
 
     // Constructores
 
     public Ingredient() {
     }
 
-    public Ingredient(Long idIngrediente, String nomIngrediente) {
-        this.idIngrediente = idIngrediente;
-        this.nomIngrediente = nomIngrediente;
+    public Ingredient(Long idIngredient, String ingredientName) {
+        this.idIngredient = idIngredient;
+        this.ingredientName = ingredientName;
     }
 
-    public Long getIdIngrediente() {
-        return idIngrediente;
+    public Long getIdIngredient() {
+        return idIngredient;
     }
 
-    public void setIdIngrediente(Long idIngrediente) {
-        this.idIngrediente = idIngrediente;
+    public void setIdIngredient(Long idIngredient) {
+        this.idIngredient = idIngredient;
     }
 
-    public String getNomIngrediente() {
-        return nomIngrediente;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setNomIngrediente(String nomIngrediente) {
-        this.nomIngrediente = nomIngrediente;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 }

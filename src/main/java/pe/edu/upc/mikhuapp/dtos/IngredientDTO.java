@@ -6,8 +6,8 @@ public class IngredientDTO {
 
     private Long idIngredient;
 
-    @NotBlank(message = "Nombre de ingrediente obligatorio")
-    private String nomIngredient;
+    @NotBlank(message = "Ingredient name is required")
+    private String ingredientName;
 
     // Get and set
     public Long getIdIngredient() {
@@ -18,11 +18,11 @@ public class IngredientDTO {
         this.idIngredient = idIngredient;
     }
 
-    public String getNomIngredient() {
-        return nomIngredient;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setNomIngredient(String nomIngredient) {
-        this.nomIngredient = nomIngredient;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 }

@@ -21,16 +21,16 @@ public class Item {
     private Ingredient ingredient;
 
     @Column(name="Cantidad_Disposicion", nullable = false)
-    private Float cantidadDisposicion;
+    private Float availableQuantity;
 
     @Column(name="Fecha_Compra", nullable = false)
-    private LocalDate fechaCompra;
+    private LocalDate purchaseDate;
 
     @Column(name="Fecha_Vencimiento", nullable = false)
-    private LocalDate fechaVencimiento;
+    private LocalDate expirationDate;
 
     @Column(name="Stock_Minimo", nullable = false)
-    private Integer stockMinimo;
+    private Integer minimumStock;
 
     // Constructores
 
@@ -38,17 +38,16 @@ public class Item {
     }
 
     public Item(Long idItem, Family family, Ingredient ingredient,
-                Float cantidadDisposicion, LocalDate fechaCompra,
-                LocalDate fechaVencimiento, Integer stockMinimo) {
+                Float availableQuantity, LocalDate purchaseDate,
+                LocalDate expirationDate, Integer minimumStock) {
         this.idItem = idItem;
         this.family = family;
         this.ingredient = ingredient;
-        this.cantidadDisposicion = cantidadDisposicion;
-        this.fechaCompra = fechaCompra;
-        this.fechaVencimiento = fechaVencimiento;
-        this.stockMinimo = stockMinimo;
+        this.availableQuantity = availableQuantity;
+        this.purchaseDate = purchaseDate;
+        this.expirationDate = expirationDate;
+        this.minimumStock = minimumStock;
     }
-
 
     public Long getIdItem() {
         return idItem;
@@ -58,51 +57,51 @@ public class Item {
         this.idItem = idItem;
     }
 
-    public Family getFamilia() {
+    public Family getFamily() {
         return family;
     }
 
-    public void setFamilia(Family family) {
+    public void setFamily(Family family) {
         this.family = family;
     }
 
-    public Ingredient getIngrediente() {
+    public Ingredient getIngredient() {
         return ingredient;
     }
 
-    public void setIngrediente(Ingredient ingredient) {
+    public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
     }
 
-    public Float getCantidadDisposicion() {
-        return cantidadDisposicion;
+    public Float getAvailableQuantity() {
+        return availableQuantity;
     }
 
-    public void setCantidadDisposicion(Float cantidadDisposicion) {
-        this.cantidadDisposicion = cantidadDisposicion;
+    public void setAvailableQuantity(Float availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
+    public Integer getMinimumStock() {
+        return minimumStock;
     }
 
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
+    public void setMinimumStock(Integer minimumStock) {
+        this.minimumStock = minimumStock;
     }
 }

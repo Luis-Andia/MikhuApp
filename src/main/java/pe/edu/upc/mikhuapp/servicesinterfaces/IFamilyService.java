@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IFamilyService {
+
     public List<Family> list();
-    public Family insert(Family f);
-    public Optional<Family> listid(Long id);
-    public Family update(Family f);
+
+    public Family insert(Family family);
+
+    public Optional<Family> findById(Long id);
+
+    public Family update(Family family);
 }

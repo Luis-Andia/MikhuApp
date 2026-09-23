@@ -10,12 +10,13 @@ import java.io.Serializable;
                 @UniqueConstraint(columnNames = {"idUser", "rol"})
         })
 public class Role implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idRol;
+    private Long idRole;
 
     @Column(name="rol", length = 30, nullable = false)
-    private String rol;
+    private String roleName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUser", nullable = false)
@@ -26,28 +27,28 @@ public class Role implements Serializable {
     public Role() {
     }
 
-    public Role(Long idRol, String rol, Users user) {
-        this.idRol = idRol;
-        this.rol = rol;
+    public Role(Long idRole, String roleName, Users user) {
+        this.idRole = idRole;
+        this.roleName = roleName;
         this.user = user;
     }
 
     // Get an SET
 
-    public Long getIdRol() {
-        return idRol;
+    public Long getIdRole() {
+        return idRole;
     }
 
-    public void setIdRol(Long idRol) {
-        this.idRol = idRol;
+    public void setIdRole(Long idRole) {
+        this.idRole = idRole;
     }
 
-    public String getRol() {
-        return rol;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public Users getUser() {

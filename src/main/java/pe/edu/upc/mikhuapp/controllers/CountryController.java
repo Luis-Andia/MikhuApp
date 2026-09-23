@@ -15,75 +15,108 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pais")
+@RequestMapping("/api/country")
 public class CountryController {
-    // Inyecciones
-    private final ICountryService pS;
+
+    // Injections
+    private final ICountryService countryService;
     private final ModelMapper modelMapper;
 
-    public CountryController(ICountryService pS, ModelMapper modelMapper) {
-        this.pS = pS;
+    public CountryController(
+            ICountryService countryService,
+            ModelMapper modelMapper) {
+
+        this.countryService = countryService;
         this.modelMapper = modelMapper;
     }
 
-    // Metodos
+    // Methods
 
-    // REGISTRAR NUEVO PAIS
+    // REGISTER NEW COUNTRY
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CountryDTO> registrar(@Validated @RequestBody CountryDTO dto){
-        Country nuevo_country = modelMapper.map(dto, Country.class);
-        pS.insert(nuevo_country);
+    public ResponseEntity<CountryDTO> register(
+            @Validated @RequestBody CountryDTO dto) {
 
-        CountryDTO responseDTO = modelMapper.map(nuevo_country, CountryDTO.class);
+        Country newCountry =
+                modelMapper.map(dto, Country.class);
+
+        countryService.insert(newCountry);
+
+        CountryDTO responseDTO =
+                modelMapper.map(newCountry, CountryDTO.class);
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("{/id}")
-                .buildAndExpand(nuevo_country.getIdCountry())
+                .path("/{id}")
+                .buildAndExpand(newCountry.getIdCountry())
                 .toUri();
+
         return ResponseEntity
                 .created(location)
                 .body(responseDTO);
     }
 
-    // LISTAR PAISES
+    // LIST COUNTRIES
     @GetMapping
-    public ResponseEntity<List<CountryDTO>> listar_paises(){
-        List<CountryDTO> lista_paises = pS.list()
+    public ResponseEntity<List<CountryDTO>> listCountries() {
+
+        List<CountryDTO> countryList = countryService.list()
                 .stream()
-                .map(p -> modelMapper.map(p, CountryDTO.class))
+                .map(country ->
+                        modelMapper.map(country, CountryDTO.class))
                 .toList();
-        return ResponseEntity.ok(lista_paises);
+
+        return ResponseEntity.ok(countryList);
     }
 
-    // ACTUALIZAR PAIS
+    // UPDATE COUNTRY
     @PutMapping("/{id}")
-    public ResponseEntity<CountryDTO> actualizar_pais(@PathVariable("id") long id, @Validated @RequestBody CountryDTO dto){
+    public ResponseEntity<CountryDTO> update(
+            @PathVariable("id") long id,
+            @Validated @RequestBody CountryDTO dto) {
 
-        // AGREGAR VALIDACION DE ID valido
-        Country country = modelMapper.map(dto, Country.class);
+        Country country =
+                modelMapper.map(dto, Country.class);
+
         country.setIdCountry(id);
-        pS.update(country);
-        CountryDTO responseDTO = modelMapper.map(country, CountryDTO.class);
+
+        countryService.update(country);
+
+        CountryDTO responseDTO =
+                modelMapper.map(country, CountryDTO.class);
+
         return ResponseEntity.ok(responseDTO);
     }
 
-    // CONSULTAR PAIS POR ID
+    // FIND COUNTRY BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<CountryDTO> buscar_pais_id(@PathVariable Long id){
-        Country p = pS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
-        CountryDTO responseDTO = modelMapper.map(p, CountryDTO.class);
+    public ResponseEntity<CountryDTO> findById(
+            @PathVariable Long id) {
+
+        Country country = countryService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Country not found"));
+
+        CountryDTO responseDTO =
+                modelMapper.map(country, CountryDTO.class);
+
         return ResponseEntity.ok(responseDTO);
     }
 
-
-    // ELIMINAR PAIS
+    // DELETE COUNTRY
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id){
-        Country p = pS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
-        pS.delete(p.getIdCountry());
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id) {
+
+        Country country = countryService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Country not found"));
+
+        countryService.delete(country.getIdCountry());
+
         return ResponseEntity.noContent().build();
     }
 }

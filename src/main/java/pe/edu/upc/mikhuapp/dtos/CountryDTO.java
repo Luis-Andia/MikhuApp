@@ -3,11 +3,14 @@ package pe.edu.upc.mikhuapp.dtos;
 import jakarta.validation.constraints.NotBlank;
 
 public class CountryDTO {
+
     private Long idCountry;
-    @NotBlank(message = "El codigo del pais no puede estar vacio")
-    private String codCountry;
-    @NotBlank(message = "El nombre del pais no puede estar vacio")
-    private String nomCountry;
+
+    @NotBlank(message = "Country code cannot be empty")
+    private String countryCode;
+
+    @NotBlank(message = "Country name cannot be empty")
+    private String countryName;
 
     public Long getIdCountry() {
         return idCountry;
@@ -17,19 +20,19 @@ public class CountryDTO {
         this.idCountry = idCountry;
     }
 
-    public String getCodCountry() {
-        return codCountry;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setCodCountry(String codCountry) {
-        this.codCountry = codCountry;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
-    public String getNomCountry() {
-        return nomCountry;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setNomCountry(String nomCountry) {
-        this.nomCountry = nomCountry;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 }

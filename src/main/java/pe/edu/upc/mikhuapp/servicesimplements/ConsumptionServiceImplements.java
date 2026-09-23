@@ -13,20 +13,25 @@ import java.util.Optional;
 public class ConsumptionServiceImplements implements IConsumptionService {
 
     @Autowired
-    private IConsumptionRepository historialConsumoRepository;
+    private IConsumptionRepository consumptionRepository;
 
     @Override
     public Consumption insert(Consumption consumption) {
-        return historialConsumoRepository.save(consumption);
+        return consumptionRepository.save(consumption);
     }
 
     @Override
     public List<Consumption> list() {
-        return historialConsumoRepository.findAll();
+        return consumptionRepository.findAll();
     }
 
     @Override
-    public Optional<Consumption> listid(Long id) {
-        return historialConsumoRepository.findById(id);
+    public Optional<Consumption> findById(Long id) {
+        return consumptionRepository.findById(id);
+    }
+
+    @Override
+    public List<Consumption> findByFamilyId(Long idFamily) {
+        return consumptionRepository.findByItem_Family_IdFamily(idFamily);
     }
 }

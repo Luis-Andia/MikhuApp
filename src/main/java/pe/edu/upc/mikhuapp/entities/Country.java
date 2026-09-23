@@ -3,28 +3,29 @@ package pe.edu.upc.mikhuapp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Pais")
+@Table(name = "Pais")
 public class Country {
-    // Atributos
+
+    // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCountry;
 
-    @Column(name="codCountry", length = 5, nullable = false)
-    private String codCountry;
+    @Column(name = "codCountry", length = 5, nullable = false)
+    private String countryCode;
 
-    @Column(name="nomCountry", length = 40, nullable = false)
-    private String nomCountry;
+    @Column(name = "nomCountry", length = 40, nullable = false)
+    private String countryName;
 
-    // Constructor vacio
+    // Empty constructor
     public Country() {
     }
 
-    // Constructor de los atributos
-    public Country(Long idCountry, String codCountry, String nomCountry) {
+    // Attributes constructor
+    public Country(Long idCountry, String countryCode, String countryName) {
         this.idCountry = idCountry;
-        this.codCountry = codCountry;
-        this.nomCountry = nomCountry;
+        this.countryCode = countryCode;
+        this.countryName = countryName;
     }
 
     // Getter and Setter
@@ -36,19 +37,19 @@ public class Country {
         this.idCountry = idCountry;
     }
 
-    public String getCodCountry() {
-        return codCountry;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setCodCountry(String codCountry) {
-        this.codCountry = codCountry;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
-    public String getNomCountry() {
-        return nomCountry;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setNomCountry(String nomCountry) {
-        this.nomCountry = nomCountry;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 }

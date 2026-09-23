@@ -1,8 +1,9 @@
 package pe.edu.upc.mikhuapp.dtos;
 
 public class FamilyDTOList {
+
     private Long idFamily;
-    private String nomFamily;
+    private String familyName;
 
     public Long getIdFamily() {
         return idFamily;
@@ -12,11 +13,11 @@ public class FamilyDTOList {
         this.idFamily = idFamily;
     }
 
-    public String getNomFamily() {
-        return nomFamily;
+    public String getFamilyName() {
+        return familyName;
     }
 
-    public void setNomFamily(String nomFamily) {
-        this.nomFamily = nomFamily;
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
     }
 }

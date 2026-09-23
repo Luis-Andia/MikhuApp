@@ -10,34 +10,35 @@ import java.util.Optional;
 
 @Service
 public class CountryServiceImplements implements ICountryService {
-    private final ICountryRepository pR;
 
-    public CountryServiceImplements(ICountryRepository pR) {
-        this.pR = pR;
+    private final ICountryRepository countryRepository;
+
+    public CountryServiceImplements(ICountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
     }
 
     @Override
-    public void insert(Country p) {
-        pR.save(p);
+    public void insert(Country country) {
+        countryRepository.save(country);
     }
 
     @Override
     public List<Country> list() {
-        return pR.findAll();
+        return countryRepository.findAll();
     }
 
     @Override
-    public Optional<Country> listid(Long id) {
-        return pR.findById(id);
+    public Optional<Country> findById(Long id) {
+        return countryRepository.findById(id);
     }
 
     @Override
-    public Country update(Country p) {
-        return pR.save(p);
+    public Country update(Country country) {
+        return countryRepository.save(country);
     }
 
     @Override
     public void delete(Long id) {
-        pR.deleteById(id);
+        countryRepository.deleteById(id);
     }
 }

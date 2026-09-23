@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,76 +22,116 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/user")
 public class UserController {
-    private final IUserService uS;
-    private final IRoleService rS;
-    private final ICountryService pS;
-    private final IFamilyService fS;
+
+    private final IUserService userService;
+    private final IRoleService roleService;
+    private final ICountryService countryService;
+    private final IFamilyService familyService;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(IUserService uS, IRoleService rS, ICountryService pS, IFamilyService fS, ModelMapper modelMapper) {
-        this.uS = uS;
-        this.rS = rS;
-        this.pS = pS;
-        this.fS = fS;
+    public UserController(
+            IUserService userService,
+            IRoleService roleService,
+            ICountryService countryService,
+            IFamilyService familyService,
+            ModelMapper modelMapper,
+            PasswordEncoder passwordEncoder) {
+
+        this.userService = userService;
+        this.roleService = roleService;
+        this.countryService = countryService;
+        this.familyService = familyService;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
-
-    // Metodos
 
     // Listar usuarios
     @GetMapping
-    public ResponseEntity<List<UserDTOList>> listar(){
-        List<UserDTOList> lista_usuarios = uS.list()
+    public ResponseEntity<List<UserDTOList>> list() {
+
+        List<UserDTOList> userList = userService.list()
                 .stream()
-                .map(u->modelMapper.map(u, UserDTOList.class))
+                .map(user -> {
+
+                    UserDTOList dto =
+                            modelMapper.map(user, UserDTOList.class);
+
+                    if (user.getRoles() != null
+                            && !user.getRoles().isEmpty()) {
+
+                        dto.setIdRole(
+                                user.getRoles()
+                                        .get(0)
+                                        .getIdRole()
+                        );
+                    }
+
+                    if (user.getFamily() != null) {
+                        dto.setIdFamily(
+                                user.getFamily().getIdFamily()
+                        );
+                    }
+
+                    if (user.getCountry() != null) {
+                        dto.setIdCountry(
+                                user.getCountry().getIdCountry()
+                        );
+                    }
+
+                    return dto;
+                })
                 .toList();
-        return ResponseEntity.ok(lista_usuarios);
+
+        return ResponseEntity.ok(userList);
     }
 
-    // INSERTAR nuevo USUARIO
+    // Insertar nuevo usuario
     @PostMapping
-    public ResponseEntity<UserDTOInsert> insertar(
-            @Validated @RequestBody UserDTOInsert usuario){
+    public ResponseEntity<UserDTOInsert> insert(
+            @Validated @RequestBody UserDTOInsert userDTO) {
 
-        Role role = rS.listid(usuario.getIdRol())
+        Role role = roleService.findById(userDTO.getIdRole())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
-                                "No existe el rol con el id: "
-                                        + usuario.getIdRol()
-                        ));
+                                "Role not found with id: "
+                                        + userDTO.getIdRole()));
 
-        Family family = fS.listid(usuario.getIdFamilia())
+        Family family = familyService.findById(userDTO.getIdFamily())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
-                                "No existe la familia con el id: "
-                                        + usuario.getIdFamilia()
-                        ));
+                                "Family not found with id: "
+                                        + userDTO.getIdFamily()));
 
-        Country country = pS.listid(usuario.getIdPais())
+        Country country = countryService.findById(userDTO.getIdCountry())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
-                                "No existe el pais con el id: "
-                                        + usuario.getIdPais()
-                        ));
+                                "Country not found with id: "
+                                        + userDTO.getIdCountry()));
 
-        Users nuevo_users =
-                modelMapper.map(usuario, Users.class);
+        Users newUser =
+                modelMapper.map(userDTO, Users.class);
 
-        nuevo_users.setRoles(List.of(role)); // VERIFICAR
-        nuevo_users.setFamily(family);
-        nuevo_users.setCountry(country);
+        // Cifrar contraseña con BCrypt
+        newUser.setPassword(
+                passwordEncoder.encode(userDTO.getPassword())
+        );
 
-        uS.insert(nuevo_users);
+        newUser.setRoles(List.of(role));
+        newUser.setFamily(family);
+        newUser.setCountry(country);
+
+        userService.insert(newUser);
 
         UserDTOInsert responseDTO =
-                modelMapper.map(nuevo_users, UserDTOInsert.class);
+                modelMapper.map(newUser, UserDTOInsert.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(nuevo_users.getIdUser())
+                .buildAndExpand(newUser.getIdUser())
                 .toUri();
 
         return ResponseEntity
@@ -98,41 +139,126 @@ public class UserController {
                 .body(responseDTO);
     }
 
-    // CONSULTAR USUARIO por ID
+    // Consultar usuario por ID
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTOList> buscarid(@PathVariable("id") Long id){
-        Users users = uS.listId(id)
-                .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        UserDTOList responseDTO = modelMapper.map(users, UserDTOList.class);
+    public ResponseEntity<UserDTOList> findById(
+            @PathVariable("id") Long id) {
+
+        Users user = userService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found"));
+
+        UserDTOList responseDTO =
+                modelMapper.map(user, UserDTOList.class);
+
+        if (user.getRoles() != null
+                && !user.getRoles().isEmpty()) {
+
+            responseDTO.setIdRole(
+                    user.getRoles()
+                            .get(0)
+                            .getIdRole()
+            );
+        }
+
+        if (user.getFamily() != null) {
+            responseDTO.setIdFamily(
+                    user.getFamily().getIdFamily()
+            );
+        }
+
+        if (user.getCountry() != null) {
+            responseDTO.setIdCountry(
+                    user.getCountry().getIdCountry()
+            );
+        }
+
         return ResponseEntity.ok(responseDTO);
     }
 
-    // ACTUALIZAR USUARIO
+    // Actualizar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
-        Users users = uS.listId(id)
-                .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        Family family = fS.listid(dto.getIdFamilia())
-                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        Country country = pS.listid(dto.getIdPais())
-                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
+    public ResponseEntity<UserDTOInsert> update(
+            @PathVariable("id") Long id,
+            @Validated @RequestBody UserDTOInsert dto) {
 
-        Users users_actualizado = modelMapper.map(dto, Users.class);
-        users_actualizado.setIdUser(id);
-        users_actualizado.setFamily(family);
-        users_actualizado.setCountry(country);
-        uS.update(users_actualizado);
-        UserDTOInsert responseDTO = modelMapper.map(users_actualizado, UserDTOInsert.class);
+        Users user = userService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found"));
+
+        Family family = familyService.findById(dto.getIdFamily())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Family not found"));
+
+        Country country = countryService.findById(dto.getIdCountry())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Country not found"));
+
+        Users updatedUser =
+                modelMapper.map(dto, Users.class);
+
+        updatedUser.setIdUser(id);
+        updatedUser.setFamily(family);
+        updatedUser.setCountry(country);
+
+        // Cifrar contraseña con BCrypt
+        updatedUser.setPassword(
+                passwordEncoder.encode(dto.getPassword())
+        );
+
+        updatedUser.setRoles(user.getRoles());
+
+        userService.update(updatedUser);
+
+        UserDTOInsert responseDTO =
+                modelMapper.map(updatedUser, UserDTOInsert.class);
+
         return ResponseEntity.ok(responseDTO);
-
     }
-    //
-    @GetMapping("/IntegrantesFamilia/{idFamilia}")
-    public ResponseEntity<List<UserDTOList>> listarIntegrantes(@PathVariable long idFamilia){
-        List<UserDTOList> lista_usuarios = uS.list()
+
+    // Listar miembros de una familia
+    @GetMapping("/family-members/{familyId}")
+    public ResponseEntity<List<UserDTOList>> listFamilyMembers(
+            @PathVariable long familyId) {
+
+        List<UserDTOList> userList = userService
+                .listFamilyMembers(familyId)
                 .stream()
-                .map(u->modelMapper.map(u, UserDTOList.class))
+                .map(user -> {
+
+                    UserDTOList dto =
+                            modelMapper.map(user, UserDTOList.class);
+
+                    if (user.getRoles() != null
+                            && !user.getRoles().isEmpty()) {
+
+                        dto.setIdRole(
+                                user.getRoles()
+                                        .get(0)
+                                        .getIdRole()
+                        );
+                    }
+
+                    if (user.getFamily() != null) {
+                        dto.setIdFamily(
+                                user.getFamily().getIdFamily()
+                        );
+                    }
+
+                    if (user.getCountry() != null) {
+                        dto.setIdCountry(
+                                user.getCountry().getIdCountry()
+                        );
+                    }
+
+                    return dto;
+                })
                 .toList();
-        return ResponseEntity.ok(lista_usuarios);
+
+        return ResponseEntity.ok(userList);
     }
 }

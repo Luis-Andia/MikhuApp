@@ -8,24 +8,23 @@ public class ItemDTOInsert {
 
     private Long idItem;
 
-    @NotNull(message = "Id de Familia obligatorio")
+    @NotNull(message = "Family ID is required")
     private Long idFamily;
 
-    @NotNull(message = "Id de Ingrediente obligatorio")
+    @NotNull(message = "Ingredient ID is required")
     private Long idIngredient;
 
-    @NotNull(message = "Cantidad disponible obligatoria")
-    private Float cantidadDisposicion;
+    @NotNull(message = "Available quantity is required")
+    private Float availableQuantity;
 
-    @NotNull(message = "Fecha de compra obligatoria")
-    private LocalDate fechaCompra;
+    @NotNull(message = "Purchase date is required")
+    private LocalDate purchaseDate;
 
-    @NotNull(message = "Fecha de vencimiento obligatoria")
-    private LocalDate fechaVencimiento;
+    @NotNull(message = "Expiration date is required")
+    private LocalDate expirationDate;
 
-    @NotNull(message = "Stock minimo obligatorio")
-    private Integer stockMinimo;
-
+    @NotNull(message = "Minimum stock is required")
+    private Integer minimumStock;
 
     public Long getIdItem() {
         return idItem;
@@ -51,35 +50,35 @@ public class ItemDTOInsert {
         this.idIngredient = idIngredient;
     }
 
-    public Float getCantidadDisposicion() {
-        return cantidadDisposicion;
+    public Float getAvailableQuantity() {
+        return availableQuantity;
     }
 
-    public void setCantidadDisposicion(Float cantidadDisposicion) {
-        this.cantidadDisposicion = cantidadDisposicion;
+    public void setAvailableQuantity(Float availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
+    public Integer getMinimumStock() {
+        return minimumStock;
     }
 
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
+    public void setMinimumStock(Integer minimumStock) {
+        this.minimumStock = minimumStock;
     }
 }

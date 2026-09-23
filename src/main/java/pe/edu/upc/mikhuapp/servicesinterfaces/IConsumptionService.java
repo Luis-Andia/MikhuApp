@@ -11,5 +11,7 @@ public interface IConsumptionService {
 
     List<Consumption> list();
 
-    Optional<Consumption> listid(Long id);
+    Optional<Consumption> findById(Long id);
+
+    List<Consumption> findByFamilyId(Long idFamily);
 }

@@ -1,25 +1,31 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
-import org.springframework.cglib.core.Local;
+import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.entities.Item;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface   IItemService {
+public interface IItemService {
 
     public List<Item> list();
 
     public Item insert(Item item);
 
-    public Optional<Item> listid(Long id);
+    public Optional<Item> findById(Long id);
 
-    public List<Item> listarVencidos(LocalDate fechaActual);
+    // HU16 Buscar item por nombre de ingrediente
+    public List<Item> searchByName(String name);
 
-    public List<Item> listarProximosVencer(LocalDate fechaActual, LocalDate fechaLimite);
+    public List<Item> findExpiredItems(LocalDate currentDate);
 
-    public List<Item> listarAlimentoBajoStock();
+    public List<Item> findItemsExpiringSoon(LocalDate currentDate, LocalDate limitDate);
+
+    public List<Item> findLowStockItems();
 
     public void delete(Long id);
+
+    // HU22 Obtener ingredientes disponibles de una familia
+    public List<Ingredient> findAvailableIngredientsByFamilyId(Long idFamily);
 }

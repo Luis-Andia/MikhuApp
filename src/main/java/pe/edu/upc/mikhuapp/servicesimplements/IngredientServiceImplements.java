@@ -13,20 +13,20 @@ import java.util.Optional;
 public class IngredientServiceImplements implements IIngredientService {
 
     @Autowired
-    private IIngredientRepository ingredienteRepository;
+    private IIngredientRepository ingredientRepository;
 
     @Override
     public List<Ingredient> list() {
-        return ingredienteRepository.findAll();
+        return ingredientRepository.findAll();
     }
 
     @Override
     public Ingredient insert(Ingredient ingredient) {
-        return ingredienteRepository.save(ingredient);
+        return ingredientRepository.save(ingredient);
     }
 
     @Override
-    public Optional<Ingredient> listid(Long id) {
-        return ingredienteRepository.findById(id);
+    public Optional<Ingredient> findById(Long id) {
+        return ingredientRepository.findById(id);
     }
 }

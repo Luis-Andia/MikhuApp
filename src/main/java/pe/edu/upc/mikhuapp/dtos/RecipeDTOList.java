@@ -5,58 +5,58 @@ import pe.edu.upc.mikhuapp.entities.Country;
 
 public class RecipeDTOList {
 
-    private Long idReceta;
-    private String nomReceta;
+    private Long idRecipe;
+    private String recipeName;
     private Country country;
-    private Integer calorias;
+    private Integer calories;
     private Difficulty difficulty;
-    private byte[] imagen;
+    private byte[] image;
 
-    public Long getIdReceta() {
-        return idReceta;
+    public Long getIdRecipe() {
+        return idRecipe;
     }
 
-    public void setIdReceta(Long idReceta) {
-        this.idReceta = idReceta;
+    public void setIdRecipe(Long idRecipe) {
+        this.idRecipe = idRecipe;
     }
 
-    public String getNomReceta() {
-        return nomReceta;
+    public String getRecipeName() {
+        return recipeName;
     }
 
-    public void setNomReceta(String nomReceta) {
-        this.nomReceta = nomReceta;
+    public void setRecipeName(String recipeName) {
+        this.recipeName = recipeName;
     }
 
-    public Country getPais() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setPais(Country country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 
-    public Integer getCalorias() {
-        return calorias;
+    public Integer getCalories() {
+        return calories;
     }
 
-    public void setCalorias(Integer calorias) {
-        this.calorias = calorias;
+    public void setCalories(Integer calories) {
+        this.calories = calories;
     }
 
-    public Difficulty getDificultad() {
+    public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDificultad(Difficulty difficulty) {
+    public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 
-    public byte[] getImagen() {
-        return imagen;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

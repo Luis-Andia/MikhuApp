@@ -11,19 +11,19 @@ public class Family {
     private Long idFamily;
 
     @Column(name="NomFamilia", length = 30, nullable = false)
-    private String nomFamily;
+    private String familyName;
 
     @Column(name="ContrasenaFamilia", length = 20, nullable = false)
-    private String passwordFamily;
+    private String familyPassword;
 
     // Constructores
     public Family() {
     }
 
-    public Family(Long idFamily, String nomFamily, String passwordFamily) {
+    public Family(Long idFamily, String familyName, String familyPassword) {
         this.idFamily = idFamily;
-        this.nomFamily = nomFamily;
-        this.passwordFamily = passwordFamily;
+        this.familyName = familyName;
+        this.familyPassword = familyPassword;
     }
 
     // Getters and Setters
@@ -36,19 +36,19 @@ public class Family {
         this.idFamily = idFamily;
     }
 
-    public String getNomFamily() {
-        return nomFamily;
+    public String getFamilyName() {
+        return familyName;
     }
 
-    public void setNomFamily(String nomFamilia) {
-        this.nomFamily = nomFamilia;
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
     }
 
-    public String getPasswordFamily() {
-        return passwordFamily;
+    public String getFamilyPassword() {
+        return familyPassword;
     }
 
-    public void setPasswordFamily(String passwordFamily) {
-        this.passwordFamily = passwordFamily;
+    public void setFamilyPassword(String familyPassword) {
+        this.familyPassword = familyPassword;
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
+
     private final IUsersRepository usersRepository;
 
     public JwtUserDetailsService(IUsersRepository usersRepository) {
@@ -24,21 +25,21 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        Users user = usersRepository.findByNomUser(username)
+        Users user = usersRepository.findByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
-                                "Usuario no encontrado: " + username
+                                "User not found: " + username
                         )
                 );
 
         List<GrantedAuthority> authorities = user.getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRol()))
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                 .map(authority -> (GrantedAuthority) authority)
                 .toList();
 
         return User.builder()
-                .username(user.getNomUser())
+                .username(user.getUsername())
                 .password(user.getPassword())
                 .authorities(authorities)
                 .disabled(!Boolean.TRUE.equals(user.getEnabled()))

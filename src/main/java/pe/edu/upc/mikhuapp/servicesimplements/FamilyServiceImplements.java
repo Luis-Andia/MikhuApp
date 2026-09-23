@@ -10,29 +10,30 @@ import java.util.Optional;
 
 @Service
 public class FamilyServiceImplements implements IFamilyService {
-    private final IFamilyRepository fR;
 
-    public FamilyServiceImplements(IFamilyRepository fR) {
-        this.fR = fR;
+    private final IFamilyRepository familyRepository;
+
+    public FamilyServiceImplements(IFamilyRepository familyRepository) {
+        this.familyRepository = familyRepository;
     }
 
     @Override
     public List<Family> list() {
-        return fR.findAll();
+        return familyRepository.findAll();
     }
 
     @Override
-    public Family insert(Family f) {
-        return fR.save(f);
+    public Family insert(Family family) {
+        return familyRepository.save(family);
     }
 
     @Override
-    public Optional<Family> listid(Long id) {
-        return fR.findById(id);
+    public Optional<Family> findById(Long id) {
+        return familyRepository.findById(id);
     }
 
     @Override
-    public Family update(Family f) {
-        return fR.save(f);
+    public Family update(Family family) {
+        return familyRepository.save(family);
     }
 }

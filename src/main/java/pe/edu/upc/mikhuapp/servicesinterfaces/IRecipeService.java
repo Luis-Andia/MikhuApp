@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
+import pe.edu.upc.mikhuapp.dtos.RecipeSuggestionDTO;
 import pe.edu.upc.mikhuapp.entities.Recipe;
 
 import java.util.List;
@@ -11,5 +12,7 @@ public interface IRecipeService {
 
     List<Recipe> list();
 
-    Optional<Recipe> listid(Long id);
+    Optional<Recipe> findById(Long id);
+
+    List<RecipeSuggestionDTO> findPersonalizedRecipes(Long idFamily);
 }

@@ -1,21 +1,18 @@
 package pe.edu.upc.mikhuapp.dtos;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 
-public class ConsumptionDTO {
+public class ConsumptionHistoryResponseDTO {
 
     private Long idConsumption;
-
-    @NotNull(message = "Item ID is required")
     private Long idItem;
-
-    @NotNull(message = "Recipe ID is required")
+    private String ingredientName;
     private Long idRecipe;
-
-    @NotNull(message = "Consumption date is required")
+    private String recipeName;
     private LocalDateTime consumptionDate;
+
+    public ConsumptionHistoryResponseDTO() {
+    }
 
     public Long getIdConsumption() {
         return idConsumption;
@@ -33,12 +30,28 @@ public class ConsumptionDTO {
         this.idItem = idItem;
     }
 
+    public String getIngredientName() {
+        return ingredientName;
+    }
+
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
+    }
+
     public Long getIdRecipe() {
         return idRecipe;
     }
 
     public void setIdRecipe(Long idRecipe) {
         this.idRecipe = idRecipe;
+    }
+
+    public String getRecipeName() {
+        return recipeName;
+    }
+
+    public void setRecipeName(String recipeName) {
+        this.recipeName = recipeName;
     }
 
     public LocalDateTime getConsumptionDate() {

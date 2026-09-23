@@ -16,79 +16,115 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/familia")
+@RequestMapping("/api/family")
 public class FamilyController {
-    // Inyecciones
-    private final IFamilyService fS;
+
+    // Injections
+    private final IFamilyService familyService;
     private final ModelMapper modelMapper;
 
-    public FamilyController(IFamilyService fS, ModelMapper modelMapper) {
-        this.fS = fS;
+    public FamilyController(
+            IFamilyService familyService,
+            ModelMapper modelMapper) {
+
+        this.familyService = familyService;
         this.modelMapper = modelMapper;
     }
 
-    // METODOS
+    // Methods
 
-    // LISTAR
+    // LIST
     @GetMapping
-    public ResponseEntity<List<FamilyDTOList>> listar(){
-        List<FamilyDTOList> lista_familias = fS.list()
+    public ResponseEntity<List<FamilyDTOList>> list() {
+
+        List<FamilyDTOList> familyList = familyService.list()
                 .stream()
-                .map(f -> modelMapper.map(f, FamilyDTOList.class))
+                .map(family ->
+                        modelMapper.map(family, FamilyDTOList.class))
                 .toList();
-        return ResponseEntity.ok(lista_familias);
+
+        return ResponseEntity.ok(familyList);
     }
 
-    // INSERTAR
+    // INSERT
     @PostMapping
-    public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
-        Family nueva_family = modelMapper.map(familia, Family.class);
-        fS.insert(nueva_family);
+    public ResponseEntity<FamilyDTOInsert> insert(
+            @Validated @RequestBody FamilyDTOInsert familyDTO) {
 
-        FamilyDTOInsert responseDTO = modelMapper.map(nueva_family, FamilyDTOInsert.class);
+        Family newFamily =
+                modelMapper.map(familyDTO, Family.class);
+
+        familyService.insert(newFamily);
+
+        FamilyDTOInsert responseDTO =
+                modelMapper.map(newFamily, FamilyDTOInsert.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("{/id}")
-                .buildAndExpand(nueva_family.getIdFamily())
+                .path("/{id}")
+                .buildAndExpand(newFamily.getIdFamily())
                 .toUri();
-        return ResponseEntity.created(location).body(responseDTO);
+
+        return ResponseEntity
+                .created(location)
+                .body(responseDTO);
     }
 
-    // CONSULTAR familia por ID
+    // FIND FAMILY BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<FamilyDTOList> buscarid(@PathVariable Long id){
-        Family family = fS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        FamilyDTOList responseDTO = modelMapper.map(family, FamilyDTOList.class);
+    public ResponseEntity<FamilyDTOList> findById(
+            @PathVariable Long id) {
+
+        Family family = familyService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Family not found"));
+
+        FamilyDTOList responseDTO =
+                modelMapper.map(family, FamilyDTOList.class);
+
         return ResponseEntity.ok(responseDTO);
     }
 
-    // ACTUALIZAR FAMILIA
+    // UPDATE FAMILY
     @PutMapping
-    public ResponseEntity<FamilyDTOInsert> actualizarfamilia(@Validated @RequestBody FamilyDTOInsert dto){
-        Optional<Family> existente = fS.listid(dto.getIdFamilia());
-        if (existente.isEmpty()) {
-            throw new ResourceNotFoundException("No existe la familia");
+    public ResponseEntity<FamilyDTOInsert> update(
+            @Validated @RequestBody FamilyDTOInsert dto) {
+
+        Optional<Family> existingFamily =
+                familyService.findById(dto.getIdFamily());
+
+        if (existingFamily.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "Family not found");
         }
-        Family family = existente.get();
 
-        family.setNomFamily(dto.getNomFamilia());
-        family.setPasswordFamily(dto.getContrasenaFamilia());
+        Family family = existingFamily.get();
 
-        fS.update(family);
-        FamilyDTOInsert responseDTO = modelMapper.map(family, FamilyDTOInsert.class);
+        family.setFamilyName(dto.getFamilyName());
+        family.setFamilyPassword(dto.getFamilyPassword());
+
+        familyService.update(family);
+
+        FamilyDTOInsert responseDTO =
+                modelMapper.map(family, FamilyDTOInsert.class);
+
         return ResponseEntity.ok(responseDTO);
     }
 
-    // ELIMINAR INTEGRANTE DE FAMILIA
-    @DeleteMapping("/{id}/familia/{idFamilia}")
-    public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id, @PathVariable Long idFamilia){
-        Family familia = fS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
+    // DELETE FAMILY MEMBER
+    @DeleteMapping("/{id}/family/{familyId}")
+    public ResponseEntity<Void> deleteFamilyMember(
+            @PathVariable Long id,
+            @PathVariable Long familyId) {
 
-        familia.setIdFamily(idFamilia);
-        fS.update(familia);
+        Family family = familyService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Family not found"));
+
+        family.setIdFamily(familyId);
+        familyService.update(family);
 
         return ResponseEntity.noContent().build();
     }

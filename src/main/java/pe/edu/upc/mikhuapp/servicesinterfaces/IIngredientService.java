@@ -11,5 +11,5 @@ public interface IIngredientService {
 
     Ingredient insert(Ingredient ingredient);
 
-    Optional<Ingredient> listid(Long id);
+    Optional<Ingredient> findById(Long id);
 }

@@ -14,13 +14,17 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rol")
+@RequestMapping("/api/role")
 public class RoleController {
-    private final IRoleService rS;
+
+    private final IRoleService roleService;
     private final ModelMapper modelMapper;
 
-    public RoleController(IRoleService rS, ModelMapper modelMapper) {
-        this.rS = rS;
+    public RoleController(
+            IRoleService roleService,
+            ModelMapper modelMapper) {
+
+        this.roleService = roleService;
         this.modelMapper = modelMapper;
     }
 
@@ -28,36 +32,54 @@ public class RoleController {
 
     // Listar
     @GetMapping
-    public ResponseEntity<List<RoleDTO>> list(){
-        List<RoleDTO> lista_roles = rS.list()
+    public ResponseEntity<List<RoleDTO>> list() {
+
+        List<RoleDTO> roleList = roleService.list()
                 .stream()
-                .map(r -> modelMapper.map(r, RoleDTO.class))
+                .map(role ->
+                        modelMapper.map(role, RoleDTO.class))
                 .toList();
-        return ResponseEntity.ok(lista_roles);
+
+        return ResponseEntity.ok(roleList);
     }
 
     // Insertar
     @PostMapping
-    public ResponseEntity<RoleDTO> insertar(@Validated @RequestBody RoleDTO dto){
-        Role nuevo_rol = modelMapper.map(dto, Role.class);
-        rS.insert(nuevo_rol);
-        RoleDTO responseDTO = modelMapper.map(nuevo_rol, RoleDTO.class);
+    public ResponseEntity<RoleDTO> insert(
+            @Validated @RequestBody RoleDTO dto) {
+
+        Role newRole =
+                modelMapper.map(dto, Role.class);
+
+        roleService.insert(newRole);
+
+        RoleDTO responseDTO =
+                modelMapper.map(newRole, RoleDTO.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("{/id}")
-                .buildAndExpand(nuevo_rol.getIdRol())
+                .path("/{id}")
+                .buildAndExpand(newRole.getIdRole())
                 .toUri();
 
-        return ResponseEntity.created(location).body(responseDTO);
+        return ResponseEntity
+                .created(location)
+                .body(responseDTO);
     }
 
     // Consultar por ID
     @GetMapping("/{id}")
-    public ResponseEntity<RoleDTO> buscar_rol_id(@PathVariable Long id){
-        Role rol = rS.listid(id)
-                .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
-        RoleDTO responseDTO = modelMapper.map(rol, RoleDTO.class);
+    public ResponseEntity<RoleDTO> findById(
+            @PathVariable Long id) {
+
+        Role role = roleService.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Role not found"));
+
+        RoleDTO responseDTO =
+                modelMapper.map(role, RoleDTO.class);
+
         return ResponseEntity.ok(responseDTO);
     }
 }
