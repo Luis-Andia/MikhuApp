@@ -126,10 +126,16 @@ public class UserController {
         return ResponseEntity.ok(responseDTO);
 
     }
-    //
+    //LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
     public ResponseEntity<List<UserDTOList>> listarIntegrantes(@PathVariable long idFamilia){
-        List<UserDTOList> lista_usuarios = uS.list()
+        Family familia = fS.listid(idFamilia)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No existe la familia con el id: " + idFamilia
+                    )
+                );
+
+        List<UserDTOList> lista_usuarios = uS.listarIntegrantes(idFamilia)
                 .stream()
                 .map(u->modelMapper.map(u, UserDTOList.class))
                 .toList();
