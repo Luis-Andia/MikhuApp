@@ -74,13 +74,13 @@ public class RecipeController {
         Recipe recipe = rS.listId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
 
-        Recipe recipe_actualizado = modelMapper.map(dto, Recipe.class);
-        recipe_actualizado.setIdRecipe(id);
+        Recipe recipeactualizado = modelMapper.map(dto, Recipe.class);
+        recipeactualizado.setIdRecipe(id);
 
-        rS.update(recipe_actualizado);
+        rS.update(recipeactualizado);
 
         RecipeDTOInsert responseDTO =
-                modelMapper.map(recipe_actualizado, RecipeDTOInsert.class);
+                modelMapper.map(recipeactualizado, RecipeDTOInsert.class);
 
         return ResponseEntity.ok(responseDTO);
     }
