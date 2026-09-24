@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,6 +27,7 @@ public class IngredientController {
 
     // HU21: Registrar Ingrediente
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
 
         Ingredient ingredientRegistrado = iS.listId(dto.getIdIngredient())
@@ -46,6 +48,7 @@ public class IngredientController {
 
     // HU22: Listar ingredientes registrados
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<IngredientDTO>> list() {
         List<IngredientDTO> lista = iS.list().stream()
                 .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
@@ -60,6 +63,7 @@ public class IngredientController {
 
     // HU25: Consultar un ingredinete por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
         Ingredient ingredient = iS.listId(id)

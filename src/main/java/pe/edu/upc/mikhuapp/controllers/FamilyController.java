@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,18 +30,9 @@ public class FamilyController {
 
     // METODOS
 
-    // LISTAR
-    @GetMapping
-    public ResponseEntity<List<FamilyDTOList>> listar(){
-        List<FamilyDTOList> lista_familias = fS.list()
-                .stream()
-                .map(f -> modelMapper.map(f, FamilyDTOList.class))
-                .toList();
-        return ResponseEntity.ok(lista_familias);
-    }
-
-    // INSERTAR
+    // HU26: INSERTAR Familiar
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
         Family nueva_family = modelMapper.map(familia, Family.class);
         fS.insert(nueva_family);
@@ -55,17 +47,20 @@ public class FamilyController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
-    // CONSULTAR familia por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<FamilyDTOList> buscarid(@PathVariable Long id){
-        Family family = fS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        FamilyDTOList responseDTO = modelMapper.map(family, FamilyDTOList.class);
-        return ResponseEntity.ok(responseDTO);
+    // HU27: LISTAR Familias
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<FamilyDTOList>> listar(){
+        List<FamilyDTOList> lista_familias = fS.list()
+                .stream()
+                .map(f -> modelMapper.map(f, FamilyDTOList.class))
+                .toList();
+        return ResponseEntity.ok(lista_familias);
     }
 
-    // ACTUALIZAR FAMILIA
+    // HU28: ACTUALIZAR FAMILIA
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FamilyDTOInsert> actualizarfamilia(@Validated @RequestBody FamilyDTOInsert dto){
         Optional<Family> existente = fS.listid(dto.getIdFamily());
         if (existente.isEmpty()) {
@@ -81,8 +76,9 @@ public class FamilyController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    // ELIMINAR INTEGRANTE DE FAMILIA
+    // HU29: ELIMINAR INTEGRANTE DE FAMILIA
     @DeleteMapping("/{id}/familia/{idFamilia}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id, @PathVariable Long idFamilia){
         Family familia = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
@@ -91,5 +87,15 @@ public class FamilyController {
         fS.update(familia);
 
         return ResponseEntity.noContent().build();
+    }
+
+    // HU30: CONSULTAR familia por ID
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<FamilyDTOList> buscarid(@PathVariable Long id){
+        Family family = fS.listid(id)
+                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
+        FamilyDTOList responseDTO = modelMapper.map(family, FamilyDTOList.class);
+        return ResponseEntity.ok(responseDTO);
     }
 }

@@ -3,6 +3,7 @@ package pe.edu.upc.mikhuapp.controllers;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,6 +42,7 @@ public class RecipeIngredientController {
 
     // HU41: REGISTRAR INGREDIENTE a RECETA
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RecipeIngredientDTO> registrar(@RequestBody RecipeIngredientDTO dto) {
         // Validaciones
         Recipe recipe = rS.listId(dto.getIdRecipe())
@@ -67,6 +69,7 @@ public class RecipeIngredientController {
 
     // HU42: LISTAR INGREDIENTES-RECETA
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RecipeIngredientDTO>>list(){
         List<RecipeIngredientDTO> list = riS.list()
                 .stream()
@@ -77,6 +80,7 @@ public class RecipeIngredientController {
 
     // HU43: ACTUALIZAR INGREDIENTE DE UNA RECETA
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RecipeIngredientDTO> update(@Valid @RequestBody RecipeIngredientDTO dto){
         // Verificacion de existe la relacion
         Optional<RecipeIngredient> exists = riS.listId(dto.getIdRecipeIngredient());
@@ -113,6 +117,7 @@ public class RecipeIngredientController {
 
     // HU44: ELIMINAR INGREDIENTE DE RECETA
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         RecipeIngredient recipeIngredient = riS.listId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No existe el ingrediente de receta"));
@@ -123,6 +128,7 @@ public class RecipeIngredientController {
 
     // HU45: CONSULTAR UN INGREDIENTE DE RECETA POR ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RecipeIngredientDTO> getById(@PathVariable Long id){
         RecipeIngredient recipeIngredient = riS.listId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No existe el ingrediente de receta"));

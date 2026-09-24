@@ -28,7 +28,7 @@ public class CountryController {
 
     // Metodos
 
-    // REGISTRAR NUEVO PAIS
+    // HU31: REGISTRAR NUEVO PAIS
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CountryDTO> registrar(@Validated @RequestBody CountryDTO dto){
@@ -46,8 +46,9 @@ public class CountryController {
                 .body(responseDTO);
     }
 
-    // LISTAR PAISES
+    // HU23: LISTAR PAISES
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CountryDTO>> listar_paises(){
         List<CountryDTO> lista_paises = pS.list()
                 .stream()
@@ -56,8 +57,9 @@ public class CountryController {
         return ResponseEntity.ok(lista_paises);
     }
 
-    // ACTUALIZAR PAIS
+    // HU33: ACTUALIZAR PAIS
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CountryDTO> actualizar_pais(@PathVariable("id") long id, @Validated @RequestBody CountryDTO dto){
 
         // AGREGAR VALIDACION DE ID valido
@@ -68,8 +70,19 @@ public class CountryController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    // CONSULTAR PAIS POR ID
+    // HU34: ELIMINAR PAIS
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id){
+        Country p = pS.listid(id)
+                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
+        pS.delete(p.getIdCountry());
+        return ResponseEntity.noContent().build();
+    }
+
+    // HU35: CONSULTAR PAIS POR ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CountryDTO> buscar_pais_id(@PathVariable Long id){
         Country p = pS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
@@ -77,13 +90,4 @@ public class CountryController {
         return ResponseEntity.ok(responseDTO);
     }
 
-
-    // ELIMINAR PAIS
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id){
-        Country p = pS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
-        pS.delete(p.getIdCountry());
-        return ResponseEntity.noContent().build();
-    }
 }

@@ -3,6 +3,7 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,6 +38,7 @@ public class RecipeController {
 
     //HU23 LISTAR RECETAS
     @GetMapping("/listarReceta")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RecipeDTOList>> listarReceta() {
         List<RecipeDTOList> lista = rS.list()
                 .stream()
@@ -46,6 +48,7 @@ public class RecipeController {
     }
 
     // HU11 REGISTRAR RECETA
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<RecipeDTOInsert> insertar(
             @Validated @RequestBody RecipeDTOInsert recipedto){
@@ -70,6 +73,7 @@ public class RecipeController {
 
     // HU13 ACTUALIZAR RECETA
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RecipeDTOInsert> actualizarReceta(
             @PathVariable("id") Long id,
             @Validated @RequestBody RecipeDTOInsert dto){
@@ -90,6 +94,7 @@ public class RecipeController {
 
     // HU14 ELIMINAR RECETA
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminarReceta(
             @PathVariable("id") Long id){
 
@@ -103,6 +108,7 @@ public class RecipeController {
 
     // HU15 CONSULTAR RECETA POR ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RecipeDTOList> listarId(
             @PathVariable("id") Long id){
 
