@@ -7,9 +7,7 @@ import java.util.Optional;
 
 public interface IIngredientService {
 
-    List<Ingredient> list();
-
-    Ingredient insert(Ingredient ingredient);
-
-    Optional<Ingredient> listid(Long id);
+    public List<Ingredient> list();
+    public void insert(Ingredient ingredient);
+    public Optional<Ingredient> listId(Long id);
 }

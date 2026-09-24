@@ -12,21 +12,25 @@ import java.util.Optional;
 @Service
 public class RecipeServiceImplements implements IRecipeService {
 
-    @Autowired
-    private IRecipeRepository recetaRepository;
+    private final IRecipeRepository rR;
+
+    public RecipeServiceImplements(IRecipeRepository rR) {
+        this.rR = rR;
+    }
+
 
     @Override
-    public Recipe insert(Recipe recipe) {
-        return recetaRepository.save(recipe);
+    public void insert(Recipe recipe) {
+        rR.save(recipe);
     }
 
     @Override
     public List<Recipe> list() {
-        return recetaRepository.findAll();
+        return rR.findAll();
     }
 
     @Override
-    public Optional<Recipe> listid(Long id) {
-        return recetaRepository.findById(id);
+    public Optional<Recipe> listId(Long id) {
+        return rR.findById(id);
     }
 }

@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface IRecipeService {
 
-    Recipe insert(Recipe recipe);
+    public void insert(Recipe recipe);
 
-    List<Recipe> list();
+    public List<Recipe> list();
 
-    Optional<Recipe> listid(Long id);
+    public Optional<Recipe> listId(Long id);
 }

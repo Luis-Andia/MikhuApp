@@ -56,7 +56,7 @@ public class ItemController {
         Family family = familiaService.listid(dto.getIdFamily())
                 .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
 
-        Ingredient ingredient = ingredienteService.listid(dto.getIdIngredient())
+        Ingredient ingredient = ingredienteService.listId(dto.getIdIngredient())
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
         Item item = modelMapper.map(dto, Item.class);
