@@ -67,7 +67,7 @@ public class RecipeController {
 
     // HU13 ACTUALIZAR RECETA
     @PutMapping("/{id}")
-    public ResponseEntity<RecipeDTOInsert> actualizar_receta(
+    public ResponseEntity<RecipeDTOInsert> actualizarReceta(
             @PathVariable("id") Long id,
             @Validated @RequestBody RecipeDTOInsert dto){
 
@@ -87,7 +87,7 @@ public class RecipeController {
 
     // HU14 ELIMINAR RECETA
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar_receta(
+    public ResponseEntity<Void> eliminarReceta(
             @PathVariable("id") Long id){
 
         rS.listId(id)
@@ -96,5 +96,19 @@ public class RecipeController {
         rS.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    // HU15 CONSULTAR RECETA POR ID
+    @GetMapping("/{id}")
+    public ResponseEntity<RecipeDTOList> listarId(
+            @PathVariable("id") Long id){
+
+        Recipe recipe = rS.listId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
+
+        RecipeDTOList responseDTO =
+                modelMapper.map(recipe, RecipeDTOList.class);
+
+        return ResponseEntity.ok(responseDTO);
     }
 }
