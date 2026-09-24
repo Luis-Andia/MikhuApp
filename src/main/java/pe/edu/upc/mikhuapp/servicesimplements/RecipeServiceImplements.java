@@ -33,4 +33,19 @@ public class RecipeServiceImplements implements IRecipeService {
     public Optional<Recipe> listId(Long id) {
         return rR.findById(id);
     }
+
+    @Override
+    public void update(Recipe recipe) {
+        rR.save(recipe);
+    }
+
+    @Override
+    public void delete(Long id) {
+        rR.deleteById(id);
+    }
+
+    @Override
+    public List<Recipe> listarPorIngrediente(String nombreIngrediente) {
+        return rR.findByIngrediente(nombreIngrediente);
+    }
 }
