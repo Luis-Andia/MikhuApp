@@ -3,7 +3,7 @@ package pe.edu.upc.mikhuapp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Recipe")
+@Table(name="recipes")
 public class Recipe {
 
     @Id

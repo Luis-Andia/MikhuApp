@@ -3,7 +3,7 @@ package pe.edu.upc.mikhuapp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Family")
+@Table(name="families")
 public class Family {
     // Atributos
     @Id
