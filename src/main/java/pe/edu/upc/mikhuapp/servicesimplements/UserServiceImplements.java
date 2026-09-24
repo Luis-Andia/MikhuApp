@@ -42,7 +42,7 @@ public class UserServiceImplements implements IUserService {
     }
 
     @Override
-    public List<Users> listarIntegrantes(Long idFamily) {
+    public List<Users> listmembers(Long idFamily) {
         return uR.findByFamily_idFamily(idFamily);
     }
 }
