@@ -13,11 +13,11 @@ public class Item {
     private Long idItem;
 
     @ManyToOne
-    @JoinColumn(name="idFamilia")
+    @JoinColumn(name="idFamily")
     private Family family;
 
     @ManyToOne
-    @JoinColumn(name="idIngrediente")
+    @JoinColumn(name="idIngredient")
     private Ingredient ingredient;
 
     @Column(name="Cantidad_Disposicion", nullable = false)

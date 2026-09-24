@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import pe.edu.upc.mikhuapp.entities.Item;
 
 import java.security.PublicKey;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 
+@Repository
 public interface IItemRepository extends JpaRepository<Item, Long> {
     //HU17 Listar ingredientes vencidos
     public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual);

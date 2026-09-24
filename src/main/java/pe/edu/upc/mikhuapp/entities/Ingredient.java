@@ -3,39 +3,38 @@ package pe.edu.upc.mikhuapp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Ingrediente")
+@Table(name = "Ingredient")
 public class Ingredient {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idIngrediente;
+    private Long idIngredient;
 
-    @Column(name = "nomIngrediente", length = 40, nullable = false)
-    private String nomIngrediente;
+    @Column(name = "nomIngredient", length = 40, nullable = false)
+    private String nomIngredient;
 
     // Constructores
-
     public Ingredient() {
     }
 
-    public Ingredient(Long idIngrediente, String nomIngrediente) {
-        this.idIngrediente = idIngrediente;
-        this.nomIngrediente = nomIngrediente;
+    public Ingredient(Long idIngredient, String nomIngredient) {
+        this.idIngredient = idIngredient;
+        this.nomIngredient = nomIngredient;
     }
 
-    public Long getIdIngrediente() {
-        return idIngrediente;
+    // Getters y Setters
+    public Long getIdIngredient() {
+        return idIngredient;
     }
 
-    public void setIdIngrediente(Long idIngrediente) {
-        this.idIngrediente = idIngrediente;
+    public void setIdIngredient(Long idIngredient) {
+        this.idIngredient = idIngredient;
     }
 
-    public String getNomIngrediente() {
-        return nomIngrediente;
+    public String getNomIngredient() {
+        return nomIngredient;
     }
 
-    public void setNomIngrediente(String nomIngrediente) {
-        this.nomIngrediente = nomIngrediente;
+    public void setNomIngredient(String nomIngredient) {
+        this.nomIngredient = nomIngredient;
     }
 }

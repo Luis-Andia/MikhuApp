@@ -1,9 +1,7 @@
 package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,7 +37,7 @@ public class IngredientController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(ingredientRegistrado.getIdIngrediente())
+                .buildAndExpand(ingredientRegistrado.getIdIngredient())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
