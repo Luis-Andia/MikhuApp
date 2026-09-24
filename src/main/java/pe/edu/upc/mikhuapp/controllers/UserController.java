@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,6 +42,7 @@ public class UserController {
 
     // Listar usuarios
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDTOList>> listar(){
         List<UserDTOList> lista_usuarios = uS.list()
                 .stream()
@@ -54,25 +56,25 @@ public class UserController {
     public ResponseEntity<UserDTOInsert> insertar(
             @Validated @RequestBody UserDTOInsert usuario){
 
-        Role role = rS.listid(usuario.getIdRol())
+        Role role = rS.listid(usuario.getIdRole())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "No existe el rol con el id: "
-                                        + usuario.getIdRol()
+                                        + usuario.getIdRole()
                         ));
 
-        Family family = fS.listid(usuario.getIdFamilia())
+        Family family = fS.listid(usuario.getIdFamily())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "No existe la familia con el id: "
-                                        + usuario.getIdFamilia()
+                                        + usuario.getIdFamily()
                         ));
 
-        Country country = pS.listid(usuario.getIdPais())
+        Country country = pS.listid(usuario.getIdCountry())
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "No existe el pais con el id: "
-                                        + usuario.getIdPais()
+                                        + usuario.getIdCountry()
                         ));
 
         Users nuevo_users =
@@ -112,9 +114,9 @@ public class UserController {
     public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        Family family = fS.listid(dto.getIdFamilia())
+        Family family = fS.listid(dto.getIdFamily())
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        Country country = pS.listid(dto.getIdPais())
+        Country country = pS.listid(dto.getIdCountry())
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
 
         Users users_actualizado = modelMapper.map(dto, Users.class);

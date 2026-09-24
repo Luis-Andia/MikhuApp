@@ -41,8 +41,8 @@ public class ItemController {
         List<ItemDTOList> lista = itemService.list().stream()
                 .map(item -> {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-                    dto.setIdFamily(item.getFamilia().getIdFamily());
-                    dto.setIdIngredient(item.getIngrediente().getIdIngredient());
+                    dto.setIdFamily(item.getFamily().getIdFamily());
+                    dto.setIdIngredient(item.getIngredient().getIdIngredient());
                     return dto;
                 })
                 .toList();
@@ -62,8 +62,8 @@ public class ItemController {
 
         Item item = modelMapper.map(dto, Item.class);
 
-        item.setFamilia(family);
-        item.setIngrediente(ingredient);
+        item.setFamily(family);
+        item.setIngredient(ingredient);
 
         Item itemRegistrado = itemService.insert(item);
 
@@ -87,8 +87,8 @@ public class ItemController {
                 .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
 
         ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-        dto.setIdFamily(item.getFamilia().getIdFamily());
-        dto.setIdIngredient(item.getIngrediente().getIdIngredient());
+        dto.setIdFamily(item.getFamily().getIdFamily());
+        dto.setIdIngredient(item.getIngredient().getIdIngredient());
 
         return ResponseEntity.ok(dto);
     }
@@ -141,7 +141,7 @@ public class ItemController {
                 .stream()
                 .map(item -> {
                     ItemResponseDTO dto = modelMapper.map(item, ItemResponseDTO.class);
-                    dto.setNombreIngrediente(item.getIngrediente().getNomIngredient());
+                    dto.setNombreIngrediente(item.getIngredient().getNomIngredient());
                     return dto;
                 })
                 .toList();

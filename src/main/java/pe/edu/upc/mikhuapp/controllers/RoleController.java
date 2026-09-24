@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,6 +29,7 @@ public class RoleController {
 
     // Listar
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RoleDTO>> list(){
         List<RoleDTO> lista_roles = rS.list()
                 .stream()

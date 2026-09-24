@@ -7,28 +7,30 @@ import pe.edu.upc.mikhuapp.entities.Country;
 public class RecipeDTOInsert {
 
     @NotNull(message = "El id de la receta es obligatorio")
-    private Long idReceta;
+    private Long idRecipe;
     @NotBlank(message = "El nombre de la receta es obligatorio")
-    private String nomReceta;
+    private String nomRecipe;
     @NotBlank(message = "El pais de la receta es obligatoria")
     private Country country;
     @NotNull(message = "Las calorias de la receta son obligatorias")
-    private Integer calorias;
+    private Integer calories;
 
-    public Long getIdReceta() {
-        return idReceta;
+    // Get y set
+
+    public Long getIdRecipe() {
+        return idRecipe;
     }
 
-    public void setIdReceta(Long idReceta) {
-        this.idReceta = idReceta;
+    public void setIdRecipe(Long idRecipe) {
+        this.idRecipe = idRecipe;
     }
 
-    public String getNomReceta() {
-        return nomReceta;
+    public String getNomRecipe() {
+        return nomRecipe;
     }
 
-    public void setNomReceta(String nomReceta) {
-        this.nomReceta = nomReceta;
+    public void setNomRecipe(String nomRecipe) {
+        this.nomRecipe = nomRecipe;
     }
 
     public Country getCountry() {
@@ -39,12 +41,11 @@ public class RecipeDTOInsert {
         this.country = country;
     }
 
-    public Integer getCalorias() {
-        return calorias;
+    public Integer getCalories() {
+        return calories;
     }
 
-    public void setCalorias(Integer calorias) {
-        this.calorias = calorias;
+    public void setCalories(Integer calories) {
+        this.calories = calories;
     }
-
 }

@@ -67,14 +67,14 @@ public class FamilyController {
     // ACTUALIZAR FAMILIA
     @PutMapping
     public ResponseEntity<FamilyDTOInsert> actualizarfamilia(@Validated @RequestBody FamilyDTOInsert dto){
-        Optional<Family> existente = fS.listid(dto.getIdFamilia());
+        Optional<Family> existente = fS.listid(dto.getIdFamily());
         if (existente.isEmpty()) {
             throw new ResourceNotFoundException("No existe la familia");
         }
         Family family = existente.get();
 
-        family.setNomFamily(dto.getNomFamilia());
-        family.setPasswordFamily(dto.getContrasenaFamilia());
+        family.setNomFamily(dto.getNomFamily());
+        family.setPasswordFamily(dto.getPasswordFamily());
 
         fS.update(family);
         FamilyDTOInsert responseDTO = modelMapper.map(family, FamilyDTOInsert.class);

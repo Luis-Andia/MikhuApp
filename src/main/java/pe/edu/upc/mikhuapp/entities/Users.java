@@ -21,7 +21,7 @@ public class Users implements Serializable {
     )
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name="password", length = 20, nullable = false)
+    @Column(name="password", length = 200, nullable = false)
     private String password;
 
     @Column(name="nomUser", length = 40, nullable = false)
