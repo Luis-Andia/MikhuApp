@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -35,23 +36,9 @@ public class ItemController {
         this.modelMapper = modelMapper;
     }
 
-    // LISTAR ITEM
-    @GetMapping
-    public ResponseEntity<List<ItemDTOList>> list() {
-        List<ItemDTOList> lista = itemService.list().stream()
-                .map(item -> {
-                    ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-                    dto.setIdFamily(item.getFamily().getIdFamily());
-                    dto.setIdIngredient(item.getIngredient().getIdIngredient());
-                    return dto;
-                })
-                .toList();
-
-        return ResponseEntity.ok(lista);
-    }
-
-    // INSERTAR ITEM
+    // HU16: INSERTAR ITEM
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ItemDTOList> insert(@Validated @RequestBody ItemDTOInsert dto) {
 
         Family family = familiaService.listid(dto.getIdFamily())
@@ -80,7 +67,40 @@ public class ItemController {
         return ResponseEntity.created(location).body(response);
     }
 
+    // HU17: LISTAR ITEM
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ItemDTOList>> list() {
+        List<ItemDTOList> lista = itemService.list().stream()
+                .map(item -> {
+                    ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
+                    dto.setIdFamily(item.getFamily().getIdFamily());
+                    dto.setIdIngredient(item.getIngredient().getIdIngredient());
+                    return dto;
+                })
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+    // HU18: ACTUALIZAR ITEM
+
+
+    // HU19: ELIMINAR ITEM
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> eliminar_item(@PathVariable("id") Long id) {
+        Item item = itemService.listid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
+
+        itemService.delete(item.getIdItem());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    // HU20: CONSULTAR UN ITEM POR ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ItemDTOList> listId(@PathVariable Long id) {
 
         Item item = itemService.listid(id)
@@ -95,6 +115,7 @@ public class ItemController {
 
     // LISTAR ITEMS VENCIDOS
     @GetMapping("/Vencidos")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity <List<ItemDTOList>>listarVencidos() {
         LocalDate fechaActual = LocalDate.now();
 
@@ -149,15 +170,6 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar_item(@PathVariable("id") Long id) {
-        Item item = itemService.listid(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
-
-        itemService.delete(item.getIdItem());
-
-        return ResponseEntity.noContent().build();
-    }
 
 
 }

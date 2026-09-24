@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,7 +36,9 @@ public class ConsumptionController {
         this.modelMapper = modelMapper;
     }
 
+    // HU: Listar items consumidos
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ConsumptionDTO>> list() {
 
         List<ConsumptionDTO> lista = cS.list().stream()
@@ -53,6 +56,7 @@ public class ConsumptionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ConsumptionDTO> insert(
             @Validated @RequestBody ConsumptionDTO dto) {
 
@@ -90,6 +94,7 @@ public class ConsumptionController {
 
     //Actualizar consumo
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ConsumptionDTO> update( @PathVariable("id") Long id, @Validated @RequestBody ConsumptionDTO dto) {
         Consumption consumption = cS.listid(id)
                 .orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
@@ -107,6 +112,7 @@ public class ConsumptionController {
 
     //Eliminar consumo
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ConsumptionDTO> delete(@PathVariable("id") Long id) {
         cS.listid(id).
                 orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
@@ -117,6 +123,7 @@ public class ConsumptionController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ConsumptionDTO> listId(
             @PathVariable Long id) {
 
@@ -135,6 +142,7 @@ public class ConsumptionController {
 
     // HU51: Listar alimentos mas consumidos
     @GetMapping("/alimentos-mas-consumidos")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>>ListMostConsumedIngredients(){
         List<MostConsumedIngredientsDTO> list = cS.ListMostConsumedIngredients()
                 .stream()

@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/usuarios")
 public class UserController {
     private final IUserService uS;
     private final IRoleService rS;
@@ -103,6 +103,7 @@ public class UserController {
 
     // CONSULTAR USUARIO por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOList> buscarid(@PathVariable("id") Long id){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
@@ -112,6 +113,7 @@ public class UserController {
 
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
@@ -132,6 +134,7 @@ public class UserController {
 
     // Eliminar USUARIO
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOList> delete(@PathVariable("id") Long id) {
         uS.listId(id).
                 orElseThrow(() -> new  ResourceNotFoundException("Usuario no encontrado"));
