@@ -38,7 +38,7 @@ public class ItemController {
 
     // HU16: INSERTAR ITEM
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ItemDTOList> insert(@Validated @RequestBody ItemDTOInsert dto) {
 
         Family family = familiaService.listid(dto.getIdFamily())
@@ -69,7 +69,7 @@ public class ItemController {
 
     // HU17: LISTAR ITEM
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<ItemDTOList>> list() {
         List<ItemDTOList> lista = itemService.list().stream()
                 .map(item -> {
@@ -88,7 +88,7 @@ public class ItemController {
 
     // HU19: ELIMINAR ITEM
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<Void> eliminar_item(@PathVariable("id") Long id) {
         Item item = itemService.listid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
@@ -100,7 +100,7 @@ public class ItemController {
 
     // HU20: CONSULTAR UN ITEM POR ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ItemDTOList> listId(@PathVariable Long id) {
 
         Item item = itemService.listid(id)
@@ -115,7 +115,7 @@ public class ItemController {
 
     // LISTAR ITEMS VENCIDOS
     @GetMapping("/Vencidos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity <List<ItemDTOList>>listarVencidos() {
         LocalDate fechaActual = LocalDate.now();
 
@@ -127,7 +127,9 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
+    // HU_: ALIMENTOS PROXIMOS A VENCER
     @GetMapping("/ProximosVencer")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity <List<ItemDTOList>> listarProximosVencer() {
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaLimite = fechaActual.plusDays(3);
@@ -140,7 +142,9 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
+    // HU: Alimentos bajo stock
     @GetMapping("/bajoStock")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
         List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
                 .stream()
@@ -152,6 +156,7 @@ public class ItemController {
 
     // HU47 LISTAR ITEMS DEL INVENTARIO FAMILIAR
     @GetMapping("/familia/{idFamily}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<ItemDTOQuery>> listarItemsPorFamilia(
             @PathVariable("idFamily") Long idFamily) {
 

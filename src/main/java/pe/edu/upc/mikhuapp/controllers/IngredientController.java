@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ingredientes")
+@RequestMapping("/ingredients")
 public class IngredientController {
     private final IIngredientService iS;
     private final ModelMapper modelMapper;
@@ -27,7 +27,7 @@ public class IngredientController {
 
     // HU21: Registrar Ingrediente
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
 
         Ingredient ingredientRegistrado = iS.listId(dto.getIdIngredient())
@@ -48,7 +48,7 @@ public class IngredientController {
 
     // HU22: Listar ingredientes registrados
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<IngredientDTO>> list() {
         List<IngredientDTO> lista = iS.list().stream()
                 .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
@@ -61,9 +61,9 @@ public class IngredientController {
 
     // HU24: Eliminar un ingrediente
 
-    // HU25: Consultar un ingredinete por ID
+    // HU25: Consultar un ingrediente por ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
         Ingredient ingredient = iS.listId(id)

@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pais")
+@RequestMapping("/api/countries")
 public class CountryController {
     // Inyecciones
     private final ICountryService pS;
@@ -47,8 +47,7 @@ public class CountryController {
     }
 
     // HU23: LISTAR PAISES
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping // Todos pueden listar los paises
     public ResponseEntity<List<CountryDTO>> listar_paises(){
         List<CountryDTO> lista_paises = pS.list()
                 .stream()
@@ -81,8 +80,7 @@ public class CountryController {
     }
 
     // HU35: CONSULTAR PAIS POR ID
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}") // Todos pueden consultar un pais
     public ResponseEntity<CountryDTO> buscar_pais_id(@PathVariable Long id){
         Country p = pS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));

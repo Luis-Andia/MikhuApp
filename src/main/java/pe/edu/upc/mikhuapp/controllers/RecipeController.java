@@ -20,25 +20,22 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recetas")
+@RequestMapping("/recipes")
 public class RecipeController {
     private final IRecipeService rS;
     private final ModelMapper modelMapper;
     private final ICountryService cS;
-    private final IFamilyService fS;
     private final IIngredientService iS;
 
-    public RecipeController(IRecipeService rS, ModelMapper modelMapper, ICountryService cS, IFamilyService fS, IIngredientService iS) {
+    public RecipeController(IRecipeService rS, ModelMapper modelMapper, ICountryService cS, IIngredientService iS) {
         this.rS = rS;
         this.modelMapper = modelMapper;
         this.cS = cS;
-        this.fS = fS;
         this.iS = iS;
     }
 
     //HU23 LISTAR RECETAS
-    @GetMapping("/listarReceta")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping() // Todos pueden listar las recetas
     public ResponseEntity<List<RecipeDTOList>> listarReceta() {
         List<RecipeDTOList> lista = rS.list()
                 .stream()
@@ -48,15 +45,12 @@ public class RecipeController {
     }
 
     // HU11 REGISTRAR RECETA
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<RecipeDTOInsert> insertar(
-            @Validated @RequestBody RecipeDTOInsert recipedto){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<RecipeDTOInsert> insertar(@Validated @RequestBody RecipeDTOInsert recipedto){
 
         Recipe recipe = modelMapper.map(recipedto, Recipe.class);
-
         rS.insert(recipe);
-
         RecipeDTOInsert responseDTO =
                 modelMapper.map(recipe, RecipeDTOInsert.class);
 
@@ -95,20 +89,15 @@ public class RecipeController {
     // HU14 ELIMINAR RECETA
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> eliminarReceta(
-            @PathVariable("id") Long id){
-
+    public ResponseEntity<Void> eliminarReceta(@PathVariable("id") Long id){
         rS.listId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
-
         rS.delete(id);
-
         return ResponseEntity.noContent().build();
     }
 
     // HU15 CONSULTAR RECETA POR ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RecipeDTOList> listarId(
             @PathVariable("id") Long id){
 

@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.lang.invoke.MethodType;
+
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -67,7 +69,12 @@ public class SecurityConfig {
 
                         // Login público
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/countries").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/recipes").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/recipes/*").permitAll()
+
 
                         // Swagger
                         .requestMatchers(
