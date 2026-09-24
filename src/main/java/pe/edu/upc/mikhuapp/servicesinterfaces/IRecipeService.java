@@ -17,4 +17,6 @@ public interface IRecipeService {
     void update(Recipe recipe);
 
     void delete(Long id);
+
+    List<Recipe> listarPorIngrediente(String nombreIngrediente);
 }

@@ -43,4 +43,9 @@ public class RecipeServiceImplements implements IRecipeService {
     public void delete(Long id) {
         rR.deleteById(id);
     }
+
+    @Override
+    public List<Recipe> listarPorIngrediente(String nombreIngrediente) {
+        return rR.findByIngrediente(nombreIngrediente);
+    }
 }

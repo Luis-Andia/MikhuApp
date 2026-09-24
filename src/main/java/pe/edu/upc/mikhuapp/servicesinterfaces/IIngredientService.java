@@ -10,4 +10,5 @@ public interface IIngredientService {
     public List<Ingredient> list();
     public void insert(Ingredient ingredient);
     public Optional<Ingredient> listId(Long id);
+    public Optional<Ingredient> findByNomIngredient(String nomIngredient);
 }
