@@ -64,4 +64,24 @@ public class RecipeController {
                 .created(location)
                 .body(responseDTO);
     }
+
+    // HU13 ACTUALIZAR RECETA
+    @PutMapping("/{id}")
+    public ResponseEntity<RecipeDTOInsert> actualizar_receta(
+            @PathVariable("id") Long id,
+            @Validated @RequestBody RecipeDTOInsert dto){
+
+        Recipe recipe = rS.listId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
+
+        Recipe recipe_actualizado = modelMapper.map(dto, Recipe.class);
+        recipe_actualizado.setIdRecipe(id);
+
+        rS.update(recipe_actualizado);
+
+        RecipeDTOInsert responseDTO =
+                modelMapper.map(recipe_actualizado, RecipeDTOInsert.class);
+
+        return ResponseEntity.ok(responseDTO);
+    }
 }

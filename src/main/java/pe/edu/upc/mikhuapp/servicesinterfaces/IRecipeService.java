@@ -8,9 +8,13 @@ import java.util.Optional;
 
 public interface IRecipeService {
 
-    public void insert(Recipe recipe);
+    void insert(Recipe recipe);
 
-    public List<Recipe> list();
+    List<Recipe> list();
 
-    public Optional<Recipe> listId(Long id);
+    Optional<Recipe> listId(Long id);
+
+    void update(Recipe recipe);
+
+    void delete(Long id);
 }
