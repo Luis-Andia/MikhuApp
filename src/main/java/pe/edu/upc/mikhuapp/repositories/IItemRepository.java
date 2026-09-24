@@ -15,26 +15,23 @@ import org.springframework.data.jpa.repository.Query;
 
 @Repository
 public interface IItemRepository extends JpaRepository<Item, Long> {
-    //HU17 Listar ingredientes vencidos
-    public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual);
+    //HU Listar ingredientes vencidos
+    public List<Item> findByDueDateBefore(LocalDate fechaActual);
 
-    //HU17 Listar proximos a vencer Ordenados
+    //HU Listar proximos a vencer Ordenados
     @Query(value = "SELECT i FROM Item i"
-            + " WHERE i.fechaVencimiento BETWEEN :fechaActual AND :fechaLimite"
-            + " ORDER BY i.fechaVencimiento ASC"
+            + " WHERE i.dueDate BETWEEN :fechaActual AND :fechaLimite"
+            + " ORDER BY i.dueDate ASC"
     )
-    List<Item> findByfechaVencimientoBetween(
+    List<Item> findByDueDateBetween(
             @Param("fechaActual") LocalDate fechaActual,
             @Param("fechaLimite") LocalDate fechaLimite
     );
 
-    //HU18 Listar alimentos con bajo Stock
+
+    //HU Listar alimentos con bajo Stock
     @Query(value = "SELECT i FROM Item i"
-            + " WHERE i.cantidadDisposicion <= i.stockMinimo"
+            + " WHERE i.amountAvailable <= i.minimumStock"
     )
     List<Item> findAlimentosBajoStock();
-
-
-
-
 }
