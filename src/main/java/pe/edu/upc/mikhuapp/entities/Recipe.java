@@ -20,20 +20,15 @@ public class Recipe {
     @Column(name="Calorias", nullable = false)
     private Integer calories;
 
-    @ManyToOne
-    @JoinColumn(name="Id_Dificultad")
-    private Difficulty difficulty;
-
     public Recipe() {
     }
 
     public Recipe(Long idRecipe, String nomRecipe, Country country,
-                  Integer calories, Difficulty difficulty, byte[] imagen) {
+                  Integer calories) {
         this.idRecipe = idRecipe;
         this.nomRecipe = nomRecipe;
         this.country = country;
         this.calories = calories;
-        this.difficulty = difficulty;
     }
 
     public Long getIdRecipe() {
@@ -68,11 +63,4 @@ public class Recipe {
         this.calories = calories;
     }
 
-    public Difficulty getDificultad() {
-        return difficulty;
-    }
-
-    public void setDificultad(Difficulty difficulty) {
-        this.difficulty = difficulty;
-    }
 }

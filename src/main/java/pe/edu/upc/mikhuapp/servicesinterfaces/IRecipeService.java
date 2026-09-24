@@ -1,6 +1,7 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
 import pe.edu.upc.mikhuapp.entities.Recipe;
+import pe.edu.upc.mikhuapp.entities.Users;
 
 import java.util.List;
 import java.util.Optional;
