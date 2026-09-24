@@ -135,7 +135,7 @@ public class UserController {
                     )
                 );
 
-        List<UserDTOList> lista_usuarios = uS.listarIntegrantes(idFamilia)
+        List<UserDTOList> lista_usuarios = uS.listmembers(idFamilia)
                 .stream()
                 .map(u->modelMapper.map(u, UserDTOList.class))
                 .toList();
