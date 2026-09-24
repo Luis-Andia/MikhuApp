@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
+import pe.edu.upc.mikhuapp.dtos.MostConsumedIngredientsDTO;
 import pe.edu.upc.mikhuapp.entities.Consumption;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.entities.Recipe;
@@ -103,5 +104,23 @@ public class ConsumptionController {
         dto.setIdReceta(historial.getRecipe().getIdRecipe());
 
         return ResponseEntity.ok(dto);
+    }
+
+    // HU51: Listar alimentos mas consumidos
+    @GetMapping("/alimentos-mas-consumidos")
+    public ResponseEntity<List<MostConsumedIngredientsDTO>>ListMostConsumedIngredients(){
+        List<MostConsumedIngredientsDTO> list = cS.ListMostConsumedIngredients()
+                .stream()
+                .map(item -> {
+                    MostConsumedIngredientsDTO dto = new MostConsumedIngredientsDTO();
+
+                    dto.setIdItem(((Number) item[0]).intValue());
+                    dto.setNomIngredient((String) item[1]);
+                    dto.setQuantity(((Number) item[2]).intValue());
+
+                    return dto;
+                })
+                .toList();
+        return ResponseEntity.ok(list);
     }
 }

@@ -3,7 +3,7 @@ package pe.edu.upc.mikhuapp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="recipe_ingredients")
+@Table(name="recipeIngredients")
 public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

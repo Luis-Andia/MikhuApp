@@ -7,9 +7,8 @@ import java.util.Optional;
 
 public interface IConsumptionService {
 
-    Consumption insert(Consumption consumption);
-
-    List<Consumption> list();
-
-    Optional<Consumption> listid(Long id);
+    public Consumption insert(Consumption consumption);
+    public List<Consumption> list();
+    public Optional<Consumption> listid(Long id);
+    public List<Object[]>ListMostConsumedIngredients();
 }
