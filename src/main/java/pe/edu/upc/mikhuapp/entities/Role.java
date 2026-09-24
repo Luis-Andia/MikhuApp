@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "roles",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"user_id", "rol"})
+                @UniqueConstraint(columnNames = {"idUser", "rol"})
         })
 public class Role implements Serializable {
     @Id
@@ -18,7 +18,7 @@ public class Role implements Serializable {
     private String rol;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "idUser", nullable = false)
     private Users user;
 
     // Constructores

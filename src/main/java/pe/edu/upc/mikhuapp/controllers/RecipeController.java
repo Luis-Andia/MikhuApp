@@ -15,28 +15,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/recetas")
 public class RecipeController {
+    private final IRecipeService rS;
+    private final ModelMapper modelMapper;
+    private final ICountryService cS;
+    private final IFamilyService fS;
 
-    @Autowired
-    private IRecipeService recetaService;
-
-    @Autowired
-    private ICountryService paisService;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private IRecipeRepository iRecipeRepository;
-
-    @Autowired
-    private IRecipeService iRecipeService;
-    @Autowired
-    private IFamilyService iFamilyService;
+    public RecipeController(IRecipeService rS, ModelMapper modelMapper, ICountryService cS, IFamilyService fS) {
+        this.rS = rS;
+        this.modelMapper = modelMapper;
+        this.cS = cS;
+        this.fS = fS;
+    }
 
     //HU23 LISTAR RECETAS
     @GetMapping("/listarReceta")
     public ResponseEntity<List<RecipeDTOList>> listarReceta() {
-        List<RecipeDTOList> lista = iRecipeService.list()
+        List<RecipeDTOList> lista = rS.list()
                 .stream()
                 .map(receta->modelMapper.map(receta, RecipeDTOList.class))
                 .toList();

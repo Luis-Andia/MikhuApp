@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,6 +30,7 @@ public class CountryController {
 
     // REGISTRAR NUEVO PAIS
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CountryDTO> registrar(@Validated @RequestBody CountryDTO dto){
         Country nuevo_country = modelMapper.map(dto, Country.class);
         pS.insert(nuevo_country);

@@ -22,23 +22,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/historial-consumo")
 public class ConsumptionController {
+    private final IConsumptionService cS;
+    private final IItemService iS;
+    private final IRecipeService rS;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private IConsumptionService historialConsumoService;
-
-    @Autowired
-    private IItemService itemService;
-
-    @Autowired
-    private IRecipeService recetaService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    public ConsumptionController(IConsumptionService cS, IItemService iS, IRecipeService rS, ModelMapper modelMapper) {
+        this.cS = cS;
+        this.iS = iS;
+        this.rS = rS;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     public ResponseEntity<List<ConsumptionDTO>> list() {
 
-        List<ConsumptionDTO> lista = historialConsumoService.list().stream()
+        List<ConsumptionDTO> lista = cS.list().stream()
                 .map(historial -> {
                     ConsumptionDTO dto =
                             modelMapper.map(historial, ConsumptionDTO.class);
@@ -56,11 +55,11 @@ public class ConsumptionController {
     public ResponseEntity<ConsumptionDTO> insert(
             @Validated @RequestBody ConsumptionDTO dto) {
 
-        Item item = itemService.listid(dto.getIdItem())
+        Item item = iS.listid(dto.getIdItem())
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Item no encontrado"));
 
-        Recipe recipe = recetaService.listid(dto.getIdReceta())
+        Recipe recipe = rS.listid(dto.getIdReceta())
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Receta no encontrada"));
 
@@ -71,7 +70,7 @@ public class ConsumptionController {
         historial.setRecipe(recipe);
 
         Consumption historialRegistrado =
-                historialConsumoService.insert(historial);
+                cS.insert(historial);
 
         ConsumptionDTO response =
                 modelMapper.map(historialRegistrado, ConsumptionDTO.class);
@@ -92,7 +91,7 @@ public class ConsumptionController {
     public ResponseEntity<ConsumptionDTO> listId(
             @PathVariable Long id) {
 
-        Consumption historial = historialConsumoService.listid(id)
+        Consumption historial = cS.listid(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Consumo no encontrado"));
 

@@ -45,4 +45,19 @@ public class ItemServiceImplements implements IItemService {
     public List<Item> listarAlimentoBajoStock() {
         return itemRepository.findAlimentosBajoStock();
     }
+
+    @Override
+    public void delete(Long id) {
+        itemRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual) {
+        return itemRepository.findByfechaVencimientoBefore(fechaActual);
+    }
+
+    @Override
+    public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite) {
+        return itemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite);
+    }
 }

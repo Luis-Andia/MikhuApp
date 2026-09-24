@@ -24,21 +24,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 public class ItemController {
+    private final IItemService itemService;
+    private final IFamilyService familiaService;
+    private final IIngredientService ingredienteService;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private IItemService itemService;
+    public ItemController(IItemService itemService, IFamilyService familiaService, IIngredientService ingredienteService, ModelMapper modelMapper) {
+        this.itemService = itemService;
+        this.familiaService = familiaService;
+        this.ingredienteService = ingredienteService;
+        this.modelMapper = modelMapper;
+    }
 
-    @Autowired
-    private IFamilyService familiaService;
-
-    @Autowired
-    private IIngredientService ingredienteService;
-
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private IItemRepository iItemRepository;
-
+    // LISTAR ITEM
     @GetMapping
     public ResponseEntity<List<ItemDTOList>> list() {
         List<ItemDTOList> lista = itemService.list().stream()
@@ -53,6 +51,7 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
+    // INSERTAR ITEM
     @PostMapping
     public ResponseEntity<ItemDTOList> insert(@Validated @RequestBody ItemDTOInsert dto) {
 
@@ -95,11 +94,12 @@ public class ItemController {
         return ResponseEntity.ok(dto);
     }
 
+    // LISTAR ITEMS VENCIDOS
     @GetMapping("/Vencidos")
     public ResponseEntity <List<ItemDTOList>>listarVencidos() {
         LocalDate fechaActual = LocalDate.now();
 
-        List<ItemDTOList> lista = iItemRepository.findByfechaVencimientoBefore(fechaActual)
+        List<ItemDTOList> lista = itemService.findByfechaVencimientoBefore(fechaActual)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
@@ -112,7 +112,7 @@ public class ItemController {
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaLimite = fechaActual.plusDays(3);
 
-        List<ItemDTOList> lista = iItemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite)
+        List<ItemDTOList> lista = itemService.listarProximosVencer(fechaActual, fechaLimite)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
@@ -122,12 +122,22 @@ public class ItemController {
 
     @GetMapping("/bajoStock")
     public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
-        List<ItemDTOList> lista = iItemRepository.findAlimentosBajoStock()
+        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
 
         return ResponseEntity.ok(lista);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar_item(@PathVariable("id") Long id) {
+        Item item = itemService.listid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
+
+        itemService.delete(item.getIdItem());
+
+        return ResponseEntity.noContent().build();
     }
 
 
