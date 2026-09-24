@@ -13,6 +13,7 @@ import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredientService;
 
 import java.net.URI;
 import java.util.List;
@@ -24,12 +25,14 @@ public class RecipeController {
     private final ModelMapper modelMapper;
     private final ICountryService cS;
     private final IFamilyService fS;
+    private final IIngredientService iS;
 
-    public RecipeController(IRecipeService rS, ModelMapper modelMapper, ICountryService cS, IFamilyService fS) {
+    public RecipeController(IRecipeService rS, ModelMapper modelMapper, ICountryService cS, IFamilyService fS, IIngredientService iS) {
         this.rS = rS;
         this.modelMapper = modelMapper;
         this.cS = cS;
         this.fS = fS;
+        this.iS = iS;
     }
 
     //HU23 LISTAR RECETAS
@@ -110,5 +113,21 @@ public class RecipeController {
                 modelMapper.map(recipe, RecipeDTOList.class);
 
         return ResponseEntity.ok(responseDTO);
+    }
+
+    // HU57 CONSULTAR RECETAS POR INGREDIENTE
+    @GetMapping("/ingrediente/{nombreIngrediente}")
+    public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(
+            @PathVariable("nombreIngrediente") String nombreIngrediente){
+
+        iS.findByNomIngredient(nombreIngrediente)
+                .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
+
+        List<RecipeDTOList> lista = rS.listarPorIngrediente(nombreIngrediente)
+                .stream()
+                .map(receta -> modelMapper.map(receta, RecipeDTOList.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
     }
 }
