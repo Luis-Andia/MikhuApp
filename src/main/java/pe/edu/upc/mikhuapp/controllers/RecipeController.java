@@ -3,13 +3,18 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.*;
+import pe.edu.upc.mikhuapp.entities.*;
+import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -35,5 +40,28 @@ public class RecipeController {
                 .map(receta->modelMapper.map(receta, RecipeDTOList.class))
                 .toList();
         return ResponseEntity.ok(lista);
+    }
+
+    // HU11 REGISTRAR RECETA
+    @PostMapping
+    public ResponseEntity<RecipeDTOInsert> insertar(
+            @Validated @RequestBody RecipeDTOInsert recipedto){
+
+        Recipe recipe = modelMapper.map(recipedto, Recipe.class);
+
+        rS.insert(recipe);
+
+        RecipeDTOInsert responseDTO =
+                modelMapper.map(recipe, RecipeDTOInsert.class);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(recipe.getIdRecipe())
+                .toUri();
+
+        return ResponseEntity
+                .created(location)
+                .body(responseDTO);
     }
 }

@@ -1,12 +1,18 @@
 package pe.edu.upc.mikhuapp.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import pe.edu.upc.mikhuapp.entities.Country;
 
-public class RecipeDTOList {
+public class RecipeDTOInsert {
 
+    @NotNull(message = "El id de la receta es obligatorio")
     private Long idReceta;
+    @NotBlank(message = "El nombre de la receta es obligatorio")
     private String nomReceta;
+    @NotBlank(message = "El pais de la receta es obligatoria")
     private Country country;
+    @NotNull(message = "Las calorias de la receta son obligatorias")
     private Integer calorias;
 
     public Long getIdReceta() {
@@ -25,11 +31,11 @@ public class RecipeDTOList {
         this.nomReceta = nomReceta;
     }
 
-    public Country getPais() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setPais(Country country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 
