@@ -141,7 +141,7 @@ public class ItemController {
                 .stream()
                 .map(item -> {
                     ItemDTOQuery dto = modelMapper.map(item, ItemDTOQuery.class);
-                    dto.setNombreIngrediente(item.getIngredient().getNomIngredient());
+                    dto.setIngredientName(item.getIngredient().getNomIngredient());
                     return dto;
                 })
                 .toList();

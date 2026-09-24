@@ -5,11 +5,11 @@ import java.time.LocalDate;
 public class ItemDTOQuery {
 
     private Long idItem;
-    private String nombreIngrediente;
-    private Float cantidadDisposicion;
-    private LocalDate fechaCompra;
-    private LocalDate fechaVencimiento;
-    private Integer stockMinimo;
+    private String ingredientName;
+    private Integer amountAvailable;
+    private LocalDate purchaseDate;
+    private LocalDate dueDate;
+    private Integer minimumStock;
 
     public Long getIdItem() {
         return idItem;
@@ -19,43 +19,43 @@ public class ItemDTOQuery {
         this.idItem = idItem;
     }
 
-    public String getNombreIngrediente() {
-        return nombreIngrediente;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setNombreIngrediente(String nombreIngrediente) {
-        this.nombreIngrediente = nombreIngrediente;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
-    public Float getCantidadDisposicion() {
-        return cantidadDisposicion;
+    public Integer getAmountAvailable() {
+        return amountAvailable;
     }
 
-    public void setCantidadDisposicion(Float cantidadDisposicion) {
-        this.cantidadDisposicion = cantidadDisposicion;
+    public void setAmountAvailable(Integer amountAvailable) {
+        this.amountAvailable = amountAvailable;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
+    public Integer getMinimumStock() {
+        return minimumStock;
     }
 
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
+    public void setMinimumStock(Integer minimumStock) {
+        this.minimumStock = minimumStock;
     }
 }
