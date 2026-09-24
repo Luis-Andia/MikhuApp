@@ -2,7 +2,7 @@ package pe.edu.upc.mikhuapp.dtos;
 
 import java.time.LocalDate;
 
-public class ItemResponseDTO {
+public class ItemDTOQuery {
 
     private Long idItem;
     private String nombreIngrediente;
