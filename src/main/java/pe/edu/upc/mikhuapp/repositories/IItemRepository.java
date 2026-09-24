@@ -26,7 +26,7 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
 
     //HU47 Listar items del inventario familiar
     @Query(value = "SELECT i FROM Item i"
-            + " WHERE i.familia.idFamily = :idFamily"
+            + " WHERE i.family.idFamily = :idFamily"
     )
     List<Item> findByFamilyId(
             @Param("idFamily") Long idFamily
