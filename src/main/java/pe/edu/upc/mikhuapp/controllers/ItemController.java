@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOList;
+import pe.edu.upc.mikhuapp.dtos.ItemResponseDTO;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.entities.Item;
@@ -123,6 +124,26 @@ public class ItemController {
         List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+    // HU47 LISTAR ITEMS DEL INVENTARIO FAMILIAR
+    @GetMapping("/familia/{idFamily}")
+    public ResponseEntity<List<ItemResponseDTO>> listarItemsPorFamilia(
+            @PathVariable("idFamily") Long idFamily) {
+
+        familiaService.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
+
+        List<ItemResponseDTO> lista = itemService.listarItemsPorFamilia(idFamily)
+                .stream()
+                .map(item -> {
+                    ItemResponseDTO dto = modelMapper.map(item, ItemResponseDTO.class);
+                    dto.setNombreIngrediente(item.getIngrediente().getNomIngredient());
+                    return dto;
+                })
                 .toList();
 
         return ResponseEntity.ok(lista);
