@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOList;
-import pe.edu.upc.mikhuapp.dtos.ItemResponseDTO;
+import pe.edu.upc.mikhuapp.dtos.ItemDTOQuery;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.entities.Item;
@@ -131,17 +131,17 @@ public class ItemController {
 
     // HU47 LISTAR ITEMS DEL INVENTARIO FAMILIAR
     @GetMapping("/familia/{idFamily}")
-    public ResponseEntity<List<ItemResponseDTO>> listarItemsPorFamilia(
+    public ResponseEntity<List<ItemDTOQuery>> listarItemsPorFamilia(
             @PathVariable("idFamily") Long idFamily) {
 
         familiaService.listid(idFamily)
                 .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
 
-        List<ItemResponseDTO> lista = itemService.listarItemsPorFamilia(idFamily)
+        List<ItemDTOQuery> lista = itemService.listarItemsPorFamilia(idFamily)
                 .stream()
                 .map(item -> {
-                    ItemResponseDTO dto = modelMapper.map(item, ItemResponseDTO.class);
-                    dto.setNombreIngrediente(item.getIngredient().getNomIngredient());
+                    ItemDTOQuery dto = modelMapper.map(item, ItemDTOQuery.class);
+                    dto.setIngredientName(item.getIngredient().getNomIngredient());
                     return dto;
                 })
                 .toList();
