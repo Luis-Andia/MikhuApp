@@ -7,10 +7,7 @@ public class RecipeDTOList {
     private Long idReceta;
     private String nomReceta;
     private Country country;
-    private Double calorias;
-    private int difficulty;
-
-    // Get and set
+    private Integer calorias;
 
     public Long getIdReceta() {
         return idReceta;
@@ -28,27 +25,20 @@ public class RecipeDTOList {
         this.nomReceta = nomReceta;
     }
 
-    public Country getCountry() {
+    public Country getPais() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public void setPais(Country country) {
         this.country = country;
     }
 
-    public Double getCalorias() {
+    public Integer getCalorias() {
         return calorias;
     }
 
-    public void setCalorias(Double calorias) {
+    public void setCalorias(Integer calorias) {
         this.calorias = calorias;
     }
 
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
-    }
 }
