@@ -10,31 +10,31 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRecipe;
 
-    @Column(name="Nom_Receta", length = 100, nullable = false)
+    @Column(name="nomRecipe", length = 100, nullable = false)
     private String nomRecipe;
 
     @ManyToOne
-    @JoinColumn(name="Id_Pais")
+    @JoinColumn(name="idCountry")
     private Country country;
 
-    @Column(name="Calorias", nullable = false)
-    private Integer calories;
+    @Column(name="calories", nullable = false)
+    private double calories;
 
-    @ManyToOne
-    @JoinColumn(name="Id_Dificultad")
-    private Difficulty difficulty;
+    @Column(name="difficulty", nullable = false)
+    private int difficulty;
 
     public Recipe() {
     }
 
-    public Recipe(Long idRecipe, String nomRecipe, Country country,
-                  Integer calories, Difficulty difficulty, byte[] imagen) {
+    public Recipe(Long idRecipe, String nomRecipe, Country country, double calories, int difficulty) {
         this.idRecipe = idRecipe;
         this.nomRecipe = nomRecipe;
         this.country = country;
         this.calories = calories;
         this.difficulty = difficulty;
     }
+
+    // get and set
 
     public Long getIdRecipe() {
         return idRecipe;
@@ -52,27 +52,27 @@ public class Recipe {
         this.nomRecipe = nomRecipe;
     }
 
-    public Country getPais() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setPais(Country country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 
-    public Integer getCalories() {
+    public double getCalories() {
         return calories;
     }
 
-    public void setCalories(Integer calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
     }
 
-    public Difficulty getDificultad() {
+    public int getDifficulty() {
         return difficulty;
     }
 
-    public void setDificultad(Difficulty difficulty) {
+    public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 }

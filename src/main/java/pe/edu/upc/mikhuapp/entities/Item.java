@@ -20,17 +20,17 @@ public class Item {
     @JoinColumn(name="idIngredient")
     private Ingredient ingredient;
 
-    @Column(name="Cantidad_Disposicion", nullable = false)
-    private Float cantidadDisposicion;
+    @Column(name="amountAvailable", nullable = false)
+    private Float amountAvailable;
 
-    @Column(name="Fecha_Compra", nullable = false)
-    private LocalDate fechaCompra;
+    @Column(name="purchaseDate", nullable = false)
+    private LocalDate purchaseDate;
 
-    @Column(name="Fecha_Vencimiento", nullable = false)
-    private LocalDate fechaVencimiento;
+    @Column(name="dueDate", nullable = false)
+    private LocalDate dueDate;
 
-    @Column(name="Stock_Minimo", nullable = false)
-    private Integer stockMinimo;
+    @Column(name="minimumStock", nullable = false)
+    private Integer minimumStock;
 
     // Constructores
 
@@ -38,15 +38,15 @@ public class Item {
     }
 
     public Item(Long idItem, Family family, Ingredient ingredient,
-                Float cantidadDisposicion, LocalDate fechaCompra,
-                LocalDate fechaVencimiento, Integer stockMinimo) {
+                Float amountAvailable, LocalDate purchaseDate,
+                LocalDate dueDate, Integer minimumStock) {
         this.idItem = idItem;
         this.family = family;
         this.ingredient = ingredient;
-        this.cantidadDisposicion = cantidadDisposicion;
-        this.fechaCompra = fechaCompra;
-        this.fechaVencimiento = fechaVencimiento;
-        this.stockMinimo = stockMinimo;
+        this.amountAvailable = amountAvailable;
+        this.purchaseDate = purchaseDate;
+        this.dueDate = dueDate;
+        this.minimumStock = minimumStock;
     }
 
 
@@ -74,35 +74,35 @@ public class Item {
         this.ingredient = ingredient;
     }
 
-    public Float getCantidadDisposicion() {
-        return cantidadDisposicion;
+    public Float getAmountAvailable() {
+        return amountAvailable;
     }
 
-    public void setCantidadDisposicion(Float cantidadDisposicion) {
-        this.cantidadDisposicion = cantidadDisposicion;
+    public void setAmountAvailable(Float cantidadDisposicion) {
+        this.amountAvailable = cantidadDisposicion;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
+    public void setPurchaseDate(LocalDate fechaCompra) {
+        this.purchaseDate = fechaCompra;
     }
 
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setDueDate(LocalDate fechaVencimiento) {
+        this.dueDate = fechaVencimiento;
     }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
+    public Integer getMinimumStock() {
+        return minimumStock;
     }
 
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
+    public void setMinimumStock(Integer stockMinimo) {
+        this.minimumStock = stockMinimo;
     }
 }

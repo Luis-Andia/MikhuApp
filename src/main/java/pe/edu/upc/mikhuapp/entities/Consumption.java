@@ -5,9 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Historial_Consumo")
+@Table(name = "Consumption")
 public class Consumption {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConsumption;
@@ -20,7 +19,7 @@ public class Consumption {
     @JoinColumn(name = "Id_Receta", nullable = false)
     private Recipe recipe;
 
-    @Column(name = "Fecha_Consumo", nullable = false)
+    @Column(name = "consumptionDate", nullable = false)
     private LocalDateTime consumptionDate;
 
     public Consumption() {
