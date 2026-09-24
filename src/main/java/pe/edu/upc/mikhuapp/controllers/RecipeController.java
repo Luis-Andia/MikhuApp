@@ -84,4 +84,17 @@ public class RecipeController {
 
         return ResponseEntity.ok(responseDTO);
     }
+
+    // HU14 ELIMINAR RECETA
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar_receta(
+            @PathVariable("id") Long id){
+
+        rS.listId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
+
+        rS.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
