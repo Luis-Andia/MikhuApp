@@ -12,5 +12,5 @@ public interface IUserService {
     public void insert(Users u); // Insertar un usuario
     public void delete(Long id); // Eliminar un usuario
     public Users update(Users u);
-    public List<Users> listarIntegrantes(Long idFamilia);
+    public List<Users> listmembers(Long idFamilia);
 }
