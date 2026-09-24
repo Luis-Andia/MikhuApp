@@ -28,11 +28,12 @@ public class IngredientController {
     @PostMapping
     public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
 
+        Ingredient ingredientRegistrado = iS.listId(dto.getIdIngredient())
+                .orElseThrow(()->new ResourceNotFoundException("No existe el ingrediente con el id: " + dto.getIdIngredient()));
         Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
+        iS.insert(ingredient);
 
-        Ingredient ingredientRegistrado = iS.insert(ingredient);
-
-        IngredientDTO response = modelMapper.map(ingredientRegistrado, IngredientDTO.class);
+        IngredientDTO responseDTO = modelMapper.map(ingredient, IngredientDTO.class);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -40,7 +41,7 @@ public class IngredientController {
                 .buildAndExpand(ingredientRegistrado.getIdIngredient())
                 .toUri();
 
-        return ResponseEntity.created(location).body(response);
+        return ResponseEntity.created(location).body(responseDTO);
     }
 
     // HU22: Listar ingredientes registrados
@@ -61,7 +62,7 @@ public class IngredientController {
     @GetMapping("/{id}")
     public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
-        Ingredient ingredient = iS.listid(id)
+        Ingredient ingredient = iS.listId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
         IngredientDTO dto = modelMapper.map(ingredient, IngredientDTO.class);

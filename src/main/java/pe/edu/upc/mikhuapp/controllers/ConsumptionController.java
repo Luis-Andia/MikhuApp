@@ -59,7 +59,7 @@ public class ConsumptionController {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Item no encontrado"));
 
-        Recipe recipe = rS.listid(dto.getIdReceta())
+        Recipe recipe = rS.listId(dto.getIdReceta())
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Receta no encontrada"));
 

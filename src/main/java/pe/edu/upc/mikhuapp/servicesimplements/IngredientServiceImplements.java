@@ -11,22 +11,25 @@ import java.util.Optional;
 
 @Service
 public class IngredientServiceImplements implements IIngredientService {
+    private final IIngredientRepository iR;
 
-    @Autowired
-    private IIngredientRepository ingredienteRepository;
+
+    public IngredientServiceImplements(IIngredientRepository iR) {
+        this.iR = iR;
+    }
 
     @Override
     public List<Ingredient> list() {
-        return ingredienteRepository.findAll();
+        return iR.findAll();
     }
 
     @Override
-    public Ingredient insert(Ingredient ingredient) {
-        return ingredienteRepository.save(ingredient);
+    public void insert(Ingredient ingredient) {
+        iR.save(ingredient);
     }
 
     @Override
-    public Optional<Ingredient> listid(Long id) {
-        return ingredienteRepository.findById(id);
+    public Optional<Ingredient> listId(Long id) {
+        return iR.findById(id);
     }
 }
