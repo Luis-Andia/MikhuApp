@@ -12,11 +12,11 @@ public class Consumption {
     private Long idConsumption;
 
     @ManyToOne
-    @JoinColumn(name = "Id_Item", nullable = false)
+    @JoinColumn(name = "idItem", nullable = false)
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "Id_Receta", nullable = false)
+    @JoinColumn(name = "idRecipe", nullable = false)
     private Recipe recipe;
 
     @Column(name = "consumptionDate", nullable = false)
