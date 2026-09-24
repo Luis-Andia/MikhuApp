@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/familia")
+@RequestMapping("/api/families")
 public class FamilyController {
     // Inyecciones
     private final IFamilyService fS;
@@ -32,7 +32,7 @@ public class FamilyController {
 
     // HU26: INSERTAR Familiar
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
         Family nueva_family = modelMapper.map(familia, Family.class);
         fS.insert(nueva_family);
@@ -60,7 +60,7 @@ public class FamilyController {
 
     // HU28: ACTUALIZAR FAMILIA
     @PutMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<FamilyDTOInsert> actualizarfamilia(@Validated @RequestBody FamilyDTOInsert dto){
         Optional<Family> existente = fS.listid(dto.getIdFamily());
         if (existente.isEmpty()) {
@@ -76,16 +76,14 @@ public class FamilyController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    // HU29: ELIMINAR INTEGRANTE DE FAMILIA
+    // HU29: ELIMINAR FAMILIA
     @DeleteMapping("/{id}/familia/{idFamilia}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id, @PathVariable Long idFamilia){
         Family familia = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
 
-        familia.setIdFamily(idFamilia);
-        fS.update(familia);
-
+        fS.delete(familia.getIdFamily());
         return ResponseEntity.noContent().build();
     }
 
