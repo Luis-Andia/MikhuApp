@@ -10,10 +10,10 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFamily;
 
-    @Column(name="NomFamilia", length = 30, nullable = false)
+    @Column(name="NomFamily", length = 30, nullable = false)
     private String nomFamily;
 
-    @Column(name="ContrasenaFamilia", length = 20, nullable = false)
+    @Column(name="PasswordFamily", length = 20, nullable = false)
     private String passwordFamily;
 
     // Constructores
@@ -40,8 +40,8 @@ public class Family {
         return nomFamily;
     }
 
-    public void setNomFamily(String nomFamilia) {
-        this.nomFamily = nomFamilia;
+    public void setNomFamily(String nomFamily) {
+        this.nomFamily = nomFamily;
     }
 
     public String getPasswordFamily() {

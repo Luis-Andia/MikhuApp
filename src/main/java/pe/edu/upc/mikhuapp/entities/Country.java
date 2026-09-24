@@ -3,7 +3,7 @@ package pe.edu.upc.mikhuapp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Pais")
+@Table(name="Country")
 public class Country {
     // Atributos
     @Id

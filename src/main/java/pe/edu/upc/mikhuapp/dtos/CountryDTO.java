@@ -9,6 +9,7 @@ public class CountryDTO {
     @NotBlank(message = "El nombre del pais no puede estar vacio")
     private String nomCountry;
 
+    // Getter y Setter
     public Long getIdCountry() {
         return idCountry;
     }

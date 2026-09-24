@@ -2,7 +2,6 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.springframework.validation.annotation.Validated;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,7 +11,6 @@ import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
-import pe.edu.upc.mikhuapp.repositories.IItemRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredientService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
@@ -43,7 +41,7 @@ public class ItemController {
                 .map(item -> {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
                     dto.setIdFamily(item.getFamilia().getIdFamily());
-                    dto.setIdIngredient(item.getIngrediente().getIdIngrediente());
+                    dto.setIdIngredient(item.getIngrediente().getIdIngredient());
                     return dto;
                 })
                 .toList();
@@ -70,7 +68,7 @@ public class ItemController {
 
         ItemDTOList response = modelMapper.map(itemRegistrado, ItemDTOList.class);
         response.setIdFamily(family.getIdFamily());
-        response.setIdIngredient(ingredient.getIdIngrediente());
+        response.setIdIngredient(ingredient.getIdIngredient());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -89,7 +87,7 @@ public class ItemController {
 
         ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
         dto.setIdFamily(item.getFamilia().getIdFamily());
-        dto.setIdIngredient(item.getIngrediente().getIdIngrediente());
+        dto.setIdIngredient(item.getIngrediente().getIdIngredient());
 
         return ResponseEntity.ok(dto);
     }
