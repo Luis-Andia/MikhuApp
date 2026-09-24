@@ -33,12 +33,12 @@ public class ItemServiceImplements implements IItemService {
 
     @Override
     public List<Item> listarVencidos(LocalDate fechaActual) {
-        return itemRepository.findByfechaVencimientoBefore(fechaActual);
+        return itemRepository.findByDueDateBefore(fechaActual);
     }
 
     @Override
     public List<Item> listarProximosVencer(LocalDate fechaActual, LocalDate fechaLimite){
-        return itemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite);
+        return itemRepository.findByDueDateBetween(fechaActual, fechaLimite);
     }
 
     @Override
@@ -53,11 +53,11 @@ public class ItemServiceImplements implements IItemService {
 
     @Override
     public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual) {
-        return itemRepository.findByfechaVencimientoBefore(fechaActual);
+        return itemRepository.findByDueDateBefore(fechaActual);
     }
 
     @Override
     public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite) {
-        return itemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite);
+        return itemRepository.findByDueDateBetween(fechaActual, fechaLimite);
     }
 }
