@@ -15,16 +15,16 @@ public class ItemDTOInsert {
     private Long idIngredient;
 
     @NotNull(message = "Cantidad disponible obligatoria")
-    private Float cantidadDisposicion;
+    private Float amountAvailable;
 
     @NotNull(message = "Fecha de compra obligatoria")
-    private LocalDate fechaCompra;
+    private LocalDate purchaseDate;
 
     @NotNull(message = "Fecha de vencimiento obligatoria")
-    private LocalDate fechaVencimiento;
+    private LocalDate dueDate;
 
     @NotNull(message = "Stock minimo obligatorio")
-    private Integer stockMinimo;
+    private int minimumStock;
 
 
     public Long getIdItem() {
@@ -51,35 +51,35 @@ public class ItemDTOInsert {
         this.idIngredient = idIngredient;
     }
 
-    public Float getCantidadDisposicion() {
-        return cantidadDisposicion;
+    public Float getAmountAvailable() {
+        return amountAvailable;
     }
 
-    public void setCantidadDisposicion(Float cantidadDisposicion) {
-        this.cantidadDisposicion = cantidadDisposicion;
+    public void setAmountAvailable(Float amountAvailable) {
+        this.amountAvailable = amountAvailable;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
+    public int getMinimumStock() {
+        return minimumStock;
     }
 
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
+    public void setMinimumStock(int minimumStock) {
+        this.minimumStock = minimumStock;
     }
 }

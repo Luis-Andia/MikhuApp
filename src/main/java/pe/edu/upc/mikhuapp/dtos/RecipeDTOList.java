@@ -4,28 +4,28 @@ import pe.edu.upc.mikhuapp.entities.Country;
 
 public class RecipeDTOList {
 
-    private Long idReceta;
-    private String nomReceta;
+    private Long idRecipe;
+    private String nomRecipe;
     private Country country;
-    private Double calorias;
+    private Double calories;
     private int difficulty;
 
     // Get and set
 
-    public Long getIdReceta() {
-        return idReceta;
+    public Long getIdRecipe() {
+        return idRecipe;
     }
 
-    public void setIdReceta(Long idReceta) {
-        this.idReceta = idReceta;
+    public void setIdRecipe(Long idRecipe) {
+        this.idRecipe = idRecipe;
     }
 
-    public String getNomReceta() {
-        return nomReceta;
+    public String getNomRecipe() {
+        return nomRecipe;
     }
 
-    public void setNomReceta(String nomReceta) {
-        this.nomReceta = nomReceta;
+    public void setNomRecipe(String nomRecipe) {
+        this.nomRecipe = nomRecipe;
     }
 
     public Country getCountry() {
@@ -36,12 +36,12 @@ public class RecipeDTOList {
         this.country = country;
     }
 
-    public Double getCalorias() {
-        return calorias;
+    public Double getCalories() {
+        return calories;
     }
 
-    public void setCalorias(Double calorias) {
-        this.calorias = calorias;
+    public void setCalories(Double calories) {
+        this.calories = calories;
     }
 
     public int getDifficulty() {
