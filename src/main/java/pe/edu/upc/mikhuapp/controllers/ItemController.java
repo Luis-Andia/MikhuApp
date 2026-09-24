@@ -99,7 +99,7 @@ public class ItemController {
     public ResponseEntity <List<ItemDTOList>>listarVencidos() {
         LocalDate fechaActual = LocalDate.now();
 
-        List<ItemDTOList> lista = iItemRepository.findByfechaVencimientoBefore(fechaActual)
+        List<ItemDTOList> lista = itemService.findByfechaVencimientoBefore(fechaActual)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
@@ -112,7 +112,7 @@ public class ItemController {
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaLimite = fechaActual.plusDays(3);
 
-        List<ItemDTOList> lista = iItemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite)
+        List<ItemDTOList> lista = itemService.listarProximosVencer(fechaActual, fechaLimite)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
@@ -122,7 +122,7 @@ public class ItemController {
 
     @GetMapping("/bajoStock")
     public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
-        List<ItemDTOList> lista = iItemRepository.findAlimentosBajoStock()
+        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();

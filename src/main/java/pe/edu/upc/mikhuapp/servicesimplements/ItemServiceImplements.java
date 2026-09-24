@@ -50,4 +50,14 @@ public class ItemServiceImplements implements IItemService {
     public void delete(Long id) {
         itemRepository.deleteById(id);
     }
+
+    @Override
+    public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual) {
+        return itemRepository.findByfechaVencimientoBefore(fechaActual);
+    }
+
+    @Override
+    public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite) {
+        return itemRepository.findByfechaVencimientoBetween(fechaActual, fechaLimite);
+    }
 }

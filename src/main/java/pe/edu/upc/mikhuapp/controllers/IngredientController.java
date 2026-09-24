@@ -17,17 +17,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/ingredientes")
 public class IngredientController {
+    private final IIngredientService iS;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private IIngredientService ingredienteService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    public IngredientController(IIngredientService iS, ModelMapper modelMapper) {
+        this.iS = iS;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     public ResponseEntity<List<IngredientDTO>> list() {
-        List<IngredientDTO> lista = ingredienteService.list().stream()
-                .map(ingrediente -> modelMapper.map(ingrediente, IngredientDTO.class))
+        List<IngredientDTO> lista = iS.list().stream()
+                .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
                 .toList();
 
         return ResponseEntity.ok(lista);
@@ -38,7 +39,7 @@ public class IngredientController {
 
         Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
 
-        Ingredient ingredientRegistrado = ingredienteService.insert(ingredient);
+        Ingredient ingredientRegistrado = iS.insert(ingredient);
 
         IngredientDTO response = modelMapper.map(ingredientRegistrado, IngredientDTO.class);
 
@@ -54,7 +55,7 @@ public class IngredientController {
     @GetMapping("/{id}")
     public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
-        Ingredient ingredient = ingredienteService.listid(id)
+        Ingredient ingredient = iS.listid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
         IngredientDTO dto = modelMapper.map(ingredient, IngredientDTO.class);
