@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
 import pe.edu.upc.mikhuapp.dtos.UserDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.UserDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
@@ -128,6 +129,17 @@ public class UserController {
         return ResponseEntity.ok(responseDTO);
 
     }
+
+    // Eliminar USUARIO
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDTOList> delete(@PathVariable("id") Long id) {
+        uS.listId(id).
+                orElseThrow(() -> new  ResourceNotFoundException("Usuario no encontrado"));
+
+        uS.delete(id);
+        return  ResponseEntity.noContent().build();
+    }
+
     //LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
     public ResponseEntity<List<UserDTOList>> listmembers(@PathVariable long idFamilia){

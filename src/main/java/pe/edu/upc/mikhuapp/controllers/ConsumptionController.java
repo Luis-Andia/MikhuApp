@@ -1,7 +1,6 @@
 package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +87,34 @@ public class ConsumptionController {
 
         return ResponseEntity.created(location).body(response);
     }
+
+    //Actualizar consumo
+    @PutMapping("/{id}")
+    public ResponseEntity<ConsumptionDTO> update( @PathVariable("id") Long id, @Validated @RequestBody ConsumptionDTO dto) {
+        Consumption consumption = cS.listid(id)
+                .orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
+
+            Consumption consumptionactualizado = modelMapper.map(dto, Consumption.class);
+            consumptionactualizado.setIdConsumption(consumption.getIdConsumption());
+
+            cS.update(consumptionactualizado);
+
+            ConsumptionDTO response =
+                    modelMapper.map(consumptionactualizado, ConsumptionDTO.class);
+
+            return ResponseEntity.ok(response);
+    }
+
+    //Eliminar consumo
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ConsumptionDTO> delete(@PathVariable("id") Long id) {
+        cS.listid(id).
+                orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
+
+        cS.delete(id);
+        return  ResponseEntity.noContent().build();
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ConsumptionDTO> listId(

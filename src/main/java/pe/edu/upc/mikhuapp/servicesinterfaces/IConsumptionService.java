@@ -11,4 +11,6 @@ public interface IConsumptionService {
     public List<Consumption> list();
     public Optional<Consumption> listid(Long id);
     public List<Object[]>ListMostConsumedIngredients();
+    void update(Consumption consumption);
+    void delete (Long id);
 }
