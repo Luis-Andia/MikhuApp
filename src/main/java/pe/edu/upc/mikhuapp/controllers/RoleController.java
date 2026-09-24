@@ -60,4 +60,28 @@ public class RoleController {
         RoleDTO responseDTO = modelMapper.map(rol, RoleDTO.class);
         return ResponseEntity.ok(responseDTO);
     }
+
+    // HU08 Actualizar
+    @PutMapping("/{id}")
+    public ResponseEntity<RoleDTO> actualizarRol(@PathVariable("id") Long id, @Validated @RequestBody RoleDTO dto){
+        Role rol = rS.listid(id)
+                .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
+
+        Role role_actualizado = modelMapper.map(dto, Role.class);
+        role_actualizado.setIdRol(rol.getIdRol());
+        rS.update(role_actualizado);
+
+        RoleDTO responseDTO = modelMapper.map(role_actualizado, RoleDTO.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    // HU09 Eliminar
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarRol(@PathVariable("id") Long id){
+        Role rol = rS.listid(id)
+                .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
+
+        rS.delete(rol.getIdRol());
+        return ResponseEntity.noContent().build();
+    }
 }

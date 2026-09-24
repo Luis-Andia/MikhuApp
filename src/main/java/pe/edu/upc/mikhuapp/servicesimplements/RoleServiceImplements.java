@@ -30,4 +30,14 @@ public class RoleServiceImplements implements IRoleService {
     public Optional<Role> listid(Long id) {
         return rR.findById(id);
     }
+
+    @Override
+    public Role update(Role r) {
+        return rR.save(r);
+    }
+
+    @Override
+    public void delete(Long id) {
+        rR.deleteById(id);
+    }
 }
