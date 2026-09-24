@@ -47,6 +47,11 @@ public class ItemServiceImplements implements IItemService {
     }
 
     @Override
+    public List<Item> listarItemsPorFamilia(Long idFamily) {
+        return itemRepository.findByFamilyId(idFamily);
+    }
+
+    @Override
     public void delete(Long id) {
         itemRepository.deleteById(id);
     }

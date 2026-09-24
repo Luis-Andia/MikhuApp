@@ -32,4 +32,9 @@ public class IngredientServiceImplements implements IIngredientService {
     public Optional<Ingredient> listId(Long id) {
         return iR.findById(id);
     }
+
+    @Override
+    public Optional<Ingredient> findByNomIngredient(String nomIngredient) {
+        return iR.findByNomIngredient(nomIngredient);
+    }
 }
