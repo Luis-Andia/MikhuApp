@@ -3,6 +3,7 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,15 +26,7 @@ public class IngredientController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping
-    public ResponseEntity<List<IngredientDTO>> list() {
-        List<IngredientDTO> lista = iS.list().stream()
-                .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
-                .toList();
-
-        return ResponseEntity.ok(lista);
-    }
-
+    // HU21: Registrar Ingrediente
     @PostMapping
     public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
 
@@ -52,6 +45,21 @@ public class IngredientController {
         return ResponseEntity.created(location).body(response);
     }
 
+    // HU22: Listar ingredientes registrados
+    @GetMapping
+    public ResponseEntity<List<IngredientDTO>> list() {
+        List<IngredientDTO> lista = iS.list().stream()
+                .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+    // HU23: Actualizar un ingrediente
+
+    // HU24: Eliminar un ingrediente
+
+    // HU25: Consultar un ingredinete por ID
     @GetMapping("/{id}")
     public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
@@ -59,7 +67,6 @@ public class IngredientController {
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
         IngredientDTO dto = modelMapper.map(ingredient, IngredientDTO.class);
-
         return ResponseEntity.ok(dto);
     }
 }
