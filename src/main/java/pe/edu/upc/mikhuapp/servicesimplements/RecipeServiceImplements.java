@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.mikhuapp.dtos.RecipeDetailDTO;
 import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.repositories.IRecipeRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
@@ -47,5 +48,10 @@ public class RecipeServiceImplements implements IRecipeService {
     @Override
     public List<Recipe> listarPorIngrediente(String nombreIngrediente) {
         return rR.findByIngrediente(nombreIngrediente);
+    }
+
+    @Override
+    public List<RecipeDetailDTO> consultarDetalleReceta(Long idRecipe) {
+        return rR.consultarDetalleReceta(idRecipe);
     }
 }
