@@ -125,4 +125,20 @@ public class RecipeController {
 
         return ResponseEntity.ok(lista);
     }
+
+    // HU52 CONSULTAR DETALLE DE RECETA
+    @GetMapping("/{id}/detalle")
+    public ResponseEntity<List<RecipeDetailDTO>> consultarDetalleReceta(
+            @PathVariable("id") Long idRecipe) {
+
+        rS.listId(idRecipe)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Receta no encontrada"
+                        ));
+
+        return ResponseEntity.ok(
+                rS.consultarDetalleReceta(idRecipe)
+        );
+    }
 }
