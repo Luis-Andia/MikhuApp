@@ -77,9 +77,9 @@ public class FamilyController {
     }
 
     // HU29: ELIMINAR FAMILIA
-    @DeleteMapping("/{id}/familia/{idFamilia}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
-    public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id, @PathVariable Long idFamilia){
+    public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id){
         Family familia = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.CountryDTO;
 import pe.edu.upc.mikhuapp.entities.Country;
+import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
 
@@ -60,8 +61,8 @@ public class CountryController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CountryDTO> actualizar_pais(@PathVariable("id") long id, @Validated @RequestBody CountryDTO dto){
-
-        // AGREGAR VALIDACION DE ID valido
+        Country pais = pS.listid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pais no encontrado"));
         Country country = modelMapper.map(dto, Country.class);
         country.setIdCountry(id);
         pS.update(country);

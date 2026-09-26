@@ -19,7 +19,6 @@ public class UserDTOInsert {
     private int age;
     @NotNull(message = "Correo obligatorio")
     private String email;
-    @NotNull(message = "Id de Familia obligatorio")
     private Long idFamily;
     @NotNull(message = "Id de Pais obligatorio")
     private Long idCountry;
