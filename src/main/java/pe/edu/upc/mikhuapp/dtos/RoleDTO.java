@@ -4,19 +4,18 @@ package pe.edu.upc.mikhuapp.dtos;
 import jakarta.validation.constraints.NotBlank;
 
 public class RoleDTO {
-    private Long idRole;
+    private Long idRol;
 
     @NotBlank(message = "El nombre del rol es obligatorio")
     private String rol;
 
     // Get and set
-
-    public Long getIdRole() {
-        return idRole;
+    public Long getIdRol() {
+        return idRol;
     }
 
-    public void setIdRole(Long idRole) {
-        this.idRole = idRole;
+    public void setIdRol(Long idRol) {
+        this.idRol = idRol;
     }
 
     public String getRol() {
