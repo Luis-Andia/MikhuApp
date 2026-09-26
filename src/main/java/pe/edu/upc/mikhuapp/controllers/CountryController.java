@@ -58,13 +58,13 @@ public class CountryController {
     }
 
     // HU33: ACTUALIZAR PAIS
-    @PutMapping("/{id}")
+    @PutMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CountryDTO> actualizar_pais(@PathVariable("id") long id, @Validated @RequestBody CountryDTO dto){
-        Country pais = pS.listid(id)
+    public ResponseEntity<CountryDTO> actualizar_pais(@Validated @RequestBody CountryDTO dto){
+        Country pais = pS.listid(dto.getIdCountry())
                 .orElseThrow(() -> new ResourceNotFoundException("Pais no encontrado"));
         Country country = modelMapper.map(dto, Country.class);
-        country.setIdCountry(id);
+        country.setIdCountry(dto.getIdCountry());
         pS.update(country);
         CountryDTO responseDTO = modelMapper.map(country, CountryDTO.class);
         return ResponseEntity.ok(responseDTO);

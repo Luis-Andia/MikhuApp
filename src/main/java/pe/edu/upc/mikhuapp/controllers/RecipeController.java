@@ -66,17 +66,15 @@ public class RecipeController {
     }
 
     // HU13 ACTUALIZAR RECETA
-    @PutMapping("/{id}")
+    @PutMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RecipeDTOInsert> actualizarReceta(
-            @PathVariable("id") Long id,
-            @Validated @RequestBody RecipeDTOInsert dto){
+    public ResponseEntity<RecipeDTOInsert> actualizarReceta(@Validated @RequestBody RecipeDTOInsert dto){
 
-        Recipe recipe = rS.listId(id)
+        Recipe recipe = rS.listId(dto.getIdRecipe())
                 .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
 
         Recipe recipeactualizado = modelMapper.map(dto, Recipe.class);
-        recipeactualizado.setIdRecipe(id);
+        recipeactualizado.setIdRecipe(dto.getIdRecipe());
 
         rS.update(recipeactualizado);
 

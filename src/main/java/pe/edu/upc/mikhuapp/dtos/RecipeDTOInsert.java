@@ -1,19 +1,20 @@
 package pe.edu.upc.mikhuapp.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class RecipeDTOInsert {
     private Long idRecipe;
     @NotBlank(message = "El nombre de la receta es obligatorio")
     private String nomRecipe;
-    @NotBlank(message = "El id del pais de la receta es obligatorio")
+    @Positive(message = "El id del pais de la receta es obligatorio")
     private Long idCountry;
-    @NotNull(message = "Las calorias de la receta son obligatorias")
+    @Positive(message = "Las calorias de la receta son obligatorias")
     private double calories;
+    @Positive(message = "La dificultad es obligatoria")
+    private int difficulty;
 
     // Get y set
-
     public Long getIdRecipe() {
         return idRecipe;
     }
@@ -44,5 +45,13 @@ public class RecipeDTOInsert {
 
     public void setCalories(double calories) {
         this.calories = calories;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 }
