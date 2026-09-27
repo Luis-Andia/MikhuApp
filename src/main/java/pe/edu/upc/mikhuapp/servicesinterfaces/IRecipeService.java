@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
+import org.springframework.data.repository.query.Param;
 import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.entities.Users;
 
@@ -19,4 +20,6 @@ public interface IRecipeService {
     public void delete(Long id);
 
     public List<Recipe> listarPorIngrediente(String nombreIngrediente);
+    public List<Recipe> findRecipe_nomRecipe(@Param("nomRecipe") String nomRecipe);
+
 }

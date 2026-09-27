@@ -108,6 +108,12 @@ public class RecipeController {
         return ResponseEntity.ok(responseDTO);
     }
 
+//    // HU53: CONSULTAR RECETA POR NOMBRE
+//    @GetMapping("/nomRecipe")
+//    public ResponseEntity<List<Recipe>> listRecipebyName(@RequestParam String nomRecipe){
+//
+//    }
+
     // HU57 CONSULTAR RECETAS POR INGREDIENTE
     @GetMapping("/ingrediente/{nombreIngrediente}")
     public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(

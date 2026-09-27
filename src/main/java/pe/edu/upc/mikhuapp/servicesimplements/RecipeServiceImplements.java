@@ -48,4 +48,9 @@ public class RecipeServiceImplements implements IRecipeService {
     public List<Recipe> listarPorIngrediente(String nombreIngrediente) {
         return rR.findByIngrediente(nombreIngrediente);
     }
+
+    @Override
+    public List<Recipe> findRecipe_nomRecipe(String nomRecipe) {
+        return rR.findRecipe_nomRecipe(nomRecipe);
+    }
 }

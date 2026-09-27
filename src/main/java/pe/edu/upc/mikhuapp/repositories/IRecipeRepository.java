@@ -11,12 +11,13 @@ import java.util.List;
 @Repository
 public interface IRecipeRepository extends JpaRepository<Recipe, Long> {
 
-    // HU57 CONSULTAR RECETAS POR INGREDIENTE
+    // HU53: Consultar receta por nombre
+    @Query(value="SELECT * FROM recipes where nom_recipe LIKE :nomRecipe;", nativeQuery = true)
+    public List<Recipe> findRecipe_nomRecipe(@Param("nomRecipe") String nomRecipe);
+
+    // HU57: CONSULTAR RECETAS POR INGREDIENTE
     @Query(value = "SELECT ri.recipe FROM RecipeIngredient ri"
             + " JOIN ri.ingredient i"
-            + " WHERE i.nomIngredient = :nombreIngrediente"
-    )
-    List<Recipe> findByIngrediente(
-            @Param("nombreIngrediente") String nombreIngrediente
-    );
+            + " WHERE i.nomIngredient = :nombreIngrediente")
+    public List<Recipe> findByIngrediente(@Param("nombreIngrediente") String nombreIngrediente);
 }
