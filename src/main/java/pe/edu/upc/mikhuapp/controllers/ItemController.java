@@ -127,38 +127,10 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
-    // HU_: ALIMENTOS PROXIMOS A VENCER
-    @GetMapping("/ProximosVencer")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity <List<ItemDTOList>> listarProximosVencer() {
-        LocalDate fechaActual = LocalDate.now();
-        LocalDate fechaLimite = fechaActual.plusDays(3);
-
-        List<ItemDTOList> lista = itemService.listarProximosVencer(fechaActual, fechaLimite)
-                .stream()
-                .map(item->modelMapper.map(item, ItemDTOList.class))
-                .toList();
-
-        return ResponseEntity.ok(lista);
-    }
-
-    // HU: Alimentos bajo stock
-    @GetMapping("/bajoStock")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
-        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
-                .stream()
-                .map(item->modelMapper.map(item, ItemDTOList.class))
-                .toList();
-
-        return ResponseEntity.ok(lista);
-    }
-
-    // HU47 LISTAR ITEMS DEL INVENTARIO FAMILIAR
+    // HU47: LISTAR ITEMS DEL INVENTARIO FAMILIAR
     @GetMapping("/familia/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<List<ItemDTOQuery>> listarItemsPorFamilia(
-            @PathVariable("idFamily") Long idFamily) {
+    public ResponseEntity<List<ItemDTOQuery>> listarItemsPorFamilia(@PathVariable("idFamily") Long idFamily) {
 
         familiaService.listid(idFamily)
                 .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
@@ -175,6 +147,35 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
+    // HU48: Buscar item por nombre
 
+
+    // HU49: LISTAR ALIMENTOS CON BAJO STOCK
+    @GetMapping("/bajoStock")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
+        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
+                .stream()
+                .map(item->modelMapper.map(item, ItemDTOList.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+
+    // HU50: ALIMENTOS PROXIMOS A VENCER
+    @GetMapping("/ProximosVencer")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity <List<ItemDTOList>> listarProximosVencer() {
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaLimite = fechaActual.plusDays(3);
+
+        List<ItemDTOList> lista = itemService.listarProximosVencer(fechaActual, fechaLimite)
+                .stream()
+                .map(item->modelMapper.map(item, ItemDTOList.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
 
 }

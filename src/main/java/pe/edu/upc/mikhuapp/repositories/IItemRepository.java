@@ -17,24 +17,18 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
     //HU Listar proximos a vencer Ordenados
     @Query(value = "SELECT i FROM Item i"
             + " WHERE i.dueDate BETWEEN :fechaActual AND :fechaLimite"
-            + " ORDER BY i.dueDate ASC"
-    )
+            + " ORDER BY i.dueDate ASC")
     List<Item> findByDueDateBetween(
             @Param("fechaActual") LocalDate fechaActual,
-            @Param("fechaLimite") LocalDate fechaLimite
-    );
+            @Param("fechaLimite") LocalDate fechaLimite);
 
     //HU47 Listar items del inventario familiar
     @Query(value = "SELECT i FROM Item i"
-            + " WHERE i.family.idFamily = :idFamily"
-    )
-    List<Item> findByFamilyId(
-            @Param("idFamily") Long idFamily
-    );
+            + " WHERE i.family.idFamily = :idFamily")
+    List<Item> findByFamilyId(@Param("idFamily") Long idFamily);
 
     //HU Listar alimentos con bajo Stock
     @Query(value = "SELECT i FROM Item i"
-            + " WHERE i.amountAvailable <= i.minimumStock"
-    )
+            + " WHERE i.amountAvailable <= i.minimumStock")
     List<Item> findAlimentosBajoStock();
 }

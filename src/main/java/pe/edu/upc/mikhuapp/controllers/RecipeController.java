@@ -123,4 +123,6 @@ public class RecipeController {
 
         return ResponseEntity.ok(lista);
     }
+
+    // HU52: Consultar detalle de receta - JOHAN
 }

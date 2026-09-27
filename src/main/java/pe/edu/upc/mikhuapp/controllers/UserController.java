@@ -143,7 +143,7 @@ public class UserController {
         return  ResponseEntity.noContent().build();
     }
 
-    //LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
+    // HU46: LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
     public ResponseEntity<List<UserDTOList>> listmembers(@PathVariable long idFamilia){
         Family familia = fS.listid(idFamilia)
