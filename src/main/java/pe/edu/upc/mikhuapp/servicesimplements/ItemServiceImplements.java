@@ -47,7 +47,7 @@ public class ItemServiceImplements implements IItemService {
     }
 
     @Override
-    public List<Item> listarItemsPorFamilia(Long idFamily) {
+    public List<Object[]> listarItemsPorFamilia(Long idFamily) {
         return itemRepository.findByFamilyId(idFamily);
     }
 
