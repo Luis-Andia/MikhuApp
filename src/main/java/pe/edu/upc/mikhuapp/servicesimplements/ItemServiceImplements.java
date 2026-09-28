@@ -27,6 +27,9 @@ public class ItemServiceImplements implements IItemService {
     }
 
     @Override
+    public void update(Item item) { itemRepository.save(item); }
+
+    @Override
     public Optional<Item> listid(Long id) {
         return itemRepository.findById(id);
     }

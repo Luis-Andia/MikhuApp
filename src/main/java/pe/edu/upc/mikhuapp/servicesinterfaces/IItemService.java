@@ -13,6 +13,8 @@ public interface   IItemService {
 
     public Item insert(Item item);
 
+    public void update(Item item);
+
     public Optional<Item> listid(Long id);
 
     public List<Item> listarVencidos(LocalDate fechaActual);
