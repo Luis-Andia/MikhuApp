@@ -12,13 +12,17 @@ public class Ingredient {
     @Column(name = "nomIngredient", length = 40, nullable = false)
     private String nomIngredient;
 
+    @Column(name="ingredientCategory", length = 40, nullable = false)
+    private String ingredientCategory;
+
     // Constructores
     public Ingredient() {
     }
 
-    public Ingredient(Long idIngredient, String nomIngredient) {
-        this.idIngredient = idIngredient;
+    public Ingredient(String ingredientCategory, String nomIngredient, Long idIngredient) {
+        this.ingredientCategory = ingredientCategory;
         this.nomIngredient = nomIngredient;
+        this.idIngredient = idIngredient;
     }
 
     // Getters y Setters
@@ -36,5 +40,13 @@ public class Ingredient {
 
     public void setNomIngredient(String nomIngredient) {
         this.nomIngredient = nomIngredient;
+    }
+
+    public String getIngredientCategory() {
+        return ingredientCategory;
+    }
+
+    public void setIngredientCategory(String ingredientCategory) {
+        this.ingredientCategory = ingredientCategory;
     }
 }

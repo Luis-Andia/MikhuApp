@@ -16,7 +16,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ingredients")
+
 public class IngredientController {
+
     private final IIngredientService iS;
     private final ModelMapper modelMapper;
 
@@ -29,9 +31,6 @@ public class IngredientController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
-
-        Ingredient ingredientRegistrado = iS.listId(dto.getIdIngredient())
-                .orElseThrow(()->new ResourceNotFoundException("No existe el ingrediente con el id: " + dto.getIdIngredient()));
         Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
         iS.insert(ingredient);
 
@@ -40,7 +39,7 @@ public class IngredientController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(ingredientRegistrado.getIdIngredient())
+                .buildAndExpand(ingredient.getIdIngredient())
                 .toUri();
 
         return ResponseEntity.created(location).body(responseDTO);

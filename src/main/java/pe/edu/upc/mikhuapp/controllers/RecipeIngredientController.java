@@ -47,6 +47,7 @@ public class RecipeIngredientController {
         // Validaciones
         Recipe recipe = rS.listId(dto.getIdRecipe())
                 .orElseThrow(() -> new ResourceNotFoundException("No existe la receta con el id: " + dto.getIdRecipe()));
+
         Ingredient ingredient = iS.listId(dto.getIdIngredient())
                 .orElseThrow(() -> new ResourceNotFoundException("No existe el ingrediente con el id: " + dto.getIdIngredient()));
 

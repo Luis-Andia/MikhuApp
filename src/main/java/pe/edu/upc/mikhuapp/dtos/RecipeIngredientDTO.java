@@ -2,14 +2,16 @@ package pe.edu.upc.mikhuapp.dtos;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 
 public class RecipeIngredientDTO {
     private Long idRecipeIngredient;
-    @NotNull(message = "Receta obligatoria")
+
+    @Positive(message = "Receta obligatoria")
     private Long idRecipe;
 
-    @NotNull(message = "Ingrediente obligatorio")
+    @Positive(message = "Ingrediente obligatorio")
     private Long idIngredient;
 
     @NotNull(message = "Cantidad requerida")
