@@ -76,10 +76,10 @@ public class ItemController {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
                     dto.setIdFamily(item.getFamily().getIdFamily());
                     dto.setIdIngredient(item.getIngredient().getIdIngredient());
-                    dto.setCantidadDisposicion((float) item.getAmountAvailable());
-                    dto.setFechaCompra(item.getPurchaseDate());
-                    dto.setFechaVencimiento(item.getDueDate());
-                    dto.setStockMinimo(item.getMinimumStock());
+                    dto.setAmountAvailable((float) item.getAmountAvailable());
+                    dto.setPurchaseDate(item.getPurchaseDate());
+                    dto.setDueDate(item.getDueDate());
+                    dto.setMinimumStock(item.getMinimumStock());
                     return dto;
                 })
                 .toList();
@@ -113,10 +113,10 @@ public class ItemController {
 
         response.setIdFamily(family.getIdFamily());
         response.setIdIngredient(ingredient.getIdIngredient());
-        response.setCantidadDisposicion((float) item.getAmountAvailable());
-        response.setFechaCompra(item.getPurchaseDate());
-        response.setFechaVencimiento(item.getDueDate());
-        response.setStockMinimo(item.getMinimumStock());
+        response.setAmountAvailable((float) item.getAmountAvailable());
+        response.setPurchaseDate(item.getPurchaseDate());
+        response.setDueDate(item.getDueDate());
+        response.setMinimumStock(item.getMinimumStock());
 
         return ResponseEntity.ok(response);
     }

@@ -1,6 +1,7 @@
 package pe.edu.upc.mikhuapp.dtos;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
@@ -8,14 +9,14 @@ public class ItemDTOInsert {
 
     private Long idItem;
 
-    @NotNull(message = "Id de Familia obligatorio")
+    @Positive(message = "Id de Familia obligatorio")
     private Long idFamily;
 
-    @NotNull(message = "Id de Ingrediente obligatorio")
+    @Positive(message = "Id de Ingrediente obligatorio")
     private Long idIngredient;
 
-    @NotNull(message = "Cantidad disponible obligatoria")
-    private Float amountAvailable;
+    @Positive(message = "Cantidad disponible obligatoria")
+    private double amountAvailable;
 
     @NotNull(message = "Fecha de compra obligatoria")
     private LocalDate purchaseDate;
@@ -23,9 +24,11 @@ public class ItemDTOInsert {
     @NotNull(message = "Fecha de vencimiento obligatoria")
     private LocalDate dueDate;
 
-    @NotNull(message = "Stock minimo obligatorio")
+    @Positive(message = "Stock minimo obligatorio")
     private int minimumStock;
 
+
+   // get y set
 
     public Long getIdItem() {
         return idItem;
@@ -51,11 +54,11 @@ public class ItemDTOInsert {
         this.idIngredient = idIngredient;
     }
 
-    public Float getAmountAvailable() {
+    public double getAmountAvailable() {
         return amountAvailable;
     }
 
-    public void setAmountAvailable(Float amountAvailable) {
+    public void setAmountAvailable(double amountAvailable) {
         this.amountAvailable = amountAvailable;
     }
 

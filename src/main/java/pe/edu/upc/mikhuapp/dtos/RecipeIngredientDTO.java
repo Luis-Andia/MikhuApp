@@ -9,16 +9,17 @@ public class RecipeIngredientDTO {
     private Long idRecipeIngredient;
 
     @Positive(message = "Receta obligatoria")
-    private Long idRecipe;
+    private Long recipeId;
 
     @Positive(message = "Ingrediente obligatorio")
-    private Long idIngredient;
+    private Long ingredientId;
 
     @NotNull(message = "Cantidad requerida")
     @Min(value = 1, message = "La cantidad debe ser un valor positivo")
     private int requestedQuantity;
 
     // Get y Set
+
     public Long getIdRecipeIngredient() {
         return idRecipeIngredient;
     }
@@ -27,20 +28,20 @@ public class RecipeIngredientDTO {
         this.idRecipeIngredient = idRecipeIngredient;
     }
 
-    public Long getIdRecipe() {
-        return idRecipe;
+    public Long getRecipeId() {
+        return recipeId;
     }
 
-    public void setIdRecipe(Long idRecipe) {
-        this.idRecipe = idRecipe;
+    public void setRecipeId(Long recipeId) {
+        this.recipeId = recipeId;
     }
 
-    public Long getIdIngredient() {
-        return idIngredient;
+    public Long getIngredientId() {
+        return ingredientId;
     }
 
-    public void setIdIngredient(Long idIngredient) {
-        this.idIngredient = idIngredient;
+    public void setIngredientId(Long ingredientId) {
+        this.ingredientId = ingredientId;
     }
 
     public int getRequestedQuantity() {

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/recipe-ingredients")
+@RequestMapping("/api/recipeingredients")
 public class RecipeIngredientController {
     private final IRecipeIngredientService riS;
     private final IIngredientService iS;
@@ -43,17 +43,18 @@ public class RecipeIngredientController {
     // HU41: REGISTRAR INGREDIENTE a RECETA
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RecipeIngredientDTO> registrar(@RequestBody RecipeIngredientDTO dto) {
+    public ResponseEntity<RecipeIngredientDTO> registrar(@Valid @RequestBody RecipeIngredientDTO dto) {
         // Validaciones
-        Recipe recipe = rS.listId(dto.getIdRecipe())
-                .orElseThrow(() -> new ResourceNotFoundException("No existe la receta con el id: " + dto.getIdRecipe()));
+        Recipe recipe = rS.listId(dto.getRecipeId())
+                .orElseThrow(() -> new ResourceNotFoundException("No existe la receta con el id: " + dto.getRecipeId()));
 
-        Ingredient ingredient = iS.listId(dto.getIdIngredient())
-                .orElseThrow(() -> new ResourceNotFoundException("No existe el ingrediente con el id: " + dto.getIdIngredient()));
+        Ingredient ingredient = iS.listId(dto.getIngredientId())
+                .orElseThrow(() -> new ResourceNotFoundException("No existe el ingrediente con el id: " + dto.getIngredientId()));
 
         RecipeIngredient recipeIngredient = modelMapper.map(dto, RecipeIngredient.class);
         recipeIngredient.setRecipe(recipe);
         recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setRequestedQuantity(dto.getRequestedQuantity());
         riS.insert(recipeIngredient);
 
         RecipeIngredientDTO responseDTO = modelMapper.map(recipeIngredient, RecipeIngredientDTO.class);
@@ -90,15 +91,15 @@ public class RecipeIngredientController {
         }
 
         // Verificar que el ingrediente y recta existan
-        Optional<Ingredient> ingredient = iS.listId(dto.getIdIngredient());
-        Optional<Recipe> recipe = rS.listId(dto.getIdRecipe());
+        Optional<Ingredient> ingredient = iS.listId(dto.getIngredientId());
+        Optional<Recipe> recipe = rS.listId(dto.getRecipeId());
 
         if (ingredient.isEmpty()) {
-            throw new ResourceNotFoundException("No existe el ingrediente con el id: " + dto.getIdIngredient());
+            throw new ResourceNotFoundException("No existe el ingrediente con el id: " + dto.getIngredientId());
         }
 
         if (recipe.isEmpty()) {
-            throw new ResourceNotFoundException("No existe la receta con el id: " + dto.getIdRecipe());
+            throw new ResourceNotFoundException("No existe la receta con el id: " + dto.getRecipeId());
         }
 
         // Obtiene la relacion existente entre Receta e Ingrediente

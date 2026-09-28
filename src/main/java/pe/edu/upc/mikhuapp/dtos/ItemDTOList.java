@@ -7,11 +7,12 @@ public class ItemDTOList {
     private Long idItem;
     private Long idFamily;
     private Long idIngredient;
-    private Float cantidadDisposicion;
-    private LocalDate fechaCompra;
-    private LocalDate fechaVencimiento;
-    private Integer stockMinimo;
+    private double amountAvailable;
+    private LocalDate purchaseDate;
+    private LocalDate dueDate;
+    private int minimumStock;
 
+    // get y set
 
     public Long getIdItem() {
         return idItem;
@@ -37,35 +38,35 @@ public class ItemDTOList {
         this.idIngredient = idIngredient;
     }
 
-    public Float getCantidadDisposicion() {
-        return cantidadDisposicion;
+    public double getAmountAvailable() {
+        return amountAvailable;
     }
 
-    public void setCantidadDisposicion(Float cantidadDisposicion) {
-        this.cantidadDisposicion = cantidadDisposicion;
+    public void setAmountAvailable(double amountAvailable) {
+        this.amountAvailable = amountAvailable;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
+    public int getMinimumStock() {
+        return minimumStock;
     }
 
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
+    public void setMinimumStock(int minimumStock) {
+        this.minimumStock = minimumStock;
     }
 }
