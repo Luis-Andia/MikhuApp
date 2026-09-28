@@ -12,7 +12,7 @@ import java.util.List;
 public interface IRecipeRepository extends JpaRepository<Recipe, Long> {
 
     // HU53: Consultar receta por nombre
-    @Query(value="SELECT * FROM recipes where nom_recipe LIKE :nomRecipe;", nativeQuery = true)
+    @Query(value="SELECT * FROM recipes where nom_recipe ILIKE '%' || :nomRecipe || '%';", nativeQuery = true)
     public List<Recipe> findRecipe_nomRecipe(@Param("nomRecipe") String nomRecipe);
 
     // HU57: CONSULTAR RECETAS POR INGREDIENTE
