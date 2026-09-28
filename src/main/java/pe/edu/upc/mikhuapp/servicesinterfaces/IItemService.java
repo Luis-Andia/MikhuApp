@@ -23,7 +23,7 @@ public interface   IItemService {
 
     public List<Item> listarAlimentoBajoStock();
 
-    public List<Item> listarItemsPorFamilia(Long idFamily);
+    public List<Object[]> listarItemsPorFamilia(Long idFamily);
 
     public void delete(Long id);
 

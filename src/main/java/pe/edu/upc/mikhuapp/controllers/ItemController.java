@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOList;
-import pe.edu.upc.mikhuapp.dtos.ItemDTOQuery;
+import pe.edu.upc.mikhuapp.dtos.FamilyInventoryDTO;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.entities.Ingredient;
 import pe.edu.upc.mikhuapp.entities.Item;
@@ -197,6 +197,10 @@ public class ItemController {
         return ResponseEntity.ok(lista);
     }
 
+    // HU47 LISTAR ITEMS DEL INVENTARIO FAMILIAR
+    @GetMapping("/familia/{idFamily}")
+    public ResponseEntity<List<FamilyInventoryDTO>> listarItemsPorFamilia(
+            @PathVariable("idFamily") Long idFamily) {
 
     // HU50: ALIMENTOS PROXIMOS A VENCER
     @GetMapping("/ProximosVencer")
@@ -205,9 +209,20 @@ public class ItemController {
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaLimite = fechaActual.plusDays(3);
 
-        List<ItemDTOList> lista = itemService.listarProximosVencer(fechaActual, fechaLimite)
+        List<FamilyInventoryDTO> lista = itemService.listarItemsPorFamilia(idFamily)
                 .stream()
-                .map(item->modelMapper.map(item, ItemDTOList.class))
+                .map(item -> {
+                    FamilyInventoryDTO dto = new FamilyInventoryDTO();
+
+                    dto.setIdItem(((Number) item[0]).longValue());
+                    dto.setIngredientName((String) item[1]);
+                    dto.setAmountAvailable(((Number) item[2]).intValue());
+                    dto.setPurchaseDate((LocalDate) item[3]);
+                    dto.setDueDate((LocalDate) item[4]);
+                    dto.setMinimumStock(((Number) item[5]).intValue());
+
+                    return dto;
+                })
                 .toList();
 
         return ResponseEntity.ok(lista);
