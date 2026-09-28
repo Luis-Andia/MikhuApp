@@ -76,6 +76,10 @@ public class ItemController {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
                     dto.setIdFamily(item.getFamily().getIdFamily());
                     dto.setIdIngredient(item.getIngredient().getIdIngredient());
+                    dto.setCantidadDisposicion((float) item.getAmountAvailable());
+                    dto.setFechaCompra(item.getPurchaseDate());
+                    dto.setFechaVencimiento(item.getDueDate());
+                    dto.setStockMinimo(item.getMinimumStock());
                     return dto;
                 })
                 .toList();
@@ -84,7 +88,38 @@ public class ItemController {
     }
 
     // HU18: ACTUALIZAR ITEM
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity<ItemDTOList> update(@PathVariable Long id, @Validated @RequestBody ItemDTOInsert dto) {
 
+        Item item = itemService.listid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
+
+        Family family = familiaService.listid(dto.getIdFamily())
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
+
+        Ingredient ingredient = ingredienteService.listId(dto.getIdIngredient())
+                .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
+
+        modelMapper.map(dto, item);
+
+        item.setFamily(family);
+        item.setIngredient(ingredient);
+        item.setIdItem(id);
+
+        itemService.update(item);
+
+        ItemDTOList response = modelMapper.map(item, ItemDTOList.class);
+
+        response.setIdFamily(family.getIdFamily());
+        response.setIdIngredient(ingredient.getIdIngredient());
+        response.setCantidadDisposicion((float) item.getAmountAvailable());
+        response.setFechaCompra(item.getPurchaseDate());
+        response.setFechaVencimiento(item.getDueDate());
+        response.setStockMinimo(item.getMinimumStock());
+
+        return ResponseEntity.ok(response);
+    }
 
     // HU19: ELIMINAR ITEM
     @DeleteMapping("/{id}")
