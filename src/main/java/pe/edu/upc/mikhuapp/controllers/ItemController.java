@@ -88,11 +88,11 @@ public class ItemController {
     }
 
     // HU18: ACTUALIZAR ITEM
-    @PutMapping("/{id}")
+    @PutMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<ItemDTOList> update(@PathVariable Long id, @Validated @RequestBody ItemDTOInsert dto) {
+    public ResponseEntity<ItemDTOList> update(@Validated @RequestBody ItemDTOInsert dto) {
 
-        Item item = itemService.listid(id)
+        Item item = itemService.listid(dto.getIdItem())
                 .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
 
         Family family = familiaService.listid(dto.getIdFamily())
@@ -105,7 +105,7 @@ public class ItemController {
 
         item.setFamily(family);
         item.setIngredient(ingredient);
-        item.setIdItem(id);
+        item.setIdItem(dto.getIdItem());
 
         itemService.update(item);
 

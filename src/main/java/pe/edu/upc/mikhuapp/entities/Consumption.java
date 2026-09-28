@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,13 +21,12 @@ public class Consumption {
     private Recipe recipe;
 
     @Column(name = "consumptionDate", nullable = false)
-    private LocalDateTime consumptionDate;
+    private LocalDate consumptionDate;
 
     public Consumption() {
     }
 
-    public Consumption(Long idConsumption, Item item, Recipe recipe,
-                       LocalDateTime consumptionDate) {
+    public Consumption(Long idConsumption, Item item, Recipe recipe, LocalDate consumptionDate) {
         this.idConsumption = idConsumption;
         this.item = item;
         this.recipe = recipe;
@@ -57,11 +57,11 @@ public class Consumption {
         this.recipe = recipe;
     }
 
-    public LocalDateTime getConsumptionDate() {
+    public LocalDate getConsumptionDate() {
         return consumptionDate;
     }
 
-    public void setConsumptionDate(LocalDateTime consumptionDate) {
+    public void setConsumptionDate(LocalDate consumptionDate) {
         this.consumptionDate = consumptionDate;
     }
 }

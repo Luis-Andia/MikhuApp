@@ -1,12 +1,14 @@
 package pe.edu.upc.mikhuapp.dtos;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ConsumptionDTO {
 
-    private Long idConsumo;
+    private Long idConsumption;
 
     @NotNull(message = "Id de Item obligatorio")
     private Long idItem;
@@ -15,14 +17,16 @@ public class ConsumptionDTO {
     private Long idReceta;
 
     @NotNull(message = "Fecha de consumo obligatoria")
-    private LocalDateTime fechaConsumo;
+    private LocalDate consumptionDate;
 
-    public Long getIdConsumo() {
-        return idConsumo;
+    // get y set
+
+    public Long getIdConsumption() {
+        return idConsumption;
     }
 
-    public void setIdConsumo(Long idConsumo) {
-        this.idConsumo = idConsumo;
+    public void setIdConsumption(Long idConsumption) {
+        this.idConsumption = idConsumption;
     }
 
     public Long getIdItem() {
@@ -41,11 +45,11 @@ public class ConsumptionDTO {
         this.idReceta = idReceta;
     }
 
-    public LocalDateTime getFechaConsumo() {
-        return fechaConsumo;
+    public LocalDate getConsumptionDate() {
+        return consumptionDate;
     }
 
-    public void setFechaConsumo(LocalDateTime fechaConsumo) {
-        this.fechaConsumo = fechaConsumo;
+    public void setConsumptionDate(LocalDate consumptionDate) {
+        this.consumptionDate = consumptionDate;
     }
 }
