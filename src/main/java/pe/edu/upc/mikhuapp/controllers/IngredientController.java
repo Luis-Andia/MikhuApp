@@ -58,18 +58,16 @@ public class IngredientController {
     }
 
     // HU23: Actualizar un ingrediente
-    @PutMapping("/{id}")
+    @PutMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<IngredientDTO> update(
-            @PathVariable Long id,
-            @Validated @RequestBody IngredientDTO dto) {
+    public ResponseEntity<IngredientDTO> update(@Validated @RequestBody IngredientDTO dto) {
 
-        Ingredient ingredient = iS.listId(id)
+        Ingredient ingredient = iS.listId(dto.getIdIngredient())
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
 
         modelMapper.map(dto, ingredient);
 
-        ingredient.setIdIngredient(id);
+        ingredient.setIdIngredient(dto.getIdIngredient());
 
         iS.update(ingredient);
 
