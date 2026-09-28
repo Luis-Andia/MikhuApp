@@ -18,6 +18,9 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -157,5 +160,42 @@ public class ConsumptionController {
                 })
                 .toList();
         return ResponseEntity.ok(list);
+    }
+
+    // HU56 CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
+    @GetMapping("/fecha")
+    public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
+            @RequestParam LocalDate fechaInicio,
+            @RequestParam LocalDate fechaFin) {
+
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new IllegalArgumentException(
+                    "La fecha inicial no puede ser posterior a la fecha final"
+            );
+        }
+
+        LocalDateTime inicio = fechaInicio.atStartOfDay();
+
+        LocalDateTime fin = fechaFin
+                .plusDays(1)
+                .atStartOfDay();
+
+        List<Consumption> consumptions =
+                cS.consultarPorFecha(inicio, fin);
+
+        List<ConsumptionDTO> lista = new ArrayList<>();
+
+        for (Consumption consumption : consumptions) {
+
+            ConsumptionDTO dto =
+                    modelMapper.map(
+                            consumption,
+                            ConsumptionDTO.class
+                    );
+
+            lista.add(dto);
+        }
+
+        return ResponseEntity.ok(lista);
     }
 }
