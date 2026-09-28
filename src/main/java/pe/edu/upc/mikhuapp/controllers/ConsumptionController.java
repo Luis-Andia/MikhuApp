@@ -96,21 +96,26 @@ public class ConsumptionController {
     }
 
     // HU38: ACTUALIZAR un CONSUMO
-    @PutMapping("/{id}")
+    @PutMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
-    public ResponseEntity<ConsumptionDTO> update( @PathVariable("id") Long id, @Validated @RequestBody ConsumptionDTO dto) {
-        Consumption consumption = cS.listid(id)
+    public ResponseEntity<ConsumptionDTO> update(@Validated @RequestBody ConsumptionDTO dto) {
+        Consumption consumption = cS.listid(dto.getIdConsumption())
                 .orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
 
-            Consumption consumptionactualizado = modelMapper.map(dto, Consumption.class);
-            consumptionactualizado.setIdConsumption(consumption.getIdConsumption());
+        Item item = iS.listid(dto.getIdItem())
+                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
 
-            cS.update(consumptionactualizado);
+        Recipe recipe = rS.listId(dto.getIdReceta())
+                .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
 
-            ConsumptionDTO response =
-                    modelMapper.map(consumptionactualizado, ConsumptionDTO.class);
+        modelMapper.map(dto, Consumption.class);
+        consumption.setItem(item);
+        consumption.setRecipe(recipe);
+        consumption.setIdConsumption(dto.getIdConsumption());
+        cS.update(consumption);
 
-            return ResponseEntity.ok(response);
+        ConsumptionDTO response = modelMapper.map(consumption, ConsumptionDTO.class);
+        return ResponseEntity.ok(response);
     }
 
     // HU39: ELIMINAR consumo
