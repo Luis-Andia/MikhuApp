@@ -51,7 +51,7 @@ public class RecipeServiceImplements implements IRecipeService {
     }
 
     @Override
-    public List<RecipeDetailDTO> consultarDetalleReceta(Long idRecipe) {
-        return rR.consultarDetalleReceta(idRecipe);
+    public List<Recipe> findRecipe_nomRecipe(String nomRecipe) {
+        return rR.findRecipe_nomRecipe(nomRecipe);
     }
 }

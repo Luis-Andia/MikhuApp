@@ -66,10 +66,10 @@ public class RoleController {
     }
 
     // HU08 Actualizar
-    @PutMapping("/{id}")
+    @PutMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RoleDTO> actualizarRol(@PathVariable("id") Long id, @Validated @RequestBody RoleDTO dto){
-        Role rol = rS.listid(id)
+    public ResponseEntity<RoleDTO> actualizarRol(@Validated @RequestBody RoleDTO dto){
+        Role rol = rS.listid(dto.getIdRol())
                 .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
 
         Role role_actualizado = modelMapper.map(dto, Role.class);

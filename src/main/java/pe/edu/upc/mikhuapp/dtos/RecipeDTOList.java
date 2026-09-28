@@ -1,17 +1,13 @@
 package pe.edu.upc.mikhuapp.dtos;
 
-import pe.edu.upc.mikhuapp.entities.Country;
-
 public class RecipeDTOList {
-
     private Long idRecipe;
     private String nomRecipe;
-    private Country country;
+    private Long idCountry;
     private Double calories;
     private int difficulty;
 
     // Get and set
-
     public Long getIdRecipe() {
         return idRecipe;
     }
@@ -28,12 +24,12 @@ public class RecipeDTOList {
         this.nomRecipe = nomRecipe;
     }
 
-    public Country getCountry() {
-        return country;
+    public Long getIdCountry() {
+        return idCountry;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setIdCountry(Long idCountry) {
+        this.idCountry = idCountry;
     }
 
     public Double getCalories() {

@@ -66,17 +66,15 @@ public class RecipeController {
     }
 
     // HU13 ACTUALIZAR RECETA
-    @PutMapping("/{id}")
+    @PutMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RecipeDTOInsert> actualizarReceta(
-            @PathVariable("id") Long id,
-            @Validated @RequestBody RecipeDTOInsert dto){
+    public ResponseEntity<RecipeDTOInsert> actualizarReceta(@Validated @RequestBody RecipeDTOInsert dto){
 
-        Recipe recipe = rS.listId(id)
+        Recipe recipe = rS.listId(dto.getIdRecipe())
                 .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
 
         Recipe recipeactualizado = modelMapper.map(dto, Recipe.class);
-        recipeactualizado.setIdRecipe(id);
+        recipeactualizado.setIdRecipe(dto.getIdRecipe());
 
         rS.update(recipeactualizado);
 
@@ -110,6 +108,16 @@ public class RecipeController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    // HU53: CONSULTAR RECETA POR NOMBRE
+    @GetMapping("/nomRecipe")
+    public ResponseEntity<List<RecipeDTOList>> listRecipebyName(@RequestParam String nomRecipe){
+        List<RecipeDTOList> result = rS.findRecipe_nomRecipe(nomRecipe)
+                .stream()
+                .map(recipe -> modelMapper.map(recipe, RecipeDTOList.class))
+                .toList();
+        return ResponseEntity.ok(result);
+    }
+
     // HU57 CONSULTAR RECETAS POR INGREDIENTE
     @GetMapping("/ingrediente/{nombreIngrediente}")
     public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(
@@ -126,19 +134,5 @@ public class RecipeController {
         return ResponseEntity.ok(lista);
     }
 
-    // HU52 CONSULTAR DETALLE DE RECETA
-    @GetMapping("/{id}/detalle")
-    public ResponseEntity<List<RecipeDetailDTO>> consultarDetalleReceta(
-            @PathVariable("id") Long idRecipe) {
-
-        rS.listId(idRecipe)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Receta no encontrada"
-                        ));
-
-        return ResponseEntity.ok(
-                rS.consultarDetalleReceta(idRecipe)
-        );
-    }
+    // HU52: Consultar detalle de receta - JOHAN
 }
