@@ -195,7 +195,6 @@ public class ConsumptionController {
 
             lista.add(dto);
         }
-
         return ResponseEntity.ok(lista);
     }
 }
