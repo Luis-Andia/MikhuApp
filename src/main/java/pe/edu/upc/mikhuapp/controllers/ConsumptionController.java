@@ -1,8 +1,8 @@
 package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,10 +18,13 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/historial-consumo")
+@RequestMapping("/consumptions")
 public class ConsumptionController {
 
     private final IConsumptionService cS;
@@ -36,9 +39,10 @@ public class ConsumptionController {
         this.modelMapper = modelMapper;
     }
 
+    // HU: Listar items consumidos
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<List<ConsumptionDTO>> list() {
-
         List<ConsumptionDTO> lista = cS.list().stream()
                 .map(historial -> {
                     ConsumptionDTO dto =
@@ -53,7 +57,9 @@ public class ConsumptionController {
         return ResponseEntity.ok(lista);
     }
 
+    // HU36: INSERTAR un CONSUMO
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ConsumptionDTO> insert(
             @Validated @RequestBody ConsumptionDTO dto) {
 
@@ -89,7 +95,38 @@ public class ConsumptionController {
         return ResponseEntity.created(location).body(response);
     }
 
+    // HU38: ACTUALIZAR un CONSUMO
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    public ResponseEntity<ConsumptionDTO> update( @PathVariable("id") Long id, @Validated @RequestBody ConsumptionDTO dto) {
+        Consumption consumption = cS.listid(id)
+                .orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
+
+            Consumption consumptionactualizado = modelMapper.map(dto, Consumption.class);
+            consumptionactualizado.setIdConsumption(consumption.getIdConsumption());
+
+            cS.update(consumptionactualizado);
+
+            ConsumptionDTO response =
+                    modelMapper.map(consumptionactualizado, ConsumptionDTO.class);
+
+            return ResponseEntity.ok(response);
+    }
+
+    // HU39: ELIMINAR consumo
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    public ResponseEntity<ConsumptionDTO> delete(@PathVariable("id") Long id) {
+        cS.listid(id).
+                orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
+
+        cS.delete(id);
+        return  ResponseEntity.noContent().build();
+    }
+
+    // HU40: CONSULTAR un CONSUMO por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<ConsumptionDTO> listId(
             @PathVariable Long id) {
 
@@ -108,6 +145,7 @@ public class ConsumptionController {
 
     // HU51: Listar alimentos mas consumidos
     @GetMapping("/alimentos-mas-consumidos")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>>ListMostConsumedIngredients(){
         List<MostConsumedIngredientsDTO> list = cS.ListMostConsumedIngredients()
                 .stream()
@@ -122,5 +160,42 @@ public class ConsumptionController {
                 })
                 .toList();
         return ResponseEntity.ok(list);
+    }
+
+    // HU56 CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
+    @GetMapping("/fecha")
+    public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
+            @RequestParam LocalDate fechaInicio,
+            @RequestParam LocalDate fechaFin) {
+
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new IllegalArgumentException(
+                    "La fecha inicial no puede ser posterior a la fecha final"
+            );
+        }
+
+        LocalDateTime inicio = fechaInicio.atStartOfDay();
+
+        LocalDateTime fin = fechaFin
+                .plusDays(1)
+                .atStartOfDay();
+
+        List<Consumption> consumptions =
+                cS.consultarPorFecha(inicio, fin);
+
+        List<ConsumptionDTO> lista = new ArrayList<>();
+
+        for (Consumption consumption : consumptions) {
+
+            ConsumptionDTO dto =
+                    modelMapper.map(
+                            consumption,
+                            ConsumptionDTO.class
+                    );
+
+            lista.add(dto);
+        }
+
+        return ResponseEntity.ok(lista);
     }
 }

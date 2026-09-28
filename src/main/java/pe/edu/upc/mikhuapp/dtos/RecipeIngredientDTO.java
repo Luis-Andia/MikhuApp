@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.dtos;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 
@@ -12,6 +13,7 @@ public class RecipeIngredientDTO {
     private Long idIngredient;
 
     @NotNull(message = "Cantidad requerida")
+    @Min(value = 1, message = "La cantidad debe ser un valor positivo")
     private int requestedQuantity;
 
     // Get y Set

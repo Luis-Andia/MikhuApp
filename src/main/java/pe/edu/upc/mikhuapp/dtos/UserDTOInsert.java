@@ -1,7 +1,9 @@
 package pe.edu.upc.mikhuapp.dtos;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 
 public class UserDTOInsert {
@@ -15,11 +17,10 @@ public class UserDTOInsert {
     public String nomUser;
     @NotBlank(message = "Apellido paterno obligatorio")
     public String lastNameUser;
-    @NotNull(message = "Edad obligatoria")
+    @Positive(message = "Edad invalida")
     private int age;
-    @NotNull(message = "Correo obligatorio")
+    @Email(message = "Formato de correo obligatorio")
     private String email;
-    @NotNull(message = "Id de Familia obligatorio")
     private Long idFamily;
     @NotNull(message = "Id de Pais obligatorio")
     private Long idCountry;

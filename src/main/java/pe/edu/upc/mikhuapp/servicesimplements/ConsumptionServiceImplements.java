@@ -3,9 +3,11 @@ package pe.edu.upc.mikhuapp.servicesimplements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Consumption;
+import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.repositories.IConsumptionRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IConsumptionService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +38,23 @@ public class ConsumptionServiceImplements implements IConsumptionService {
     @Override
     public List<Object[]> ListMostConsumedIngredients() {
         return cR.ListMostConsumedIngredients();
+    }
+
+    @Override
+    public void update(Consumption consumption) {
+        cR.save(consumption);
+    }
+
+    @Override
+    public void delete(Long id) {
+        cR.deleteById(id);
+    }
+
+    @Override
+    public List<Consumption> consultarPorFecha(
+            LocalDateTime fechaInicio,
+            LocalDateTime fechaFin) {
+
+        return cR.consultarPorFecha(fechaInicio, fechaFin);
     }
 }

@@ -3,6 +3,7 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,24 +20,22 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recetas")
+@RequestMapping("/recipes")
 public class RecipeController {
     private final IRecipeService rS;
     private final ModelMapper modelMapper;
     private final ICountryService cS;
-    private final IFamilyService fS;
     private final IIngredientService iS;
 
-    public RecipeController(IRecipeService rS, ModelMapper modelMapper, ICountryService cS, IFamilyService fS, IIngredientService iS) {
+    public RecipeController(IRecipeService rS, ModelMapper modelMapper, ICountryService cS, IIngredientService iS) {
         this.rS = rS;
         this.modelMapper = modelMapper;
         this.cS = cS;
-        this.fS = fS;
         this.iS = iS;
     }
 
     //HU23 LISTAR RECETAS
-    @GetMapping("/listarReceta")
+    @GetMapping() // Todos pueden listar las recetas
     public ResponseEntity<List<RecipeDTOList>> listarReceta() {
         List<RecipeDTOList> lista = rS.list()
                 .stream()
@@ -47,13 +46,11 @@ public class RecipeController {
 
     // HU11 REGISTRAR RECETA
     @PostMapping
-    public ResponseEntity<RecipeDTOInsert> insertar(
-            @Validated @RequestBody RecipeDTOInsert recipedto){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<RecipeDTOInsert> insertar(@Validated @RequestBody RecipeDTOInsert recipedto){
 
         Recipe recipe = modelMapper.map(recipedto, Recipe.class);
-
         rS.insert(recipe);
-
         RecipeDTOInsert responseDTO =
                 modelMapper.map(recipe, RecipeDTOInsert.class);
 
@@ -69,16 +66,15 @@ public class RecipeController {
     }
 
     // HU13 ACTUALIZAR RECETA
-    @PutMapping("/{id}")
-    public ResponseEntity<RecipeDTOInsert> actualizarReceta(
-            @PathVariable("id") Long id,
-            @Validated @RequestBody RecipeDTOInsert dto){
+    @PutMapping()
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<RecipeDTOInsert> actualizarReceta(@Validated @RequestBody RecipeDTOInsert dto){
 
-        Recipe recipe = rS.listId(id)
+        Recipe recipe = rS.listId(dto.getIdRecipe())
                 .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
 
         Recipe recipeactualizado = modelMapper.map(dto, Recipe.class);
-        recipeactualizado.setIdRecipe(id);
+        recipeactualizado.setIdRecipe(dto.getIdRecipe());
 
         rS.update(recipeactualizado);
 
@@ -90,14 +86,11 @@ public class RecipeController {
 
     // HU14 ELIMINAR RECETA
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarReceta(
-            @PathVariable("id") Long id){
-
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> eliminarReceta(@PathVariable("id") Long id){
         rS.listId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
-
         rS.delete(id);
-
         return ResponseEntity.noContent().build();
     }
 
@@ -115,6 +108,16 @@ public class RecipeController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    // HU53: CONSULTAR RECETA POR NOMBRE
+    @GetMapping("/nomRecipe")
+    public ResponseEntity<List<RecipeDTOList>> listRecipebyName(@RequestParam String nomRecipe){
+        List<RecipeDTOList> result = rS.findRecipe_nomRecipe(nomRecipe)
+                .stream()
+                .map(recipe -> modelMapper.map(recipe, RecipeDTOList.class))
+                .toList();
+        return ResponseEntity.ok(result);
+    }
+
     // HU57 CONSULTAR RECETAS POR INGREDIENTE
     @GetMapping("/ingrediente/{nombreIngrediente}")
     public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(
@@ -130,4 +133,6 @@ public class RecipeController {
 
         return ResponseEntity.ok(lista);
     }
+
+    // HU52: Consultar detalle de receta - JOHAN
 }

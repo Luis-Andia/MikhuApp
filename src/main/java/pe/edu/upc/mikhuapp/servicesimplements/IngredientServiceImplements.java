@@ -29,6 +29,16 @@ public class IngredientServiceImplements implements IIngredientService {
     }
 
     @Override
+    public void update(Ingredient ingredient) {
+        iR.save(ingredient);
+    }
+
+    @Override
+    public void delete(Long id) {
+        iR.deleteById(id);
+    }
+
+    @Override
     public Optional<Ingredient> listId(Long id) {
         return iR.findById(id);
     }

@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ingredientes")
+@RequestMapping("/ingredients")
 public class IngredientController {
     private final IIngredientService iS;
     private final ModelMapper modelMapper;
@@ -26,6 +27,7 @@ public class IngredientController {
 
     // HU21: Registrar Ingrediente
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
 
         Ingredient ingredientRegistrado = iS.listId(dto.getIdIngredient())
@@ -46,6 +48,7 @@ public class IngredientController {
 
     // HU22: Listar ingredientes registrados
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<IngredientDTO>> list() {
         List<IngredientDTO> lista = iS.list().stream()
                 .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
@@ -55,11 +58,40 @@ public class IngredientController {
     }
 
     // HU23: Actualizar un ingrediente
+    @PutMapping()
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity<IngredientDTO> update(@Validated @RequestBody IngredientDTO dto) {
+
+        Ingredient ingredient = iS.listId(dto.getIdIngredient())
+                .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
+
+        modelMapper.map(dto, ingredient);
+
+        ingredient.setIdIngredient(dto.getIdIngredient());
+
+        iS.update(ingredient);
+
+        IngredientDTO responseDTO = modelMapper.map(ingredient, IngredientDTO.class);
+
+        return ResponseEntity.ok(responseDTO);
+    }
 
     // HU24: Eliminar un ingrediente
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
 
-    // HU25: Consultar un ingredinete por ID
+        Ingredient ingredient = iS.listId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
+
+        iS.delete(ingredient.getIdIngredient());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    // HU25: Consultar un ingrediente por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
         Ingredient ingredient = iS.listId(id)

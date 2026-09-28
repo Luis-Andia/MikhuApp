@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
 import pe.edu.upc.mikhuapp.dtos.UserDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.UserDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
@@ -22,7 +23,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/users")
 public class UserController {
     private final IUserService uS;
     private final IRoleService rS;
@@ -102,6 +103,7 @@ public class UserController {
 
     // CONSULTAR USUARIO por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOList> buscarid(@PathVariable("id") Long id){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
@@ -111,6 +113,7 @@ public class UserController {
 
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
@@ -128,7 +131,19 @@ public class UserController {
         return ResponseEntity.ok(responseDTO);
 
     }
-    //LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
+
+    // Eliminar USUARIO
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDTOList> delete(@PathVariable("id") Long id) {
+        uS.listId(id).
+                orElseThrow(() -> new  ResourceNotFoundException("Usuario no encontrado"));
+
+        uS.delete(id);
+        return  ResponseEntity.noContent().build();
+    }
+
+    // HU46: LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
     public ResponseEntity<List<UserDTOList>> listmembers(@PathVariable long idFamilia){
         Family familia = fS.listid(idFamilia)

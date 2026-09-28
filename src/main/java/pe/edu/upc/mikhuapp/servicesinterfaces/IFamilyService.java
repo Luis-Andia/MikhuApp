@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface IFamilyService {
     public List<Family> list();
-    public Family insert(Family f);
+    public void insert(Family f);
     public Optional<Family> listid(Long id);
     public Family update(Family f);
+    public void delete(Long id);
 }

@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rol")
+@RequestMapping("/api/roles")
 public class RoleController {
     private final IRoleService rS;
     private final ModelMapper modelMapper;
@@ -40,6 +40,7 @@ public class RoleController {
 
     // Insertar
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoleDTO> insertar(@Validated @RequestBody RoleDTO dto){
         Role nuevo_rol = modelMapper.map(dto, Role.class);
         rS.insert(nuevo_rol);
@@ -56,6 +57,7 @@ public class RoleController {
 
     // Consultar por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoleDTO> buscar_rol_id(@PathVariable Long id){
         Role rol = rS.listid(id)
                 .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
@@ -64,9 +66,10 @@ public class RoleController {
     }
 
     // HU08 Actualizar
-    @PutMapping("/{id}")
-    public ResponseEntity<RoleDTO> actualizarRol(@PathVariable("id") Long id, @Validated @RequestBody RoleDTO dto){
-        Role rol = rS.listid(id)
+    @PutMapping()
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<RoleDTO> actualizarRol(@Validated @RequestBody RoleDTO dto){
+        Role rol = rS.listid(dto.getIdRol())
                 .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
 
         Role role_actualizado = modelMapper.map(dto, Role.class);
@@ -79,6 +82,7 @@ public class RoleController {
 
     // HU09 Eliminar
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminarRol(@PathVariable("id") Long id){
         Role rol = rS.listid(id)
                 .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));

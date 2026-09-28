@@ -22,8 +22,8 @@ public class FamilyServiceImplements implements IFamilyService {
     }
 
     @Override
-    public Family insert(Family f) {
-        return fR.save(f);
+    public void insert(Family f) {
+        fR.save(f);
     }
 
     @Override
@@ -34,5 +34,10 @@ public class FamilyServiceImplements implements IFamilyService {
     @Override
     public Family update(Family f) {
         return fR.save(f);
+    }
+
+    @Override
+    public void delete(Long id) {
+        fR.deleteById(id);
     }
 }
