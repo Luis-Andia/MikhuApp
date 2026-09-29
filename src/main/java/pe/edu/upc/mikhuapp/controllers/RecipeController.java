@@ -47,9 +47,12 @@ public class RecipeController {
     // HU11 REGISTRAR RECETA
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RecipeDTOInsert> insertar(@Validated @RequestBody RecipeDTOInsert recipedto){
+    public ResponseEntity<RecipeDTOInsert> insertar(@Validated @RequestBody RecipeDTOInsert dto){
 
-        Recipe recipe = modelMapper.map(recipedto, Recipe.class);
+        Country country = cS.listid(dto.getIdCountry())
+                .orElseThrow(() -> new ResourceNotFoundException("Pais no encontrado"));
+
+        Recipe recipe = modelMapper.map(dto, Recipe.class);
         rS.insert(recipe);
         RecipeDTOInsert responseDTO =
                 modelMapper.map(recipe, RecipeDTOInsert.class);

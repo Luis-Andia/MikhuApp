@@ -3,13 +3,16 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.RoleDTO;
 import pe.edu.upc.mikhuapp.entities.Role;
+import pe.edu.upc.mikhuapp.entities.Users;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRoleService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IUserService;
 
 import java.net.URI;
 import java.util.List;
@@ -18,10 +21,12 @@ import java.util.List;
 @RequestMapping("/api/roles")
 public class RoleController {
     private final IRoleService rS;
+    private final IUserService uS;
     private final ModelMapper modelMapper;
 
-    public RoleController(IRoleService rS, ModelMapper modelMapper) {
+    public RoleController(IRoleService rS, IUserService uS, ModelMapper modelMapper) {
         this.rS = rS;
+        this.uS = uS;
         this.modelMapper = modelMapper;
     }
 
@@ -71,8 +76,12 @@ public class RoleController {
     public ResponseEntity<RoleDTO> actualizarRol(@Validated @RequestBody RoleDTO dto){
         Role rol = rS.listid(dto.getIdRol())
                 .orElseThrow(()-> new ResourceNotFoundException("No existe el rol"));
+        Users user = uS.listId(dto.getIdUser())
+                .orElseThrow(()-> new ResourceNotFoundException("No existe el usuario"));
+
 
         Role role_actualizado = modelMapper.map(dto, Role.class);
+        role_actualizado.setUser(user);
         role_actualizado.setIdRol(rol.getIdRol());
         rS.update(role_actualizado);
 

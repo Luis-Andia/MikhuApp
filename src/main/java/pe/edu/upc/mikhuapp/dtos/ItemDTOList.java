@@ -1,5 +1,7 @@
 package pe.edu.upc.mikhuapp.dtos;
 
+import jakarta.persistence.Column;
+
 import java.time.LocalDate;
 
 public class ItemDTOList {

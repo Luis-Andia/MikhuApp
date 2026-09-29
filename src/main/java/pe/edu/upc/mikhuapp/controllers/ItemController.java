@@ -76,10 +76,6 @@ public class ItemController {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
                     dto.setIdFamily(item.getFamily().getIdFamily());
                     dto.setIdIngredient(item.getIngredient().getIdIngredient());
-                    dto.setAmountAvailable((float) item.getAmountAvailable());
-                    dto.setPurchaseDate(item.getPurchaseDate());
-                    dto.setDueDate(item.getDueDate());
-                    dto.setMinimumStock(item.getMinimumStock());
                     return dto;
                 })
                 .toList();
@@ -88,11 +84,11 @@ public class ItemController {
     }
 
     // HU18: ACTUALIZAR ITEM
-    @PutMapping()
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<ItemDTOList> update(@Validated @RequestBody ItemDTOInsert dto) {
+    public ResponseEntity<ItemDTOList> update(@PathVariable Long id, @Validated @RequestBody ItemDTOInsert dto) {
 
-        Item item = itemService.listid(dto.getIdItem())
+        Item item = itemService.listid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
 
         Family family = familiaService.listid(dto.getIdFamily())
@@ -113,10 +109,6 @@ public class ItemController {
 
         response.setIdFamily(family.getIdFamily());
         response.setIdIngredient(ingredient.getIdIngredient());
-        response.setAmountAvailable((float) item.getAmountAvailable());
-        response.setPurchaseDate(item.getPurchaseDate());
-        response.setDueDate(item.getDueDate());
-        response.setMinimumStock(item.getMinimumStock());
 
         return ResponseEntity.ok(response);
     }
@@ -208,29 +200,27 @@ public class ItemController {
 
 
     // HU50: ALIMENTOS PROXIMOS A VENCER
-   // @GetMapping("/ProximosVencer")
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    // public ResponseEntity <List<ItemDTOList>> listarProximosVencer() {
-    //   LocalDate fechaActual = LocalDate.now();
-    //  LocalDate fechaLimite = fechaActual.plusDays(3);
+    @GetMapping("/ProximosVencer")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<ItemDTOList>> listarProximosVencer(@RequestParam Long idFamily) {
 
-    //  List<FamilyInventoryDTO> lista = itemService.listarItemsPorFamilia(idFamily)
-    //       .stream()
-    //       .map(item -> {
-    //            FamilyInventoryDTO dto = new FamilyInventoryDTO();
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaLimite = fechaActual.plusDays(3);
 
-    //           dto.setIdItem(((Number) item[0]).longValue());
-    //           dto.setIngredientName((String) item[1]);
-    //              dto.setAmountAvailable(((Number) item[2]).intValue());
-    //              dto.setPurchaseDate((LocalDate) item[3]);
-    //              dto.setDueDate((LocalDate) item[4]);
-    //              dto.setMinimumStock(((Number) item[5]).intValue());
-//
-    //                  return dto;
-    //          })
-    //          .toList();
-//
-    //      return ResponseEntity.ok(lista);
-    //   }
+        List<ItemDTOList> lista = itemService
+                .listarProximosVencer(idFamily, fechaActual, fechaLimite)
+                .stream()
+                .map(item -> {
+                    ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
+
+                    dto.setIdFamily(item.getFamily().getIdFamily());
+                    dto.setIdIngredient(item.getIngredient().getIdIngredient());
+
+                    return dto;
+                })
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
 
 }

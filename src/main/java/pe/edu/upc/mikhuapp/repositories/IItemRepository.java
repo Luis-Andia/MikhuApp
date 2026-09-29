@@ -14,11 +14,14 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
     //HU Listar ingredientes vencidos
     public List<Item> findByDueDateBefore(LocalDate fechaActual);
 
-    //HU Listar proximos a vencer Ordenados
-    @Query(value = "SELECT i FROM Item i"
-            + " WHERE i.dueDate BETWEEN :fechaActual AND :fechaLimite"
-            + " ORDER BY i.dueDate ASC")
+    //HU50 Listar proximos a vencer Ordenados
+    @Query(value = "SELECT * FROM items " +
+            "WHERE \"id_family\" = :idFamily " +
+            "AND \"due_date\" BETWEEN :fechaActual AND :fechaLimite " +
+            "ORDER BY \"due_date\" ASC",
+            nativeQuery = true)
     List<Item> findByDueDateBetween(
+            @Param("idFamily") Long idFamily,
             @Param("fechaActual") LocalDate fechaActual,
             @Param("fechaLimite") LocalDate fechaLimite);
 
@@ -31,8 +34,8 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
             @Param("idFamily") Long idFamily
     );
 
-    //HU Listar alimentos con bajo Stock
-    @Query(value = "SELECT i FROM Item i"
-            + " WHERE i.amountAvailable <= i.minimumStock")
+    //HU49 Listar alimentos con bajo Stock
+    @Query(value = "select * from items"
+            + " WHERE amount_available <= minimum_stock", nativeQuery = true)
     List<Item> findAlimentosBajoStock();
 }

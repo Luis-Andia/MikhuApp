@@ -19,7 +19,7 @@ public interface   IItemService {
 
     public List<Item> listarVencidos(LocalDate fechaActual);
 
-    public List<Item> listarProximosVencer(LocalDate fechaActual, LocalDate fechaLimite);
+    public List<Item> listarProximosVencer(Long idFamily, LocalDate fechaActual, LocalDate fechaLimite);
 
     public List<Item> listarAlimentoBajoStock();
 
@@ -28,5 +28,5 @@ public interface   IItemService {
     public void delete(Long id);
 
     public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual);
-    public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite);
+    //public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite);
 }
