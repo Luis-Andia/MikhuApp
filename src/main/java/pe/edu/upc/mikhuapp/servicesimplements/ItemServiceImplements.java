@@ -49,6 +49,12 @@ public class ItemServiceImplements implements IItemService {
         return itemRepository.findAlimentosBajoStock();
     }
 
+    // HU48 Buscar item por nombre
+    @Override
+    public List<Item> buscarPorNombre(String nombre) {
+        return itemRepository.findByIngredient_NomIngredientContainingIgnoreCase(nombre);
+    }
+
     @Override
     public List<Object[]> listarItemsPorFamilia(Long idFamily) {
         return itemRepository.findByFamilyId(idFamily);

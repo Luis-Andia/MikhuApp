@@ -38,4 +38,7 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
     @Query(value = "select * from items"
             + " WHERE amount_available <= minimum_stock", nativeQuery = true)
     List<Item> findAlimentosBajoStock();
+
+    // HU48 Buscar item por nombre
+    List<Item> findByIngredient_NomIngredientContainingIgnoreCase(String nombre);
 }
