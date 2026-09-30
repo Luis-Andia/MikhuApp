@@ -20,6 +20,11 @@ public interface IConsumptionRepository extends JpaRepository<Consumption, Long>
             "ORDER BY cantidad DESC;", nativeQuery = true)
     public List<Object[]>ListMostConsumedIngredients();
 
+    // HU55: Consultar historial de consumo por IdFamily
+    @Query("SELECT c FROM Consumption c " +
+            "WHERE c.item.family.idFamily = :idFamily")
+    List<Consumption> consultarPorFamilia(@Param("idFamily") Long idFamily);
+
     // HU56 - Consultar ingredientes consumidos por fecha
     @Query("SELECT c FROM Consumption c " +
             "WHERE c.consumptionDate >= :fechaInicio " +

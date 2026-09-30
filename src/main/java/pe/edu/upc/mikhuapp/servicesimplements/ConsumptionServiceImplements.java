@@ -40,6 +40,12 @@ public class ConsumptionServiceImplements implements IConsumptionService {
         return cR.ListMostConsumedIngredients();
     }
 
+    // HU55: Consultar historial de consumo por IdFamily
+    @Override
+    public List<Consumption> consultarPorFamilia(Long idFamily) {
+        return cR.consultarPorFamilia(idFamily);
+    }
+
     @Override
     public void update(Consumption consumption) {
         cR.save(consumption);

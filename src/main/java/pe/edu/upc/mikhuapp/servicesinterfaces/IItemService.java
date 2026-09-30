@@ -25,6 +25,9 @@ public interface   IItemService {
 
     public List<Object[]> listarItemsPorFamilia(Long idFamily);
 
+    // HU48 Buscar item por nombre
+    public List<Item> buscarPorNombre(String nombre);
+
     public void delete(Long id);
 
     public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual);

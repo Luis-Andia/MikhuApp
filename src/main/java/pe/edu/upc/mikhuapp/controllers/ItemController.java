@@ -183,6 +183,27 @@ public class ItemController {
     }
 
     // HU48: Buscar item por nombre
+    @GetMapping("/buscarPorNombre")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity<?> buscarPorNombre(@RequestParam String nombre) {
+
+        List<ItemDTOList> lista = itemService.buscarPorNombre(nombre)
+                .stream()
+                .map(item -> {
+                    ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
+                    dto.setIdFamily(item.getFamily().getIdFamily());
+                    dto.setIdIngredient(item.getIngredient().getIdIngredient());
+                    return dto;
+                })
+                .toList();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(404)
+                    .body("No hay items con el nombre: " + nombre);
+        }
+
+        return ResponseEntity.ok(lista);
+    }
 
 
     // HU49: LISTAR ALIMENTOS CON BAJO STOCK

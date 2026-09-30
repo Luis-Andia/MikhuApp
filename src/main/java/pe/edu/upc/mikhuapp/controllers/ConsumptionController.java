@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
+import pe.edu.upc.mikhuapp.dtos.HistorialConsumoResponseDTO;
 import pe.edu.upc.mikhuapp.dtos.MostConsumedIngredientsDTO;
 import pe.edu.upc.mikhuapp.entities.Consumption;
 import pe.edu.upc.mikhuapp.entities.Item;
@@ -32,7 +33,12 @@ public class ConsumptionController {
     private final IRecipeService rS;
     private final ModelMapper modelMapper;
 
-    public ConsumptionController(IConsumptionService cS, IItemService iS, IRecipeService rS, ModelMapper modelMapper) {
+    public ConsumptionController(
+            IConsumptionService cS,
+            IItemService iS,
+            IRecipeService rS,
+            ModelMapper modelMapper) {
+
         this.cS = cS;
         this.iS = iS;
         this.rS = rS;
@@ -43,16 +49,26 @@ public class ConsumptionController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<List<ConsumptionDTO>> list() {
-        List<ConsumptionDTO> lista = cS.list().stream()
+
+        List<ConsumptionDTO> lista = cS.list()
+                .stream()
                 .map(historial -> {
+
                     ConsumptionDTO dto =
                             modelMapper.map(historial, ConsumptionDTO.class);
 
-                    dto.setIdItem(historial.getItem().getIdItem());
-                    dto.setIdReceta(historial.getRecipe().getIdRecipe());
+                    dto.setIdItem(
+                            historial.getItem().getIdItem()
+                    );
+
+                    dto.setIdReceta(
+                            historial.getRecipe().getIdRecipe()
+                    );
 
                     return dto;
-                }).toList();
+
+                })
+                .toList();
 
         return ResponseEntity.ok(lista);
     }
@@ -65,11 +81,15 @@ public class ConsumptionController {
 
         Item item = iS.listid(dto.getIdItem())
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Item no encontrado"));
+                        new ResourceNotFoundException(
+                                "Item no encontrado"
+                        ));
 
         Recipe recipe = rS.listId(dto.getIdReceta())
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Receta no encontrada"));
+                        new ResourceNotFoundException(
+                                "Receta no encontrada"
+                        ));
 
         Consumption historial =
                 modelMapper.map(dto, Consumption.class);
@@ -81,7 +101,10 @@ public class ConsumptionController {
                 cS.insert(historial);
 
         ConsumptionDTO response =
-                modelMapper.map(historialRegistrado, ConsumptionDTO.class);
+                modelMapper.map(
+                        historialRegistrado,
+                        ConsumptionDTO.class
+                );
 
         response.setIdItem(item.getIdItem());
         response.setIdReceta(recipe.getIdRecipe());
@@ -89,44 +112,78 @@ public class ConsumptionController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(historialRegistrado.getIdConsumption())
+                .buildAndExpand(
+                        historialRegistrado.getIdConsumption()
+                )
                 .toUri();
 
-        return ResponseEntity.created(location).body(response);
+        return ResponseEntity
+                .created(location)
+                .body(response);
     }
 
     // HU38: ACTUALIZAR un CONSUMO
     @PutMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
-    public ResponseEntity<ConsumptionDTO> update(@Validated @RequestBody ConsumptionDTO dto) {
-        Consumption consumption = cS.listid(dto.getIdConsumption())
-                .orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
+    public ResponseEntity<ConsumptionDTO> update(
+            @Validated @RequestBody ConsumptionDTO dto) {
+
+        Consumption consumption = cS.listid(
+                        dto.getIdConsumption()
+                )
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Consumo no encontrado"
+                        ));
 
         Item item = iS.listid(dto.getIdItem())
-                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Item no encontrado"
+                        ));
 
         Recipe recipe = rS.listId(dto.getIdReceta())
-                .orElseThrow(() -> new ResourceNotFoundException("Receta no encontrada"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Receta no encontrada"
+                        ));
 
         modelMapper.map(dto, Consumption.class);
+
         consumption.setItem(item);
         consumption.setRecipe(recipe);
-        consumption.setIdConsumption(dto.getIdConsumption());
+        consumption.setIdConsumption(
+                dto.getIdConsumption()
+        );
+
         cS.update(consumption);
 
-        ConsumptionDTO response = modelMapper.map(consumption, ConsumptionDTO.class);
+        ConsumptionDTO response =
+                modelMapper.map(
+                        consumption,
+                        ConsumptionDTO.class
+                );
+
         return ResponseEntity.ok(response);
     }
 
     // HU39: ELIMINAR consumo
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
-    public ResponseEntity<ConsumptionDTO> delete(@PathVariable("id") Long id) {
-        cS.listid(id).
-                orElseThrow(() -> new  ResourceNotFoundException("Consumo no encontrado"));
+    public ResponseEntity<ConsumptionDTO> delete(
+            @PathVariable("id") Long id) {
+
+        cS.listid(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Consumo no encontrado"
+                        ));
 
         cS.delete(id);
-        return  ResponseEntity.noContent().build();
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     // HU40: CONSULTAR un CONSUMO por ID
@@ -137,13 +194,23 @@ public class ConsumptionController {
 
         Consumption historial = cS.listid(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Consumo no encontrado"));
+                        new ResourceNotFoundException(
+                                "Consumo no encontrado"
+                        ));
 
         ConsumptionDTO dto =
-                modelMapper.map(historial, ConsumptionDTO.class);
+                modelMapper.map(
+                        historial,
+                        ConsumptionDTO.class
+                );
 
-        dto.setIdItem(historial.getItem().getIdItem());
-        dto.setIdReceta(historial.getRecipe().getIdRecipe());
+        dto.setIdItem(
+                historial.getItem().getIdItem()
+        );
+
+        dto.setIdReceta(
+                historial.getRecipe().getIdRecipe()
+        );
 
         return ResponseEntity.ok(dto);
     }
@@ -151,23 +218,97 @@ public class ConsumptionController {
     // HU51: Listar alimentos mas consumidos
     @GetMapping("/alimentos-mas-consumidos")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<MostConsumedIngredientsDTO>>ListMostConsumedIngredients(){
-        List<MostConsumedIngredientsDTO> list = cS.ListMostConsumedIngredients()
-                .stream()
-                .map(item -> {
-                    MostConsumedIngredientsDTO dto = new MostConsumedIngredientsDTO();
+    public ResponseEntity<List<MostConsumedIngredientsDTO>>
+    ListMostConsumedIngredients() {
 
-                    dto.setIdItem(((Number) item[0]).intValue());
-                    dto.setNomIngredient((String) item[1]);
-                    dto.setQuantity(((Number) item[2]).intValue());
+        List<MostConsumedIngredientsDTO> list =
+                cS.ListMostConsumedIngredients()
+                        .stream()
+                        .map(item -> {
 
-                    return dto;
-                })
-                .toList();
+                            MostConsumedIngredientsDTO dto =
+                                    new MostConsumedIngredientsDTO();
+
+                            dto.setIdItem(
+                                    ((Number) item[0]).intValue()
+                            );
+
+                            dto.setNomIngredient(
+                                    (String) item[1]
+                            );
+
+                            dto.setQuantity(
+                                    ((Number) item[2]).intValue()
+                            );
+
+                            return dto;
+                        })
+                        .toList();
+
         return ResponseEntity.ok(list);
     }
 
-    // HU56 CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
+    // HU55: CONSULTAR HISTORIAL DE CONSUMO POR IdFamily
+    @GetMapping("/familia/{idFamily}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<HistorialConsumoResponseDTO>>
+    consultarPorFamilia(
+            @PathVariable Long idFamily) {
+
+        List<Consumption> consumptions =
+                cS.consultarPorFamilia(idFamily);
+
+        List<HistorialConsumoResponseDTO> lista =
+                consumptions
+                        .stream()
+                        .map(consumption -> {
+
+                            HistorialConsumoResponseDTO dto =
+                                    new HistorialConsumoResponseDTO();
+
+                            dto.setIdConsumption(
+                                    consumption.getIdConsumption()
+                            );
+
+                            dto.setIdItem(
+                                    consumption.getItem().getIdItem()
+                            );
+
+                            dto.setNomIngredient(
+                                    consumption.getItem()
+                                            .getIngredient()
+                                            .getNomIngredient()
+                            );
+
+                            dto.setIdRecipe(
+                                    consumption.getRecipe()
+                                            .getIdRecipe()
+                            );
+
+                            dto.setNomRecipe(
+                                    consumption.getRecipe()
+                                            .getNomRecipe()
+                            );
+
+                            dto.setConsumptionDate(
+                                    consumption.getConsumptionDate()
+                            );
+
+                            return dto;
+                        })
+                        .toList();
+
+        if (lista.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No hay consumos registrados para la familia: "
+                            + idFamily
+            );
+        }
+
+        return ResponseEntity.ok(lista);
+    }
+
+    // HU56: CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
     @GetMapping("/fecha")
     public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
             @RequestParam LocalDate fechaInicio,
@@ -179,16 +320,22 @@ public class ConsumptionController {
             );
         }
 
-        LocalDateTime inicio = fechaInicio.atStartOfDay();
+        LocalDateTime inicio =
+                fechaInicio.atStartOfDay();
 
-        LocalDateTime fin = fechaFin
-                .plusDays(1)
-                .atStartOfDay();
+        LocalDateTime fin =
+                fechaFin
+                        .plusDays(1)
+                        .atStartOfDay();
 
         List<Consumption> consumptions =
-                cS.consultarPorFecha(inicio, fin);
+                cS.consultarPorFecha(
+                        inicio,
+                        fin
+                );
 
-        List<ConsumptionDTO> lista = new ArrayList<>();
+        List<ConsumptionDTO> lista =
+                new ArrayList<>();
 
         for (Consumption consumption : consumptions) {
 
@@ -200,6 +347,7 @@ public class ConsumptionController {
 
             lista.add(dto);
         }
+
         return ResponseEntity.ok(lista);
     }
 }
