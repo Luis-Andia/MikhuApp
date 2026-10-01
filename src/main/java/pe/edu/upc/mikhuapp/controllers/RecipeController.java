@@ -17,6 +17,7 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IIngredientService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -135,4 +136,20 @@ public class RecipeController {
     }
 
     // HU52: Consultar detalle de receta - JOHAN
+    @GetMapping("/{id}/detalle")
+    public ResponseEntity<List<RecipeDetailDTO>> consultarDetalleReceta(
+            @PathVariable("id") Long idRecipe) {
+
+        rS.listId(idRecipe)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Receta no encontrada"));
+
+        List<RecipeDetailDTO> lista = rS.consultarDetalleReceta(idRecipe)
+                .stream()
+                .map(detalle -> modelMapper.map(detalle, RecipeDetailDTO.class))
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
 }
