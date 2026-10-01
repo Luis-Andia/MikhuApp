@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ public class ItemDTOInsert {
     @Positive(message = "Id de Ingrediente obligatorio")
     private Long idIngredient;
 
-    @Positive(message = "Cantidad disponible obligatoria")
+    @PositiveOrZero(message = "Cantidad disponible obligatoria")
     private double amountAvailable;
 
     @NotNull(message = "Fecha de compra obligatoria")
