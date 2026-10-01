@@ -35,8 +35,8 @@ public class ItemServiceImplements implements IItemService {
     }
 
     @Override
-    public List<Item> listarVencidos(LocalDate fechaActual) {
-        return itemRepository.findByDueDateBefore(fechaActual);
+    public List<Item> listarVencidos(LocalDate fechaActual, Long idFamily) {
+        return itemRepository.findByDueDateBeforeAndFamilyId(fechaActual, idFamily);
     }
 
     @Override
@@ -45,8 +45,8 @@ public class ItemServiceImplements implements IItemService {
     }
 
     @Override
-    public List<Item> listarAlimentoBajoStock() {
-        return itemRepository.findAlimentosBajoStock();
+    public List<Item> listarAlimentoBajoStock(Long idFamily) {
+        return itemRepository.findAlimentosBajoStock(idFamily);
     }
 
     // HU48 Buscar item por nombre
@@ -65,10 +65,10 @@ public class ItemServiceImplements implements IItemService {
         itemRepository.deleteById(id);
     }
 
-    @Override
-    public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual) {
-        return itemRepository.findByDueDateBefore(fechaActual);
-    }
+//    @Override
+//    public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual, Long idFamily) {
+//        return itemRepository.findByDueDateBefore(fechaActual, idFamily);
+//    }
 
 //    @Override
 //    public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite) {

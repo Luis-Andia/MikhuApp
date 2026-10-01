@@ -141,12 +141,14 @@ public class ItemController {
     }
 
     // LISTAR ITEMS VENCIDOS
-    @GetMapping("/Vencidos")
+    @GetMapping("/Vencidos/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity <List<ItemDTOList>>listarVencidos() {
+    public ResponseEntity <List<ItemDTOList>>listarVencidos(@RequestParam Long idFamily) {
+        Family family = familiaService.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
         LocalDate fechaActual = LocalDate.now();
 
-        List<ItemDTOList> lista = itemService.listarVencidos(fechaActual)
+        List<ItemDTOList> lista = itemService.listarVencidos(fechaActual, idFamily)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
@@ -207,10 +209,14 @@ public class ItemController {
 
 
     // HU49: LISTAR ALIMENTOS CON BAJO STOCK
-    @GetMapping("/bajoStock")
+    @GetMapping("/bajoStock/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
-        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
+    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock(@RequestParam Long idFamily) {
+
+        Family family = familiaService.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
+
+        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock(idFamily)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
