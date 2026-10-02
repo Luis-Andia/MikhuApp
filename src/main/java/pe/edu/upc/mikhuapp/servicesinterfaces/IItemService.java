@@ -30,6 +30,8 @@ public interface   IItemService {
 
     public void delete(Long id);
 
+    public List<Object[]> listarCantidadIngredientesDisponiblesPorFamilia(Long idFamily);
+
     //public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual);
     //public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite);
 }

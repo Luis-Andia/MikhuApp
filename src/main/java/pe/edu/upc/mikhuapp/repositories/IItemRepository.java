@@ -47,4 +47,19 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
 
     // HU48 Buscar item por nombre
     List<Item> findByIngredient_NomIngredientContainingIgnoreCase(String nombre);
+
+    //HU58 Listar cantidad de ingredientes disponibles por familia
+    @Query(value = "SELECT " +
+            "i.id_family, " +
+            "ing.id_ingredient, " +
+            "ing.nom_ingredient AS ingrediente, " +
+            "SUM(i.amount_available) AS cantidad_disponible " +
+            "FROM items i " +
+            "INNER JOIN ingredients ing ON ing.id_ingredient = i.id_ingredient " +
+            "WHERE i.id_family = :idFamily " +
+            "GROUP BY i.id_family, ing.id_ingredient, ing.nom_ingredient " +
+            "ORDER BY ing.nom_ingredient",
+            nativeQuery = true)
+    List<Object[]> availabilityOfIngredientsByFamily(
+            @Param("idFamily") Long idFamily);
 }

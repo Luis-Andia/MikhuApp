@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.mikhuapp.dtos.IngredientAvailableByFamilyDTO;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOList;
 import pe.edu.upc.mikhuapp.dtos.FamilyInventoryDTO;
@@ -252,5 +253,39 @@ public class ItemController {
 
         return ResponseEntity.ok(lista);
     }
+
+    // HU58: LISTAR CANTIDAD DE INGREDIENTES DISPONIBLES POR FAMILIA
+    @GetMapping("/CantidadIngredientesDisponibles/{idFamily}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<IngredientAvailableByFamilyDTO>> listarCantidadIngredientesDisponiblesPorFamilia(
+            @RequestParam Long idFamily) {
+
+        List<IngredientAvailableByFamilyDTO> list =
+                itemService.listarCantidadIngredientesDisponiblesPorFamilia(idFamily)
+                        .stream()
+                        .map(item -> {
+
+                            IngredientAvailableByFamilyDTO dto =
+                                    new IngredientAvailableByFamilyDTO();
+
+                            dto.setIdIngredient(
+                                    ((Number) item[1]).longValue()
+                            );
+
+                            dto.setNomIngredient(
+                                    (String) item[2]
+                            );
+
+                            dto.setAmountAvailable(
+                                    ((Number) item[3]).intValue()
+                            );
+
+                            return dto;
+                        })
+                        .toList();
+
+        return ResponseEntity.ok(list);
+    }
+
 
 }

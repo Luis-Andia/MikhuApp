@@ -65,6 +65,11 @@ public class ItemServiceImplements implements IItemService {
         itemRepository.deleteById(id);
     }
 
+    @Override
+    public List<Object[]> listarCantidadIngredientesDisponiblesPorFamilia(Long idFamily) {
+        return itemRepository.availabilityOfIngredientsByFamily(idFamily);
+    }
+
 //    @Override
 //    public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual, Long idFamily) {
 //        return itemRepository.findByDueDateBefore(fechaActual, idFamily);
