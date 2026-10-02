@@ -216,13 +216,12 @@ public class ConsumptionController {
     }
 
     // HU51: Listar alimentos mas consumidos
-    @GetMapping("/alimentos-mas-consumidos")
+    @GetMapping("/alimentos-mas-consumidos/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<MostConsumedIngredientsDTO>>
-    ListMostConsumedIngredients() {
+    public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredients(@PathVariable Long idFamily) {
 
         List<MostConsumedIngredientsDTO> list =
-                cS.ListMostConsumedIngredients()
+                cS.ListMostConsumedIngredients(idFamily)
                         .stream()
                         .map(item -> {
 
@@ -251,9 +250,7 @@ public class ConsumptionController {
     // HU55: CONSULTAR HISTORIAL DE CONSUMO POR IdFamily
     @GetMapping("/familia/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<HistorialConsumoResponseDTO>>
-    consultarPorFamilia(
-            @PathVariable Long idFamily) {
+    public ResponseEntity<List<HistorialConsumoResponseDTO>> consultarPorFamilia(@PathVariable Long idFamily) {
 
         List<Consumption> consumptions =
                 cS.consultarPorFamilia(idFamily);
