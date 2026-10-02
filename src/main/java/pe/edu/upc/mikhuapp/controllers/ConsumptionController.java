@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
+import pe.edu.upc.mikhuapp.dtos.ConsumptionDTODate;
 import pe.edu.upc.mikhuapp.dtos.HistorialConsumoResponseDTO;
 import pe.edu.upc.mikhuapp.dtos.MostConsumedIngredientsDTO;
 import pe.edu.upc.mikhuapp.entities.Consumption;
@@ -21,7 +22,6 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -216,13 +216,12 @@ public class ConsumptionController {
     }
 
     // HU51: Listar alimentos mas consumidos
-    @GetMapping("/alimentos-mas-consumidos")
+    @GetMapping("/alimentos-mas-consumidos/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<MostConsumedIngredientsDTO>>
-    ListMostConsumedIngredients() {
+    public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredients(@PathVariable Long idFamily) {
 
         List<MostConsumedIngredientsDTO> list =
-                cS.ListMostConsumedIngredients()
+                cS.ListMostConsumedIngredients(idFamily)
                         .stream()
                         .map(item -> {
 
@@ -251,9 +250,7 @@ public class ConsumptionController {
     // HU55: CONSULTAR HISTORIAL DE CONSUMO POR IdFamily
     @GetMapping("/familia/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<HistorialConsumoResponseDTO>>
-    consultarPorFamilia(
-            @PathVariable Long idFamily) {
+    public ResponseEntity<List<HistorialConsumoResponseDTO>> consultarPorFamilia(@PathVariable Long idFamily) {
 
         List<Consumption> consumptions =
                 cS.consultarPorFamilia(idFamily);
@@ -310,10 +307,11 @@ public class ConsumptionController {
 
     // HU56: CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
     @GetMapping("/fecha")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<ConsumptionDTODate>> consultarPorFecha(
             @RequestParam LocalDate fechaInicio,
-            @RequestParam LocalDate fechaFin) {
+            @RequestParam LocalDate fechaFin,
+            @RequestParam Long idFamily) {
 
         if (fechaInicio.isAfter(fechaFin)) {
             throw new IllegalArgumentException(
@@ -321,25 +319,35 @@ public class ConsumptionController {
             );
         }
 
-        List<Consumption> consumptions =
-                cS.consultarPorFecha(
-                        fechaInicio,
-                        fechaFin
-                );
+        LocalDateTime inicio = fechaInicio.atStartOfDay();
 
-        List<ConsumptionDTO> lista =
-                new ArrayList<>();
+        LocalDateTime fin = fechaFin
+                .plusDays(1)
+                .atStartOfDay();
 
-        for (Consumption consumption : consumptions) {
+        List<ConsumptionDTODate> lista =
+                cS.consultarPorFecha(inicio, fin, idFamily)
+                        .stream()
+                        .map(item -> {
 
-            ConsumptionDTO dto =
-                    modelMapper.map(
-                            consumption,
-                            ConsumptionDTO.class
-                    );
+                            ConsumptionDTODate dto =
+                                    new ConsumptionDTODate();
 
-            lista.add(dto);
-        }
+                            dto.setIdConsumption(
+                                    ((Number) item[0]).longValue()
+                            );
+
+                            dto.setConsumptionDate(
+                                    ((LocalDate) item[1])
+                            );
+
+                            dto.setNomIngredient(
+                                    (String) item[2]
+                            );
+
+                            return dto;
+                        })
+                        .toList();
 
         return ResponseEntity.ok(lista);
     }

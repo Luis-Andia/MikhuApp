@@ -114,6 +114,7 @@ public class RecipeController {
 
     // HU53: CONSULTAR RECETA POR NOMBRE
     @GetMapping("/nomRecipe")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<RecipeDTOList>> listRecipebyName(@RequestParam String nomRecipe){
         List<RecipeDTOList> result = rS.findRecipe_nomRecipe(nomRecipe)
                 .stream()
@@ -124,6 +125,7 @@ public class RecipeController {
 
     // HU57 CONSULTAR RECETAS POR INGREDIENTE
     @GetMapping("/ingrediente/{nombreIngrediente}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(
             @PathVariable("nombreIngrediente") String nombreIngrediente){
 
@@ -140,6 +142,7 @@ public class RecipeController {
 
     // HU52: Consultar detalle de receta - JOHAN
     @GetMapping("/{id}/detalle")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<RecipeDetailDTO>> consultarDetalleReceta(
             @PathVariable("id") Long idRecipe) {
 

@@ -11,14 +11,18 @@ import java.util.List;
 
 @Repository
 public interface IItemRepository extends JpaRepository<Item, Long> {
-    //HU Listar ingredientes vencidos
-    public List<Item> findByDueDateBefore(LocalDate fechaActual);
+    //HU50 Listar ingredientes vencidos
+    @Query(value = "SELECT * FROM items "
+            + "WHERE due_date < :fechaActual "
+            + "AND id_family = :idFamily", nativeQuery = true)
+    List<Item> findByDueDateBeforeAndFamilyId(@Param("fechaActual") LocalDate fechaActual,
+                                              @Param("idFamily") Long idFamily);
 
     //HU50 Listar proximos a vencer Ordenados
     @Query(value = "SELECT * FROM items " +
-            "WHERE \"id_family\" = :idFamily " +
-            "AND \"due_date\" BETWEEN :fechaActual AND :fechaLimite " +
-            "ORDER BY \"due_date\" ASC",
+            "WHERE id_family = :idFamily " +
+            "AND due_date BETWEEN :fechaActual AND :fechaLimite " +
+            "ORDER BY due_date ASC",
             nativeQuery = true)
     List<Item> findByDueDateBetween(
             @Param("idFamily") Long idFamily,
@@ -26,19 +30,36 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
             @Param("fechaLimite") LocalDate fechaLimite);
 
     //HU47 Listar items del inventario familiar
-    @Query(value = "SELECT i.idItem, ing.nomIngredient, i.amountAvailable, " +
-            "i.purchaseDate, i.dueDate, i.minimumStock " +
-            "FROM Item i JOIN i.ingredient ing " +
-            "WHERE i.family.idFamily = :idFamily")
+    @Query(value = "SELECT i.id_item, ing.nom_ingredient, i.amount_available, " +
+            "i.purchase_date, i.due_date, i.minimum_stock " +
+            "FROM items i INNER JOIN ingredients ing " +
+            "ON i.id_ingredient = ing.id_ingredient " +
+            "WHERE i.id_family = :idFamily", nativeQuery = true)
     List<Object[]> findByFamilyId(
             @Param("idFamily") Long idFamily
     );
 
     //HU49 Listar alimentos con bajo Stock
-    @Query(value = "select * from items"
-            + " WHERE amount_available <= minimum_stock", nativeQuery = true)
-    List<Item> findAlimentosBajoStock();
+    @Query(value = "SELECT * FROM items "
+            + "WHERE amount_available <= minimum_stock "
+            + "AND id_family= :idFamily", nativeQuery = true)
+    List<Item> findAlimentosBajoStock(@Param("idFamily") Long idFamily);
 
     // HU48 Buscar item por nombre
     List<Item> findByIngredient_NomIngredientContainingIgnoreCase(String nombre);
+
+    //HU58 Listar cantidad de ingredientes disponibles por familia
+    @Query(value = "SELECT " +
+            "i.id_family, " +
+            "ing.id_ingredient, " +
+            "ing.nom_ingredient AS ingrediente, " +
+            "SUM(i.amount_available) AS cantidad_disponible " +
+            "FROM items i " +
+            "INNER JOIN ingredients ing ON ing.id_ingredient = i.id_ingredient " +
+            "WHERE i.id_family = :idFamily " +
+            "GROUP BY i.id_family, ing.id_ingredient, ing.nom_ingredient " +
+            "ORDER BY ing.nom_ingredient",
+            nativeQuery = true)
+    List<Object[]> availabilityOfIngredientsByFamily(
+            @Param("idFamily") Long idFamily);
 }

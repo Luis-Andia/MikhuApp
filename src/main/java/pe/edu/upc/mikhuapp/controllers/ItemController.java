@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.mikhuapp.dtos.IngredientAvailableByFamilyDTO;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.ItemDTOList;
 import pe.edu.upc.mikhuapp.dtos.FamilyInventoryDTO;
@@ -141,12 +142,14 @@ public class ItemController {
     }
 
     // LISTAR ITEMS VENCIDOS
-    @GetMapping("/Vencidos")
+    @GetMapping("/Vencidos/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity <List<ItemDTOList>>listarVencidos() {
+    public ResponseEntity <List<ItemDTOList>>listarVencidos(@RequestParam Long idFamily) {
+        Family family = familiaService.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
         LocalDate fechaActual = LocalDate.now();
 
-        List<ItemDTOList> lista = itemService.listarVencidos(fechaActual)
+        List<ItemDTOList> lista = itemService.listarVencidos(fechaActual, idFamily)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
@@ -207,10 +210,14 @@ public class ItemController {
 
 
     // HU49: LISTAR ALIMENTOS CON BAJO STOCK
-    @GetMapping("/bajoStock")
+    @GetMapping("/bajoStock/{idFamily}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock() {
-        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock()
+    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock(@RequestParam Long idFamily) {
+
+        Family family = familiaService.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
+
+        List<ItemDTOList> lista = itemService.listarAlimentoBajoStock(idFamily)
                 .stream()
                 .map(item->modelMapper.map(item, ItemDTOList.class))
                 .toList();
@@ -225,6 +232,9 @@ public class ItemController {
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<ItemDTOList>> listarProximosVencer(@RequestParam Long idFamily) {
 
+        Family family = familiaService.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
+        
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaLimite = fechaActual.plusDays(3);
 
@@ -243,5 +253,39 @@ public class ItemController {
 
         return ResponseEntity.ok(lista);
     }
+
+    // HU58: LISTAR CANTIDAD DE INGREDIENTES DISPONIBLES POR FAMILIA
+    @GetMapping("/CantidadIngredientesDisponibles/{idFamily}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<IngredientAvailableByFamilyDTO>> listarCantidadIngredientesDisponiblesPorFamilia(
+            @RequestParam Long idFamily) {
+
+        List<IngredientAvailableByFamilyDTO> list =
+                itemService.listarCantidadIngredientesDisponiblesPorFamilia(idFamily)
+                        .stream()
+                        .map(item -> {
+
+                            IngredientAvailableByFamilyDTO dto =
+                                    new IngredientAvailableByFamilyDTO();
+
+                            dto.setIdIngredient(
+                                    ((Number) item[1]).longValue()
+                            );
+
+                            dto.setNomIngredient(
+                                    (String) item[2]
+                            );
+
+                            dto.setAmountAvailable(
+                                    ((Number) item[3]).intValue()
+                            );
+
+                            return dto;
+                        })
+                        .toList();
+
+        return ResponseEntity.ok(list);
+    }
+
 
 }

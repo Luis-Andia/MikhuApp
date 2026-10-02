@@ -17,11 +17,11 @@ public interface   IItemService {
 
     public Optional<Item> listid(Long id);
 
-    public List<Item> listarVencidos(LocalDate fechaActual);
+    public List<Item> listarVencidos(LocalDate fechaActual, Long idFamily);
 
     public List<Item> listarProximosVencer(Long idFamily, LocalDate fechaActual, LocalDate fechaLimite);
 
-    public List<Item> listarAlimentoBajoStock();
+    public List<Item> listarAlimentoBajoStock(Long idFamily);
 
     public List<Object[]> listarItemsPorFamilia(Long idFamily);
 
@@ -30,6 +30,8 @@ public interface   IItemService {
 
     public void delete(Long id);
 
-    public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual);
+    public List<Object[]> listarCantidadIngredientesDisponiblesPorFamilia(Long idFamily);
+
+    //public List<Item> findByfechaVencimientoBefore(LocalDate fechaActual);
     //public List<Item> findByfechaVencimientoBetween(LocalDate fechaActual, LocalDate fechaLimite);
 }
