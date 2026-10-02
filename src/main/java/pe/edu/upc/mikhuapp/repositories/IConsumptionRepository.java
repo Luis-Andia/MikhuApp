@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pe.edu.upc.mikhuapp.entities.Consumption;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -30,6 +30,6 @@ public interface IConsumptionRepository extends JpaRepository<Consumption, Long>
             "WHERE c.consumptionDate >= :fechaInicio " +
             "AND c.consumptionDate < :fechaFin")
     public List<Consumption> consultarPorFecha(
-            @Param("fechaInicio") LocalDateTime fechaInicio,
-            @Param("fechaFin") LocalDateTime fechaFin);
+            @Param("fechaInicio") LocalDate fechaInicio,
+            @Param("fechaFin") LocalDate fechaFin);
 }

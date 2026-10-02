@@ -310,7 +310,7 @@ public class ConsumptionController {
 
     // HU56: CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
     @GetMapping("/fecha")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
             @RequestParam LocalDate fechaInicio,
             @RequestParam LocalDate fechaFin) {
@@ -321,18 +321,10 @@ public class ConsumptionController {
             );
         }
 
-        LocalDateTime inicio =
-                fechaInicio.atStartOfDay();
-
-        LocalDateTime fin =
-                fechaFin
-                        .plusDays(1)
-                        .atStartOfDay();
-
         List<Consumption> consumptions =
                 cS.consultarPorFecha(
-                        inicio,
-                        fin
+                        fechaInicio,
+                        fechaFin
                 );
 
         List<ConsumptionDTO> lista =
