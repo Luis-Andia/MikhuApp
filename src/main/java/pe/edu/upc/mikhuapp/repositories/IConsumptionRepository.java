@@ -39,11 +39,9 @@ public interface IConsumptionRepository extends JpaRepository<Consumption, Long>
             "INNER JOIN items i ON c.id_item = i.id_item " +
             "INNER JOIN ingredients ing ON i.id_ingredient = ing.id_ingredient " +
             "WHERE c.consumption_date >= :fechaInicio " +
-            "AND c.consumption_date < :fechaFin " +
-            "AND i.id_family = :idFamily",
+            "AND c.consumption_date < :fechaFin ",
             nativeQuery = true)
-    List<Object[]> consultarPorFecha(
+    List<Consumption> consultarPorFecha(
             @Param("fechaInicio") LocalDate fechaInicio,
-            @Param("fechaFin") LocalDate fechaFin,
-            @Param("idFamily") Long idFamily);
+            @Param("fechaFin") LocalDate fechaFin);
 }
