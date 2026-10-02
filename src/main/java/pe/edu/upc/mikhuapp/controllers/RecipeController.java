@@ -149,7 +149,19 @@ public class RecipeController {
 
         List<RecipeDetailDTO> lista = rS.consultarDetalleReceta(idRecipe)
                 .stream()
-                .map(detalle -> modelMapper.map(detalle, RecipeDetailDTO.class))
+                .map(detalle -> {RecipeDetailDTO dto = new RecipeDetailDTO();
+                    dto.setIdRecipe(detalle.getRecipe().getIdRecipe());
+                    dto.setNomRecipe(detalle.getRecipe().getNomRecipe());
+                    dto.setCalories(detalle.getRecipe().getCalories());
+                    dto.setDifficulty(detalle.getRecipe().getDifficulty());
+
+                    dto.setIdIngredient(detalle.getIngredient().getIdIngredient());
+                    dto.setNomIngredient(detalle.getIngredient().getNomIngredient());
+
+                    dto.setRequestedQuantity(detalle.getRequestedQuantity());
+
+                    return dto;
+                })
                 .toList();
 
         return ResponseEntity.ok(lista);

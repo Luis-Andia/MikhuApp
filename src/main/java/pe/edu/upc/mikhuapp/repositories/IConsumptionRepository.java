@@ -22,15 +22,28 @@ public interface IConsumptionRepository extends JpaRepository<Consumption, Long>
     public List<Object[]>ListMostConsumedIngredients(@Param("idFamily") Long idFamily);
 
     // HU55: Consultar historial de consumo por IdFamily
-    @Query("SELECT c FROM Consumption c " +
-            "WHERE c.item.family.idFamily = :idFamily")
-    List<Consumption> consultarPorFamilia(@Param("idFamily") Long idFamily);
+    @Query(value = "SELECT c.* " +
+            "FROM consumptions c " +
+            "INNER JOIN items i ON c.id_item = i.id_item " +
+            "WHERE i.id_family = :idFamily",
+            nativeQuery = true)
+    List<Consumption> consultarPorFamilia(
+            @Param("idFamily") Long idFamily);
 
     // HU56 - Consultar ingredientes consumidos por fecha
-    @Query("SELECT c FROM Consumption c " +
-            "WHERE c.consumptionDate >= :fechaInicio " +
-            "AND c.consumptionDate < :fechaFin")
-    public List<Consumption> consultarPorFecha(
+    @Query(value = "SELECT " +
+            "c.id_consumption, " +
+            "c.consumption_date, " +
+            "ing.nom_ingredient " +
+            "FROM consumptions c " +
+            "INNER JOIN items i ON c.id_item = i.id_item " +
+            "INNER JOIN ingredients ing ON i.id_ingredient = ing.id_ingredient " +
+            "WHERE c.consumption_date >= :fechaInicio " +
+            "AND c.consumption_date < :fechaFin " +
+            "AND i.id_family = :idFamily",
+            nativeQuery = true)
+    List<Object[]> consultarPorFecha(
             @Param("fechaInicio") LocalDateTime fechaInicio,
-            @Param("fechaFin") LocalDateTime fechaFin);
+            @Param("fechaFin") LocalDateTime fechaFin,
+            @Param("idFamily") Long idFamily);
 }

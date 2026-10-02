@@ -231,6 +231,9 @@ public class ItemController {
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<ItemDTOList>> listarProximosVencer(@RequestParam Long idFamily) {
 
+        Family family = familiaService.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
+        
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaLimite = fechaActual.plusDays(3);
 

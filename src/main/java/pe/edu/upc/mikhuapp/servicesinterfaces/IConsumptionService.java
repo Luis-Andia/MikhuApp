@@ -20,7 +20,8 @@ public interface IConsumptionService {
 
     void update(Consumption consumption);
     void delete (Long id);
-    public List<Consumption> consultarPorFecha(
+    public List<Object[]> consultarPorFecha(
             LocalDateTime fechaInicio,
-            LocalDateTime fechaFin);
+            LocalDateTime fechaFin,
+            Long idFamily);
 }

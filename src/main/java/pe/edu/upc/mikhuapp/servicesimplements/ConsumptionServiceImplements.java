@@ -58,10 +58,11 @@ public class ConsumptionServiceImplements implements IConsumptionService {
     }
 
     @Override
-    public List<Consumption> consultarPorFecha(
+    public List<Object[]> consultarPorFecha(
             LocalDateTime fechaInicio,
-            LocalDateTime fechaFin) {
+            LocalDateTime fechaFin,
+            Long idFamily) {
 
-        return cR.consultarPorFecha(fechaInicio, fechaFin);
+        return cR.consultarPorFecha(fechaInicio, fechaFin, idFamily);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
+import pe.edu.upc.mikhuapp.dtos.ConsumptionDTODate;
 import pe.edu.upc.mikhuapp.dtos.HistorialConsumoResponseDTO;
 import pe.edu.upc.mikhuapp.dtos.MostConsumedIngredientsDTO;
 import pe.edu.upc.mikhuapp.entities.Consumption;
@@ -21,7 +22,6 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -308,9 +308,10 @@ public class ConsumptionController {
     // HU56: CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
     @GetMapping("/fecha")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
+    public ResponseEntity<List<ConsumptionDTODate>> consultarPorFecha(
             @RequestParam LocalDate fechaInicio,
-            @RequestParam LocalDate fechaFin) {
+            @RequestParam LocalDate fechaFin,
+            @RequestParam Long idFamily) {
 
         if (fechaInicio.isAfter(fechaFin)) {
             throw new IllegalArgumentException(
@@ -318,33 +319,35 @@ public class ConsumptionController {
             );
         }
 
-        LocalDateTime inicio =
-                fechaInicio.atStartOfDay();
+        LocalDateTime inicio = fechaInicio.atStartOfDay();
 
-        LocalDateTime fin =
-                fechaFin
-                        .plusDays(1)
-                        .atStartOfDay();
+        LocalDateTime fin = fechaFin
+                .plusDays(1)
+                .atStartOfDay();
 
-        List<Consumption> consumptions =
-                cS.consultarPorFecha(
-                        inicio,
-                        fin
-                );
+        List<ConsumptionDTODate> lista =
+                cS.consultarPorFecha(inicio, fin, idFamily)
+                        .stream()
+                        .map(item -> {
 
-        List<ConsumptionDTO> lista =
-                new ArrayList<>();
+                            ConsumptionDTODate dto =
+                                    new ConsumptionDTODate();
 
-        for (Consumption consumption : consumptions) {
+                            dto.setIdConsumption(
+                                    ((Number) item[0]).longValue()
+                            );
 
-            ConsumptionDTO dto =
-                    modelMapper.map(
-                            consumption,
-                            ConsumptionDTO.class
-                    );
+                            dto.setConsumptionDate(
+                                    ((LocalDate) item[1])
+                            );
 
-            lista.add(dto);
-        }
+                            dto.setNomIngredient(
+                                    (String) item[2]
+                            );
+
+                            return dto;
+                        })
+                        .toList();
 
         return ResponseEntity.ok(lista);
     }
