@@ -22,6 +22,10 @@ public interface IRecipeService {
 
     public List<Recipe> listarPorIngrediente(String nombreIngrediente);
     public List<Recipe> findRecipe_nomRecipe(@Param("nomRecipe") String nomRecipe);
+
+    // HU54: Consultar recetas por país
+    public List<Recipe> findByPais(String nombrePais);
+
     public List<RecipeIngredient> consultarDetalleReceta(Long idRecipe);
 
 }

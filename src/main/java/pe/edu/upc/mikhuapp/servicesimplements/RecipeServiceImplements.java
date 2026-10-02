@@ -60,4 +60,9 @@ public class RecipeServiceImplements implements IRecipeService {
     public List<Recipe> findRecipe_nomRecipe(String nomRecipe) {
         return rR.findRecipe_nomRecipe(nomRecipe);
     }
+
+    @Override
+    public List<Recipe> findByPais(String nombrePais) {
+        return rR.findByPais(nombrePais);
+    }
 }
