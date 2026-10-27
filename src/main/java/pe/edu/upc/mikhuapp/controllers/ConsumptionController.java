@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/consumptions")
+@RequestMapping("/api/consumptions")
 public class ConsumptionController {
 
     private final IConsumptionService cS;
