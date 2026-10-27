@@ -123,8 +123,7 @@ public class RecipeController {
 
     // HU57 CONSULTAR RECETAS POR INGREDIENTE
     @GetMapping("/ingrediente/{nombreIngrediente}")
-    public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(
-            @PathVariable("nombreIngrediente") String nombreIngrediente){
+    public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(@PathVariable("nombreIngrediente") String nombreIngrediente){
 
         iS.findByNomIngredient(nombreIngrediente)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
@@ -137,5 +136,5 @@ public class RecipeController {
         return ResponseEntity.ok(lista);
     }
 
-    // HU52: Consultar detalle de receta - JOHAN
+
 }

@@ -76,8 +76,7 @@ public class ConsumptionController {
     // HU36: INSERTAR un CONSUMO
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<ConsumptionDTO> insert(
-            @Validated @RequestBody ConsumptionDTO dto) {
+    public ResponseEntity<ConsumptionDTO> insert(@Validated @RequestBody ConsumptionDTO dto) {
 
         Item item = iS.listid(dto.getIdItem())
                 .orElseThrow(() ->
