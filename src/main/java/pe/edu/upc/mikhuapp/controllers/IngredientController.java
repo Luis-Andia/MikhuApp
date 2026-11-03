@@ -29,7 +29,7 @@ public class IngredientController {
 
     // HU21: Registrar Ingrediente
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    // @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<IngredientDTO> insert(@Validated @RequestBody IngredientDTO dto) {
         Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
         iS.insert(ingredient);
@@ -47,7 +47,7 @@ public class IngredientController {
 
     // HU22: Listar ingredientes registrados
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<IngredientDTO>> list() {
         List<IngredientDTO> lista = iS.list().stream()
                 .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
@@ -77,7 +77,7 @@ public class IngredientController {
 
     // HU24: Eliminar un ingrediente
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    // @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
         Ingredient ingredient = iS.listId(id)

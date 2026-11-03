@@ -74,7 +74,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipes").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipes/*").permitAll()
-
+                        .requestMatchers(HttpMethod.POST, "/api/families").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/families").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.DELETE, "/api/families/*").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/ingredients").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.DELETE, "/api/ingredients/*").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll() // Eliminar dps de probar
 
                         // Swagger
                         .requestMatchers(
