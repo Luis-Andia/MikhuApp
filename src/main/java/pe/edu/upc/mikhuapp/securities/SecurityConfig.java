@@ -81,6 +81,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/ingredients/*").permitAll() // Eliminar dps de probar
                         .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll() // Eliminar dps de probar
 
+                        .requestMatchers(HttpMethod.POST, "/api/countries").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.PUT, "/api/countries").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.DELETE, "/api/countries/*").permitAll() // Eliminar dps de probar
+
                         // Swagger
                         .requestMatchers(
                                 "/swagger-ui/**",
