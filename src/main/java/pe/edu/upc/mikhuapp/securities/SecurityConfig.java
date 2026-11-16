@@ -74,6 +74,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipes").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipes/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/items/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/items").permitAll()
 
 
                         // Swagger
