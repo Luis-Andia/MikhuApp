@@ -2,6 +2,7 @@ package pe.edu.upc.mikhuapp.servicesinterfaces;
 
 import pe.edu.upc.mikhuapp.entities.Consumption;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +21,7 @@ public interface IConsumptionService {
 
     void update(Consumption consumption);
     void delete (Long id);
-    public List<Object[]> consultarPorFecha(
-            LocalDateTime fechaInicio,
-            LocalDateTime fechaFin,
-            Long idFamily);
+    public List<Consumption> consultarPorFecha(
+            LocalDate fechaInicio,
+            LocalDate fechaFin);
 }

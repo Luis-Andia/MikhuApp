@@ -123,6 +123,25 @@ public class RecipeController {
         return ResponseEntity.ok(result);
     }
 
+    // HU54: CONSULTAR RECETAS POR PAÍS
+    @GetMapping("/pais")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<?> listarPorPais(
+            @RequestParam String nombrePais) {
+
+        List<RecipeDTOList> lista = rS.findByPais(nombrePais)
+                .stream()
+                .map(receta -> modelMapper.map(receta, RecipeDTOList.class))
+                .toList();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(404)
+                    .body("No hay recetas asociadas al país: " + nombrePais);
+        }
+
+        return ResponseEntity.ok(lista);
+    }
+
     // HU57 CONSULTAR RECETAS POR INGREDIENTE
     @GetMapping("/ingrediente/{nombreIngrediente}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
@@ -152,15 +171,15 @@ public class RecipeController {
 
         List<RecipeDetailDTO> lista = rS.consultarDetalleReceta(idRecipe)
                 .stream()
-                .map(detalle -> {RecipeDetailDTO dto = new RecipeDetailDTO();
+                .map(detalle -> {
+                    RecipeDetailDTO dto = new RecipeDetailDTO();
+
                     dto.setIdRecipe(detalle.getRecipe().getIdRecipe());
                     dto.setNomRecipe(detalle.getRecipe().getNomRecipe());
                     dto.setCalories(detalle.getRecipe().getCalories());
                     dto.setDifficulty(detalle.getRecipe().getDifficulty());
-
                     dto.setIdIngredient(detalle.getIngredient().getIdIngredient());
                     dto.setNomIngredient(detalle.getIngredient().getNomIngredient());
-
                     dto.setRequestedQuantity(detalle.getRequestedQuantity());
 
                     return dto;

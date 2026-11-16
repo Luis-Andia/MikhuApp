@@ -32,8 +32,8 @@ public class FamilyController {
 
     // HU26: INSERTAR Familiar
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
+    // @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+        public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
         Family nueva_family = modelMapper.map(familia, Family.class);
         fS.insert(nueva_family);
 
@@ -49,7 +49,7 @@ public class FamilyController {
 
     // HU27: LISTAR Familias
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<FamilyDTOList>> listar(){
         List<FamilyDTOList> lista_familias = fS.list()
                 .stream()
@@ -78,7 +78,7 @@ public class FamilyController {
 
     // HU29: ELIMINAR FAMILIA
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id){
         Family familia = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));

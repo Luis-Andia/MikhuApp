@@ -1,13 +1,11 @@
 package pe.edu.upc.mikhuapp.servicesimplements;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.mikhuapp.entities.Consumption;
-import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.repositories.IConsumptionRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IConsumptionService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,11 +56,10 @@ public class ConsumptionServiceImplements implements IConsumptionService {
     }
 
     @Override
-    public List<Object[]> consultarPorFecha(
-            LocalDateTime fechaInicio,
-            LocalDateTime fechaFin,
-            Long idFamily) {
+    public List<Consumption> consultarPorFecha(
+            LocalDate fechaInicio,
+            LocalDate fechaFin) {
 
-        return cR.consultarPorFecha(fechaInicio, fechaFin, idFamily);
+        return cR.consultarPorFecha(fechaInicio, fechaFin);
     }
 }

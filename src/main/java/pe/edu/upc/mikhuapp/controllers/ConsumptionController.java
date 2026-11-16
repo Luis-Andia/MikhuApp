@@ -22,10 +22,11 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/consumptions")
+@RequestMapping("/api/consumptions")
 public class ConsumptionController {
 
     private final IConsumptionService cS;
@@ -76,8 +77,7 @@ public class ConsumptionController {
     // HU36: INSERTAR un CONSUMO
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<ConsumptionDTO> insert(
-            @Validated @RequestBody ConsumptionDTO dto) {
+    public ResponseEntity<ConsumptionDTO> insert(@Validated @RequestBody ConsumptionDTO dto) {
 
         Item item = iS.listid(dto.getIdItem())
                 .orElseThrow(() ->
@@ -307,11 +307,9 @@ public class ConsumptionController {
 
     // HU56: CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
     @GetMapping("/fecha")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<ConsumptionDTODate>> consultarPorFecha(
+    public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
             @RequestParam LocalDate fechaInicio,
-            @RequestParam LocalDate fechaFin,
-            @RequestParam Long idFamily) {
+            @RequestParam LocalDate fechaFin) {
 
         if (fechaInicio.isAfter(fechaFin)) {
             throw new IllegalArgumentException(
@@ -319,35 +317,25 @@ public class ConsumptionController {
             );
         }
 
-        LocalDateTime inicio = fechaInicio.atStartOfDay();
+        List<Consumption> consumptions =
+                cS.consultarPorFecha(
+                        fechaInicio,
+                        fechaFin
+                );
 
-        LocalDateTime fin = fechaFin
-                .plusDays(1)
-                .atStartOfDay();
+        List<ConsumptionDTO> lista =
+                new ArrayList<>();
 
-        List<ConsumptionDTODate> lista =
-                cS.consultarPorFecha(inicio, fin, idFamily)
-                        .stream()
-                        .map(item -> {
+        for (Consumption consumption : consumptions) {
 
-                            ConsumptionDTODate dto =
-                                    new ConsumptionDTODate();
+            ConsumptionDTO dto =
+                    modelMapper.map(
+                            consumption,
+                            ConsumptionDTO.class
+                    );
 
-                            dto.setIdConsumption(
-                                    ((Number) item[0]).longValue()
-                            );
-
-                            dto.setConsumptionDate(
-                                    ((LocalDate) item[1])
-                            );
-
-                            dto.setNomIngredient(
-                                    (String) item[2]
-                            );
-
-                            return dto;
-                        })
-                        .toList();
+            lista.add(dto);
+        }
 
         return ResponseEntity.ok(lista);
     }

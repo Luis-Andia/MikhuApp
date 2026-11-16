@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pe.edu.upc.mikhuapp.entities.Consumption;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -39,11 +39,9 @@ public interface IConsumptionRepository extends JpaRepository<Consumption, Long>
             "INNER JOIN items i ON c.id_item = i.id_item " +
             "INNER JOIN ingredients ing ON i.id_ingredient = ing.id_ingredient " +
             "WHERE c.consumption_date >= :fechaInicio " +
-            "AND c.consumption_date < :fechaFin " +
-            "AND i.id_family = :idFamily",
+            "AND c.consumption_date < :fechaFin ",
             nativeQuery = true)
-    List<Object[]> consultarPorFecha(
-            @Param("fechaInicio") LocalDateTime fechaInicio,
-            @Param("fechaFin") LocalDateTime fechaFin,
-            @Param("idFamily") Long idFamily);
+    List<Consumption> consultarPorFecha(
+            @Param("fechaInicio") LocalDate fechaInicio,
+            @Param("fechaFin") LocalDate fechaFin);
 }

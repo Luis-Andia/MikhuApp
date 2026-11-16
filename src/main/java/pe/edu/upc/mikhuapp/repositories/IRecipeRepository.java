@@ -38,4 +38,12 @@ public interface IRecipeRepository extends JpaRepository<Recipe, Long> {
             "WHERE i.nom_ingredient = :nombreIngrediente",
             nativeQuery = true)
     public List<Recipe> findByIngrediente(@Param("nombreIngrediente") String nombreIngrediente);
+
+    // HU54: Consultar recetas por país
+    @Query(value = "SELECT r.* " +
+            "FROM recipes r " +
+            "INNER JOIN countries c ON r.id_country = c.id_country " +
+            "WHERE c.nom_country = :nombrePais",
+            nativeQuery = true)
+    public List<Recipe> findByPais(@Param("nombrePais") String nombrePais);
 }
