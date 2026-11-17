@@ -103,9 +103,17 @@ public class UserController {
 
     // CONSULTAR USUARIO por ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOList> buscarid(@PathVariable("id") Long id){
         Users users = uS.listId(id)
+                .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
+        UserDTOList responseDTO = modelMapper.map(users, UserDTOList.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+    // Consultar usuario por username
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDTOList> buscarporusername(@PathVariable("username") String username){
+        Users users = uS.listByUsername(username)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
         UserDTOList responseDTO = modelMapper.map(users, UserDTOList.class);
         return ResponseEntity.ok(responseDTO);
@@ -113,7 +121,7 @@ public class UserController {
 
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
@@ -141,21 +149,5 @@ public class UserController {
 
         uS.delete(id);
         return  ResponseEntity.noContent().build();
-    }
-
-    // HU46: LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
-    @GetMapping("/IntegrantesFamilia/{idFamilia}")
-    public ResponseEntity<List<UserDTOList>> listmembers(@PathVariable long idFamilia){
-        Family familia = fS.listid(idFamilia)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "No existe la familia con el id: " + idFamilia
-                    )
-                );
-
-        List<UserDTOList> lista_usuarios = uS.listmembers(idFamilia)
-                .stream()
-                .map(u->modelMapper.map(u, UserDTOList.class))
-                .toList();
-        return ResponseEntity.ok(lista_usuarios);
     }
 }

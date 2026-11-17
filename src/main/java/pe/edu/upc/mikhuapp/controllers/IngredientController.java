@@ -58,7 +58,7 @@ public class IngredientController {
 
     // HU23: Actualizar un ingrediente
     @PutMapping()
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<IngredientDTO> update(@Validated @RequestBody IngredientDTO dto) {
 
         Ingredient ingredient = iS.listId(dto.getIdIngredient())
@@ -90,7 +90,7 @@ public class IngredientController {
 
     // HU25: Consultar un ingrediente por ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<IngredientDTO> listId(@PathVariable Long id) {
 
         Ingredient ingredient = iS.listId(id)

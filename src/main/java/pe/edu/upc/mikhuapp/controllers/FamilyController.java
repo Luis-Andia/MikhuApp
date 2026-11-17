@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.controllers;
 
+import jakarta.persistence.Id;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,9 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.FamilyDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.FamilyDTOList;
+import pe.edu.upc.mikhuapp.dtos.UserDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IUserService;
 
 import java.net.URI;
 import java.util.List;
@@ -22,10 +25,12 @@ public class FamilyController {
     // Inyecciones
     private final IFamilyService fS;
     private final ModelMapper modelMapper;
+    private final IUserService uS;
 
-    public FamilyController(IFamilyService fS, ModelMapper modelMapper) {
+    public FamilyController(IFamilyService fS, ModelMapper modelMapper, IUserService uS) {
         this.fS = fS;
         this.modelMapper = modelMapper;
+        this.uS = uS;
     }
 
     // METODOS
@@ -60,7 +65,7 @@ public class FamilyController {
 
     // HU28: ACTUALIZAR FAMILIA
     @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<FamilyDTOInsert> actualizarfamilia(@Validated @RequestBody FamilyDTOInsert dto){
         Optional<Family> existente = fS.listid(dto.getIdFamily());
         if (existente.isEmpty()) {
@@ -89,11 +94,27 @@ public class FamilyController {
 
     // HU30: CONSULTAR familia por ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<FamilyDTOList> buscarid(@PathVariable Long id){
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<FamilyDTOInsert> buscarid(@PathVariable Long id){
         Family family = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
-        FamilyDTOList responseDTO = modelMapper.map(family, FamilyDTOList.class);
+        FamilyDTOInsert responseDTO = modelMapper.map(family, FamilyDTOInsert.class);
         return ResponseEntity.ok(responseDTO);
+    }
+
+    // HU46: LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
+    @GetMapping("/IntegrantesFamilia/{idFamilia}")
+    public ResponseEntity<List<UserDTOList>> listmembers(@PathVariable long idFamilia){
+        Family familia = fS.listid(idFamilia)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                                "No existe la familia con el id: " + idFamilia
+                        )
+                );
+
+        List<UserDTOList> lista_usuarios = uS.listmembers(idFamilia)
+                .stream()
+                .map(u->modelMapper.map(u, UserDTOList.class))
+                .toList();
+        return ResponseEntity.ok(lista_usuarios);
     }
 }

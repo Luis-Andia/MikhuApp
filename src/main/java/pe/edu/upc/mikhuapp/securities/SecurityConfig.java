@@ -1,4 +1,3 @@
-
 package pe.edu.upc.mikhuapp.securities;
 
 import org.springframework.context.annotation.Bean;
@@ -38,6 +37,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
+
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider(userDetailsService);
 
@@ -101,21 +101,28 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/countries").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/countries/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/recipes").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/recipes/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/recipes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/families").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/families/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.DELETE, "/api/families/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.PUT, "/api/families/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.PUT, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll() // Eliminar dps de probar
 
-                        // Permisos temporales existentes
-                        .requestMatchers(HttpMethod.POST, "/api/families").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/families").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/families/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/ingredients").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/items/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.POST, "/api/items/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/items/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/items/**").permitAll()
 
                         // Swagger
                         .requestMatchers(

@@ -17,13 +17,9 @@ import pe.edu.upc.mikhuapp.securities.JwtTokenService;
 @RequestMapping("/login")
 public class LoginController {
     private final AuthenticationManager authenticationManager;
-
     private final JwtTokenService jwtTokenService;
 
-    public LoginController(
-            AuthenticationManager authenticationManager,
-            JwtTokenService jwtTokenService) {
-
+    public LoginController(AuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenService = jwtTokenService;
     }
@@ -39,18 +35,11 @@ public class LoginController {
                                 request.getPassword()
                         )
                 );
-
-        UserDetails userDetails =
-                (UserDetails) authentication.getPrincipal();
-
-        String token =
-                jwtTokenService.generateToken(userDetails);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String token = jwtTokenService.generateToken(userDetails);
 
         return ResponseEntity.ok(
-                new LoginResponseDTO(
-                        token,
-                        userDetails.getUsername()
-                )
+                new LoginResponseDTO(token, userDetails.getUsername())
         );
     }
 }
