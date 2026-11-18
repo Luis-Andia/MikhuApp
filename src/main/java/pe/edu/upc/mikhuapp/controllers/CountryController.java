@@ -31,7 +31,7 @@ public class CountryController {
 
     // HU31: REGISTRAR NUEVO PAIS
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CountryDTO> registrar(@Validated @RequestBody CountryDTO dto){
         Country nuevo_country = modelMapper.map(dto, Country.class);
         pS.insert(nuevo_country);
@@ -59,7 +59,7 @@ public class CountryController {
 
     // HU33: ACTUALIZAR PAIS
     @PutMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CountryDTO> actualizar_pais(@Validated @RequestBody CountryDTO dto){
         Country pais = pS.listid(dto.getIdCountry())
                 .orElseThrow(() -> new ResourceNotFoundException("Pais no encontrado"));
@@ -72,7 +72,7 @@ public class CountryController {
 
     // HU34: ELIMINAR PAIS
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         Country p = pS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
