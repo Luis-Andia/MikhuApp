@@ -35,7 +35,7 @@ public interface IRecipeRepository extends JpaRepository<Recipe, Long> {
             "FROM recipe_ingredients ri " +
             "INNER JOIN recipes r ON ri.id_recipe = r.id_recipe " +
             "INNER JOIN ingredients i ON ri.id_ingredient = i.id_ingredient " +
-            "WHERE i.nom_ingredient = :nombreIngrediente",
+            "WHERE LOWER(i.nom_ingredient) ILIKE LOWER('%' || :nombreIngrediente || '%')",
             nativeQuery = true)
     public List<Recipe> findByIngrediente(@Param("nombreIngrediente") String nombreIngrediente);
 

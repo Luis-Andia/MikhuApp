@@ -13,4 +13,5 @@ public interface IUserService {
     public void delete(Long id); // Eliminar un usuario
     public Users update(Users u);
     public List<Users> listmembers(Long idFamilia);
+    public Optional<Users> listByUsername(String username); // Buscar usuario por username
 }

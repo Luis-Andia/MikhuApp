@@ -14,12 +14,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.lang.invoke.MethodType;
+import java.util.Arrays;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
     private final UserDetailsService userDetailsService;
 
     public SecurityConfig(UserDetailsService userDetailsService) {
@@ -50,6 +54,32 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    // Configuración CORS para permitir la comunicación con Angular
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // Permite Angular en cualquier puerto de localhost
+        configuration.setAllowedOriginPatterns(
+                Arrays.asList("http://localhost:*")
+        );
+
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
+
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(false);
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http) throws Exception {
@@ -69,21 +99,34 @@ public class SecurityConfig {
 
                         // Login público
                         .requestMatchers("/login").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/api/countries").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/recipes").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/recipes/*").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/recipes/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/recipes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/families").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.GET, "/api/families").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.DELETE, "/api/families/*").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.GET, "/api/ingredients").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.DELETE, "/api/ingredients/*").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/families/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.DELETE, "/api/families/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.PUT, "/api/families/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.PUT, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").permitAll() // Eliminar dps de probar
                         .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll() // Eliminar dps de probar
 
                         .requestMatchers(HttpMethod.POST, "/api/countries").permitAll() // Eliminar dps de probar
                         .requestMatchers(HttpMethod.PUT, "/api/countries").permitAll() // Eliminar dps de probar
                         .requestMatchers(HttpMethod.DELETE, "/api/countries/*").permitAll() // Eliminar dps de probar
+
+
+                        .requestMatchers(HttpMethod.GET, "/api/items/**").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.POST, "/api/items/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/items/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/items/**").permitAll()
 
                         // Swagger
                         .requestMatchers(
@@ -92,9 +135,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
-                        // CORS
-                        .requestMatchers(HttpMethod.OPTIONS, "/**")
-                        .permitAll()
+                        // Solicitudes CORS
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Todo lo demás requiere autenticación
                         .anyRequest().authenticated()

@@ -13,7 +13,6 @@ public class LoginResponseDTO {
     public String getToken() {
         return token;
     }
-
     public String getUsername() {
         return username;
     }
