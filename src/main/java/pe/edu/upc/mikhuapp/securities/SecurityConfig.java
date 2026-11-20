@@ -77,9 +77,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/families").permitAll() // Eliminar dps de probar
                         .requestMatchers(HttpMethod.GET, "/api/families").permitAll() // Eliminar dps de probar
                         .requestMatchers(HttpMethod.DELETE, "/api/families/*").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.GET, "/api/ingredients").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/ingredients").permitAll() // Elimin  ar dps de probar
                         .requestMatchers(HttpMethod.DELETE, "/api/ingredients/*").permitAll() // Eliminar dps de probar
                         .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll() // Eliminar dps de probar
+                        .requestMatchers(HttpMethod.GET, "/api/items").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/items/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/items", "/api/items/").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/items/*").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/items/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/consumptions").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/consumptions/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/consumptions", "/api/consumptions/").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/consumptions/*").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/consumptions/**").permitAll()
+
 
                         // Swagger
                         .requestMatchers(
