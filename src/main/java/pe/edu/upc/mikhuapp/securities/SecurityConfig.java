@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,7 +49,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration configuration)
+            AuthenticationConfiguration configuration)
             throws Exception {
 
         return configuration.getAuthenticationManager();
@@ -60,9 +61,9 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Permite Angular en cualquier puerto de localhost
-        configuration.setAllowedOriginPatterns(
-                Arrays.asList("http://localhost:*")
+        // Permitir el frontend Angular
+        configuration.setAllowedOrigins(
+                Arrays.asList("http://localhost:4200")
         );
 
         configuration.setAllowedMethods(Arrays.asList(
@@ -70,6 +71,7 @@ public class SecurityConfig {
         ));
 
         configuration.setAllowedHeaders(Arrays.asList("*"));
+
         configuration.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source =
