@@ -80,6 +80,20 @@ public class RecipeIngredientController {
         return ResponseEntity.ok(list);
     }
 
+    // HU42: LISTAR INGREDIENTES DE UNA RECETA ESPECÍFICA
+    @GetMapping("/receta/{recipeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<RecipeIngredientDTO>> listByRecipe(
+            @PathVariable Long recipeId) {
+
+        List<RecipeIngredientDTO> list = riS.listByRecipeId(recipeId)
+                .stream()
+                .map(ri -> modelMapper.map(ri, RecipeIngredientDTO.class))
+                .toList();
+
+        return ResponseEntity.ok(list);
+    }
+
     // HU43: ACTUALIZAR INGREDIENTE DE UNA RECETA
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
