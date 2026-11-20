@@ -1,3 +1,4 @@
+
 package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
@@ -9,17 +10,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RecipeIngredientServiceImplements implements IRecipeIngredientService {
+public class RecipeIngredientServiceImplements
+        implements IRecipeIngredientService {
 
     private final IRecipeIngredientRepository riR;
 
-    public RecipeIngredientServiceImplements(IRecipeIngredientRepository riR) {
+    public RecipeIngredientServiceImplements(
+            IRecipeIngredientRepository riR) {
         this.riR = riR;
     }
 
     @Override
     public List<RecipeIngredient> list() {
         return riR.findAll();
+    }
+
+    @Override
+    public List<RecipeIngredient> listByRecipeId(Long recipeId) {
+        return riR.findByRecipe_IdRecipe(recipeId);
     }
 
     @Override

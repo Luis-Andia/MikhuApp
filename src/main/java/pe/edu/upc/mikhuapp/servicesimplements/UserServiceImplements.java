@@ -45,4 +45,9 @@ public class UserServiceImplements implements IUserService {
     public List<Users> listmembers(Long idFamily) {
         return uR.findByFamily_idFamily(idFamily);
     }
+
+    @Override
+    public Optional<Users> listByUsername(String username) {
+        return uR.findByNomUser(username);
+    }
 }

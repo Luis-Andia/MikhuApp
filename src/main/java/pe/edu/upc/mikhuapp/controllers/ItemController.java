@@ -114,7 +114,7 @@ public class ItemController {
 //        return ResponseEntity.ok(response);
 //    }
     @PutMapping("/{id}")
-
+    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ItemDTOList> update(@PathVariable Long id, @Validated @RequestBody ItemDTOInsert dto) {
 
 
@@ -173,11 +173,11 @@ public class ItemController {
 
 
     // HU19: ELIMINAR ITEM
-        @DeleteMapping("/{id}")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-        public ResponseEntity<Void> eliminar_item (@PathVariable("id") Long id){
-            Item item = itemService.listid(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
+    @DeleteMapping("/{id}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity<Void> eliminar_item(@PathVariable("id") Long id) {
+        Item item = itemService.listid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
 
             itemService.delete(item.getIdItem());
 
@@ -215,11 +215,11 @@ public class ItemController {
             return ResponseEntity.ok(lista);
         }
 
-        // HU47: LISTAR ITEMS DEL INVENTARIO FAMILIAR
-        @GetMapping("/familia/{idFamily}")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-        public ResponseEntity<List<FamilyInventoryDTO>> listarItemsPorFamilia (
-                @PathVariable("idFamily") Long idFamily){
+    // HU47: LISTAR ITEMS DEL INVENTARIO FAMILIAR
+    @GetMapping("/familia/{idFamily}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity<List<FamilyInventoryDTO>> listarItemsPorFamilia(
+            @PathVariable("idFamily") Long idFamily) {
 
             familiaService.listid(idFamily)
                     .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
@@ -243,34 +243,28 @@ public class ItemController {
             return ResponseEntity.ok(lista);
         }
 
-        // HU48: Buscar item por nombre
-        @GetMapping("/buscarPorNombre")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-        public ResponseEntity<?> buscarPorNombre (@RequestParam String nombre){
+    // HU48: Buscar item por nombre
+    @GetMapping("/buscarPorNombre/{nomItem}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity<List<ItemDTOList>> buscarPorNombre(@PathVariable("nomItem") String nomItem) {
 
-            List<ItemDTOList> lista = itemService.buscarPorNombre(nombre)
-                    .stream()
-                    .map(item -> {
-                        ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
-                        dto.setIdFamily(item.getFamily().getIdFamily());
-                        dto.setIdIngredient(item.getIngredient().getIdIngredient());
-                        return dto;
-                    })
-                    .toList();
-
-            if (lista.isEmpty()) {
-                return ResponseEntity.status(404)
-                        .body("No hay items con el nombre: " + nombre);
-            }
-
-            return ResponseEntity.ok(lista);
-        }
+        List<ItemDTOList> lista = itemService.buscarPorNombre(nomItem)
+                .stream()
+                .map(item -> {
+                    ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
+                    dto.setIdFamily(item.getFamily().getIdFamily());
+                    dto.setIdIngredient(item.getIngredient().getIdIngredient());
+                    return dto;
+                })
+                .toList();
+        return ResponseEntity.ok(lista);
+    }
 
 
-        // HU49: LISTAR ALIMENTOS CON BAJO STOCK
-        @GetMapping("/bajoStock/{idFamily}")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-        public ResponseEntity<List<ItemDTOList>> listarAlimentosBajoStock (@RequestParam Long idFamily){
+    // HU49: LISTAR ALIMENTOS CON BAJO STOCK
+    @GetMapping("/bajoStock/{idFamily}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    public ResponseEntity <List<ItemDTOList>> listarAlimentosBajoStock(@RequestParam Long idFamily) {
 
             Family family = familiaService.listid(idFamily)
                     .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
@@ -284,10 +278,11 @@ public class ItemController {
         }
 
 
-        // HU50: ALIMENTOS PROXIMOS A VENCER
-        @GetMapping("/ProximosVencer")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-        public ResponseEntity<List<ItemDTOList>> listarProximosVencer (@RequestParam Long idFamily){
+
+    // HU50: ALIMENTOS PROXIMOS A VENCER
+    @GetMapping("/ProximosVencer/{idFamily}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<ItemDTOList>> listarProximosVencer(@RequestParam Long idFamily) {
 
             Family family = familiaService.listid(idFamily)
                     .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
@@ -311,11 +306,11 @@ public class ItemController {
             return ResponseEntity.ok(lista);
         }
 
-        // HU58: LISTAR CANTIDAD DE INGREDIENTES DISPONIBLES POR FAMILIA
-        @GetMapping("/CantidadIngredientesDisponibles/{idFamily}")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-        public ResponseEntity<List<IngredientAvailableByFamilyDTO>> listarCantidadIngredientesDisponiblesPorFamilia (
-                @RequestParam Long idFamily){
+    // HU58: LISTAR CANTIDAD DE INGREDIENTES DISPONIBLES POR FAMILIA
+    @GetMapping("/CantidadIngredientesDisponibles/{idFamily}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<IngredientAvailableByFamilyDTO>> listarCantidadIngredientesDisponiblesPorFamilia(
+            @RequestParam Long idFamily) {
 
             List<IngredientAvailableByFamilyDTO> list =
                     itemService.listarCantidadIngredientesDisponiblesPorFamilia(idFamily)

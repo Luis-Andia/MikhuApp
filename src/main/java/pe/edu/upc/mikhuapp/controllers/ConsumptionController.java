@@ -48,7 +48,7 @@ public class ConsumptionController {
 
     // HU: Listar items consumidos
     @GetMapping
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<List<ConsumptionDTO>> list() {
 
         List<ConsumptionDTO> lista = cS.list()
@@ -76,7 +76,7 @@ public class ConsumptionController {
 
     // HU36: INSERTAR un CONSUMO
     @PostMapping
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ConsumptionDTO> insert(@Validated @RequestBody ConsumptionDTO dto) {
 
         Item item = iS.listid(dto.getIdItem())
@@ -124,7 +124,7 @@ public class ConsumptionController {
 
     // HU38: ACTUALIZAR un CONSUMO
     @PutMapping()
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<ConsumptionDTO> update(
             @Validated @RequestBody ConsumptionDTO dto) {
 
@@ -169,7 +169,7 @@ public class ConsumptionController {
 
     // HU39: ELIMINAR consumo
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<ConsumptionDTO> delete(
             @PathVariable("id") Long id) {
 
@@ -188,7 +188,7 @@ public class ConsumptionController {
 
     // HU40: CONSULTAR un CONSUMO por ID
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<ConsumptionDTO> listId(
             @PathVariable Long id) {
 
@@ -217,39 +217,44 @@ public class ConsumptionController {
 
     // HU51: Listar alimentos mas consumidos
     @GetMapping("/alimentos-mas-consumidos/{idFamily}")
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredients(@PathVariable Long idFamily) {
-
         List<MostConsumedIngredientsDTO> list =
                 cS.ListMostConsumedIngredients(idFamily)
                         .stream()
                         .map(item -> {
-
                             MostConsumedIngredientsDTO dto =
                                     new MostConsumedIngredientsDTO();
-
-                            dto.setIdItem(
-                                    ((Number) item[0]).intValue()
-                            );
-
-                            dto.setNomIngredient(
-                                    (String) item[1]
-                            );
-
-                            dto.setQuantity(
-                                    ((Number) item[2]).intValue()
-                            );
-
+                            dto.setIdItem(((Number) item[0]).intValue());
+                            dto.setNomIngredient((String) item[1]);
+                            dto.setQuantity(((Number) item[2]).intValue());
                             return dto;
                         })
                         .toList();
+        return ResponseEntity.ok(list);
+    }
 
+    // Alimentos mas consumidos GLOBAL
+    @GetMapping("/alimentos-mas-consumidos-global")
+    public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredientsGlobal() {
+        List<MostConsumedIngredientsDTO> list =
+                cS.ListMostConsumedIngredientsGlobal()
+                        .stream()
+                        .map(item -> {
+                            MostConsumedIngredientsDTO dto =
+                                    new MostConsumedIngredientsDTO();
+                            dto.setIdItem(((Number) item[0]).intValue());
+                            dto.setNomIngredient((String) item[1]);
+                            dto.setQuantity(((Number) item[2]).intValue());
+                            return dto;
+                        })
+                        .toList();
         return ResponseEntity.ok(list);
     }
 
     // HU55: CONSULTAR HISTORIAL DE CONSUMO POR IdFamily
     @GetMapping("/familia/{idFamily}")
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<HistorialConsumoResponseDTO>> consultarPorFamilia(@PathVariable Long idFamily) {
 
         List<Consumption> consumptions =
@@ -305,9 +310,9 @@ public class ConsumptionController {
         return ResponseEntity.ok(lista);
     }
 
-    // HU56: CONSULTAR INGREDIENTES CONSUMIDOS POR FECHA
+    // HU56: CONSULTAR ITEMS CONSUMIDOS POR FECHA
     @GetMapping("/fecha")
-    public ResponseEntity<List<ConsumptionDTO>> consultarPorFecha(
+    public ResponseEntity<List<MostConsumedIngredientsDTO>> consultaritemsconsumidosPorFecha(
             @RequestParam LocalDate fechaInicio,
             @RequestParam LocalDate fechaFin) {
 
@@ -317,26 +322,18 @@ public class ConsumptionController {
             );
         }
 
-        List<Consumption> consumptions =
-                cS.consultarPorFecha(
-                        fechaInicio,
-                        fechaFin
-                );
+        List<MostConsumedIngredientsDTO> list =
+                cS.IngredientesConsumidosPorFecha(fechaInicio, fechaFin)
+                        .stream()
+                        .map(item -> {
+                            MostConsumedIngredientsDTO dto = new MostConsumedIngredientsDTO();
+                            dto.setIdItem(((Number) item[0]).intValue());
+                            dto.setNomIngredient((String) item[1]);
+                            dto.setQuantity(((Number) item[2]).intValue());
+                            return dto;
+                        })
+                        .toList();
 
-        List<ConsumptionDTO> lista =
-                new ArrayList<>();
-
-        for (Consumption consumption : consumptions) {
-
-            ConsumptionDTO dto =
-                    modelMapper.map(
-                            consumption,
-                            ConsumptionDTO.class
-                    );
-
-            lista.add(dto);
-        }
-
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(list);
     }
 }

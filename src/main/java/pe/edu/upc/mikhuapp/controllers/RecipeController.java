@@ -113,9 +113,9 @@ public class RecipeController {
     }
 
     // HU53: CONSULTAR RECETA POR NOMBRE
-    @GetMapping("/nomRecipe")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<RecipeDTOList>> listRecipebyName(@RequestParam String nomRecipe){
+    @GetMapping("/nombre/{nomRecipe}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    public ResponseEntity<List<RecipeDTOList>> listRecipebyName(@PathVariable("nomRecipe") String nomRecipe){
         List<RecipeDTOList> result = rS.findRecipe_nomRecipe(nomRecipe)
                 .stream()
                 .map(recipe -> modelMapper.map(recipe, RecipeDTOList.class))
@@ -124,10 +124,10 @@ public class RecipeController {
     }
 
     // HU54: CONSULTAR RECETAS POR PAÍS
-    @GetMapping("/pais")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @GetMapping("/pais/{nombrePais}")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<?> listarPorPais(
-            @RequestParam String nombrePais) {
+            @PathVariable("nombrePais") String nombrePais) {
 
         List<RecipeDTOList> lista = rS.findByPais(nombrePais)
                 .stream()
@@ -144,7 +144,7 @@ public class RecipeController {
 
     // HU57 CONSULTAR RECETAS POR INGREDIENTE
     @GetMapping("/ingrediente/{nombreIngrediente}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<RecipeDTOList>> listarPorIngrediente(
             @PathVariable("nombreIngrediente") String nombreIngrediente){
 
