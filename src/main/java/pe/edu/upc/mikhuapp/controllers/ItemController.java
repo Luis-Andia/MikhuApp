@@ -186,11 +186,11 @@ public class ItemController {
     }
 
     // HU48: Buscar item por nombre
-    @GetMapping("/buscarPorNombre")
+    @GetMapping("/buscarPorNombre/{nomItem}")
     // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
-    public ResponseEntity<?> buscarPorNombre(@RequestParam String nombre) {
+    public ResponseEntity<List<ItemDTOList>> buscarPorNombre(@PathVariable("nomItem") String nomItem) {
 
-        List<ItemDTOList> lista = itemService.buscarPorNombre(nombre)
+        List<ItemDTOList> lista = itemService.buscarPorNombre(nomItem)
                 .stream()
                 .map(item -> {
                     ItemDTOList dto = modelMapper.map(item, ItemDTOList.class);
@@ -199,12 +199,6 @@ public class ItemController {
                     return dto;
                 })
                 .toList();
-
-        if (lista.isEmpty()) {
-            return ResponseEntity.status(404)
-                    .body("No hay items con el nombre: " + nombre);
-        }
-
         return ResponseEntity.ok(lista);
     }
 
@@ -228,7 +222,7 @@ public class ItemController {
 
 
     // HU50: ALIMENTOS PROXIMOS A VENCER
-    @GetMapping("/ProximosVencer")
+    @GetMapping("/ProximosVencer/{idFamily}")
     // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<ItemDTOList>> listarProximosVencer(@RequestParam Long idFamily) {
 

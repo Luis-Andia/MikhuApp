@@ -16,12 +16,12 @@ public interface IConsumptionService {
     // HU51: Listar alimentos mas consumidos
     public List<Object[]>ListMostConsumedIngredients(Long idFamily);
 
+    public List<Object[]> ListMostConsumedIngredientsGlobal();
     // HU55: Consultar historial de consumo por IdFamily
     public List<Consumption> consultarPorFamilia(Long idFamily);
 
     void update(Consumption consumption);
     void delete (Long id);
-    public List<Consumption> consultarPorFecha(
-            LocalDate fechaInicio,
-            LocalDate fechaFin);
+
+    public List<Object[]> IngredientesConsumidosPorFecha(LocalDate fechaInicio, LocalDate fechaFin);
 }

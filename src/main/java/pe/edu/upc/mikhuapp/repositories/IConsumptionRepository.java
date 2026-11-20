@@ -12,14 +12,24 @@ import java.util.List;
 
 @Repository
 public interface IConsumptionRepository extends JpaRepository<Consumption, Long> {
-    // HU51: Listar alimentos mas consumidos
+    // HU51: Listar alimentos mas consumidos por familia
     @Query(value="SELECT i.id_item, ing.nom_ingredient, COUNT(c.id_consumption) as cantidad from consumptions c\n" +
             "INNER JOIN items i on c.id_item = i.id_item\n" +
             "INNER JOIN ingredients ing on i.id_ingredient = ing.id_ingredient\n" +
             "WHERE i.id_family = :idFamily\n" +
             "GROUP BY i.id_item, ing.nom_ingredient\n" +
-            "ORDER BY cantidad DESC;", nativeQuery = true)
+            "ORDER BY cantidad DESC " +
+            "LIMIT 5;", nativeQuery = true)
     public List<Object[]>ListMostConsumedIngredients(@Param("idFamily") Long idFamily);
+
+    // Listar alimentos mas consumidos GLOBAL
+    @Query(value="SELECT i.id_item, ing.nom_ingredient, COUNT(c.id_consumption) as cantidad from consumptions c\n" +
+            "INNER JOIN items i on c.id_item = i.id_item\n" +
+            "INNER JOIN ingredients ing on i.id_ingredient = ing.id_ingredient\n" +
+            "GROUP BY i.id_item, ing.nom_ingredient\n" +
+            "ORDER BY cantidad DESC " +
+            "LIMIT 5;", nativeQuery = true)
+    public List<Object[]>ListMostConsumedIngredientsGlobal();
 
     // HU55: Consultar historial de consumo por IdFamily
     @Query(value = "SELECT c.* " +
@@ -32,16 +42,17 @@ public interface IConsumptionRepository extends JpaRepository<Consumption, Long>
 
     // HU56 - Consultar ingredientes consumidos por fecha
     @Query(value = "SELECT " +
-            "c.id_consumption, " +
-            "c.consumption_date, " +
-            "ing.nom_ingredient " +
+            "i.id_item, " +
+            "ing.nom_ingredient, " +
+            "COUNT(c.id_consumption) AS cantidad " +
             "FROM consumptions c " +
             "INNER JOIN items i ON c.id_item = i.id_item " +
             "INNER JOIN ingredients ing ON i.id_ingredient = ing.id_ingredient " +
             "WHERE c.consumption_date >= :fechaInicio " +
-            "AND c.consumption_date < :fechaFin ",
-            nativeQuery = true)
-    List<Consumption> consultarPorFecha(
-            @Param("fechaInicio") LocalDate fechaInicio,
-            @Param("fechaFin") LocalDate fechaFin);
+            "AND c.consumption_date < :fechaFin " +
+            "GROUP BY i.id_item, ing.nom_ingredient " +
+            "ORDER BY cantidad DESC " +
+            "LIMIT 5", nativeQuery = true)
+    List<Object[]> IngredientesConsumidosPorFecha(
+            @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
 }

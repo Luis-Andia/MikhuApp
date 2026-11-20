@@ -39,6 +39,11 @@ public class ConsumptionServiceImplements implements IConsumptionService {
         return cR.ListMostConsumedIngredients(idFamily);
     }
 
+    @Override
+    public List<Object[]> ListMostConsumedIngredientsGlobal() {
+        return cR.ListMostConsumedIngredientsGlobal();
+    }
+
     // HU55: Consultar historial de consumo por IdFamily
     @Override
     public List<Consumption> consultarPorFamilia(Long idFamily) {
@@ -56,10 +61,7 @@ public class ConsumptionServiceImplements implements IConsumptionService {
     }
 
     @Override
-    public List<Consumption> consultarPorFecha(
-            LocalDate fechaInicio,
-            LocalDate fechaFin) {
-
-        return cR.consultarPorFecha(fechaInicio, fechaFin);
+    public List<Object[]> IngredientesConsumidosPorFecha(LocalDate fechaInicio, LocalDate fechaFin) {
+        return cR.IngredientesConsumidosPorFecha(fechaInicio, fechaFin);
     }
 }
