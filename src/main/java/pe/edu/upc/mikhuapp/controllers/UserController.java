@@ -20,6 +20,7 @@ import pe.edu.upc.mikhuapp.servicesinterfaces.IRoleService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IUserService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -43,11 +44,11 @@ public class UserController {
 
     // Listar usuarios
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDTOList>> listar(){
         List<UserDTOList> lista_usuarios = uS.list()
                 .stream()
-                .map(u->modelMapper.map(u, UserDTOList.class))
+                .map(this::toUserDTOList)
                 .toList();
         return ResponseEntity.ok(lista_usuarios);
     }
@@ -57,12 +58,7 @@ public class UserController {
     public ResponseEntity<UserDTOInsert> insertar(
             @Validated @RequestBody UserDTOInsert usuario){
 
-        Role role = rS.listid(usuario.getIdRole())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "No existe el rol con el id: "
-                                        + usuario.getIdRole()
-                        ));
+        List<Role> roles = obtenerRoles(usuario.getIdRol());
 
         Family family = fS.listid(usuario.getIdFamily())
                 .orElseThrow(() ->
@@ -81,7 +77,8 @@ public class UserController {
         Users nuevo_users =
                 modelMapper.map(usuario, Users.class);
 
-        nuevo_users.setRoles(List.of(role)); // VERIFICAR
+        roles.forEach(role -> role.setUser(nuevo_users));
+        nuevo_users.setRoles(roles);
         nuevo_users.setFamily(family);
         nuevo_users.setCountry(country);
 
@@ -89,6 +86,7 @@ public class UserController {
 
         UserDTOInsert responseDTO =
                 modelMapper.map(nuevo_users, UserDTOInsert.class);
+        responseDTO.setIdRol(obtenerIdsRoles(nuevo_users));
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -107,7 +105,7 @@ public class UserController {
     public ResponseEntity<UserDTOList> buscarid(@PathVariable("id") Long id){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        UserDTOList responseDTO = modelMapper.map(users, UserDTOList.class);
+        UserDTOList responseDTO = toUserDTOList(users);
         return ResponseEntity.ok(responseDTO);
     }
     // Consultar usuario por username
@@ -115,7 +113,7 @@ public class UserController {
     public ResponseEntity<UserDTOList> buscarporusername(@PathVariable("username") String username){
         Users users = uS.listByUsername(username)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        UserDTOList responseDTO = modelMapper.map(users, UserDTOList.class);
+        UserDTOList responseDTO = toUserDTOList(users);
         return ResponseEntity.ok(responseDTO);
     }
 
@@ -125,29 +123,61 @@ public class UserController {
     public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
         Users users = uS.listId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
+        users.setPassword(dto.getPassword());
+        users.setNomUser(dto.getNomUser());
+        users.setLastNameUser(dto.getLastNameUser());
+        users.setAge(dto.getAge());
+        users.setEmail(dto.getEmail());
+
         Family family = fS.listid(dto.getIdFamily())
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
         Country country = pS.listid(dto.getIdCountry())
                 .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
 
-        Users users_actualizado = modelMapper.map(dto, Users.class);
-        users_actualizado.setIdUser(id);
-        users_actualizado.setFamily(family);
-        users_actualizado.setCountry(country);
-        uS.update(users_actualizado);
+        List<Role> roles = obtenerRoles(dto.getIdRol());
+        roles.forEach(role -> role.setUser(users));
+        users.setRoles(roles);
+        users.setFamily(family);
+        users.setCountry(country);
+        Users users_actualizado = uS.update(users);
         UserDTOInsert responseDTO = modelMapper.map(users_actualizado, UserDTOInsert.class);
+        responseDTO.setIdRol(obtenerIdsRoles(users_actualizado));
         return ResponseEntity.ok(responseDTO);
 
     }
 
     // Eliminar USUARIO
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTOList> delete(@PathVariable("id") Long id) {
         uS.listId(id).
                 orElseThrow(() -> new  ResourceNotFoundException("Usuario no encontrado"));
 
         uS.delete(id);
         return  ResponseEntity.noContent().build();
+    }
+
+    private UserDTOList toUserDTOList(Users user) {
+        UserDTOList dto = modelMapper.map(user, UserDTOList.class);
+        dto.setIdRol(obtenerIdsRoles(user));
+        return dto;
+    }
+
+    private List<Long> obtenerIdsRoles(Users user) {
+        return user.getRoles().stream()
+                .map(Role::getIdRol)
+                .toList();
+    }
+
+    private List<Role> obtenerRoles(List<Long> idRoles) {
+        List<Role> roles = new ArrayList<>();
+        for (Long idRol : idRoles) {
+            Role role = rS.listid(idRol)
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "No existe el rol con el id: " + idRol
+                    ));
+            roles.add(role);
+        }
+        return roles;
     }
 }
