@@ -113,7 +113,13 @@ public class FamilyController {
 
         List<UserDTOList> lista_usuarios = uS.listmembers(idFamilia)
                 .stream()
-                .map(u->modelMapper.map(u, UserDTOList.class))
+                .map(u -> {
+                    UserDTOList dto = modelMapper.map(u, UserDTOList.class);
+                    dto.setIdRol(u.getRoles().stream()
+                            .map(role -> role.getIdRol())
+                            .toList());
+                    return dto;
+                })
                 .toList();
         return ResponseEntity.ok(lista_usuarios);
     }

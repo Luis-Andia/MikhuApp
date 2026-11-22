@@ -1,8 +1,10 @@
 package pe.edu.upc.mikhuapp.dtos;
 
+import java.util.List;
+
 public class UserDTOList {
     private Long idUser;
-    private Long idRole;
+    private List<Long> idRol;
     public String nomUser;
     public String lastNameUser;
     private String email;
@@ -18,12 +20,12 @@ public class UserDTOList {
         this.idUser = idUser;
     }
 
-    public Long getIdRole() {
-        return idRole;
+    public List<Long> getIdRol() {
+        return idRol;
     }
 
-    public void setIdRole(Long idRole) {
-        this.idRole = idRole;
+    public void setIdRol(List<Long> idRol) {
+        this.idRol = idRol;
     }
 
     public String getNomUser() {

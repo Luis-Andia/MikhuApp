@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.util.List;
+
 
 public class UserDTOInsert {
     private Long idUser;
 
     @NotNull(message = "Id de Rol obligatorio")
-    private Long idRole;
+    private List<Long> idRol;
     @NotBlank(message = "Contraseña obligatoria")
     private String password;
     @NotBlank(message = "Nombre de usuario obligatorio")
@@ -35,12 +37,12 @@ public class UserDTOInsert {
         this.idUser = idUser;
     }
 
-    public Long getIdRole() {
-        return idRole;
+    public List<Long> getIdRol() {
+        return idRol;
     }
 
-    public void setIdRole(Long idRole) {
-        this.idRole = idRole;
+    public void setIdRol(List<Long> idRol) {
+        this.idRol = idRol;
     }
 
     public String getPassword() {
