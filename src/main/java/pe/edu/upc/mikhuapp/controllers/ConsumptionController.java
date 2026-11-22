@@ -148,7 +148,7 @@ public class ConsumptionController {
                                 "Receta no encontrada"
                         ));
 
-        modelMapper.map(dto, Consumption.class);
+        modelMapper.map(dto, consumption);
 
         consumption.setItem(item);
         consumption.setRecipe(recipe);

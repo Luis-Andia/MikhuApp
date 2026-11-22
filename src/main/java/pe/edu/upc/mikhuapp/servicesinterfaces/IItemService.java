@@ -21,7 +21,7 @@ public interface   IItemService {
 
     public List<Item> listarProximosVencer(Long idFamily, LocalDate fechaActual, LocalDate fechaLimite);
 
-    public List<Item> listarAlimentoBajoStock(Long idFamily);
+    public List<Object[]> listarAlimentoBajoStock(Long idFamily);
 
     public List<Object[]> listarItemsPorFamilia(Long idFamily);
 

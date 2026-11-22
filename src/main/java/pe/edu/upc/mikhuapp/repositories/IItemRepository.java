@@ -12,17 +12,22 @@ import java.util.List;
 @Repository
 public interface IItemRepository extends JpaRepository<Item, Long> {
     //HU50 Listar ingredientes vencidos
+    // HU50 Listar ingredientes vencidos
     @Query(value = "SELECT * FROM items "
             + "WHERE due_date < :fechaActual "
-            + "AND id_family = :idFamily", nativeQuery = true)
-    List<Item> findByDueDateBeforeAndFamilyId(@Param("fechaActual") LocalDate fechaActual,
-                                              @Param("idFamily") Long idFamily);
+            + "AND id_family = :idFamily "
+            + "ORDER BY due_date ASC",
+            nativeQuery = true)
+    List<Item> findByDueDateBeforeAndFamilyId(
+            @Param("fechaActual") LocalDate fechaActual,
+            @Param("idFamily") Long idFamily);
 
     //HU50 Listar proximos a vencer Ordenados
-    @Query(value = "SELECT * FROM items " +
-            "WHERE id_family = :idFamily " +
-            "AND due_date BETWEEN :fechaActual AND :fechaLimite " +
-            "ORDER BY due_date ASC",
+    @Query(value = "SELECT i.* FROM items i " +
+            "INNER JOIN ingredients ing ON i.id_ingredient = ing.id_ingredient " +
+            "WHERE i.id_family = :idFamily " +
+            "AND i.due_date BETWEEN :fechaActual AND :fechaLimite " +
+            "ORDER BY i.due_date ASC",
             nativeQuery = true)
     List<Item> findByDueDateBetween(
             @Param("idFamily") Long idFamily,
@@ -39,11 +44,20 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
             @Param("idFamily") Long idFamily
     );
 
-    //HU49 Listar alimentos con bajo Stock
-    @Query(value = "SELECT * FROM items "
-            + "WHERE amount_available <= minimum_stock "
-            + "AND id_family= :idFamily", nativeQuery = true)
-    List<Item> findAlimentosBajoStock(@Param("idFamily") Long idFamily);
+    // HU49 Listar alimentos con bajo Stock
+    @Query(value = "SELECT i.id_item AS idItem, "
+            + "f.nom_family AS nomFamily, "
+            + "ing.nom_ingredient AS nomIngredient, "
+            + "i.amount_available AS amountAvailable, "
+            + "i.purchase_date AS purchaseDate, "
+            + "i.due_date AS dueDate, "
+            + "i.minimum_stock AS minimumStock "
+            + "FROM items i "
+            + "INNER JOIN families f ON i.id_family = f.id_family "
+            + "INNER JOIN ingredients ing ON i.id_ingredient = ing.id_ingredient "
+            + "WHERE i.amount_available <= i.minimum_stock "
+            + "AND i.id_family = :idFamily", nativeQuery = true)
+    List<Object[]> findAlimentosBajoStock(@Param("idFamily") Long idFamily);
 
     // HU48 Buscar item por nombre
     List<Item> findByIngredient_NomIngredientContainingIgnoreCase(String nombre);
