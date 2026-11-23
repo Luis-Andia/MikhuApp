@@ -3,6 +3,7 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,13 +32,15 @@ public class UserController {
     private final ICountryService pS;
     private final IFamilyService fS;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(IUserService uS, IRoleService rS, ICountryService pS, IFamilyService fS, ModelMapper modelMapper) {
+    public UserController(IUserService uS, IRoleService rS, ICountryService pS, IFamilyService fS, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.uS = uS;
         this.rS = rS;
         this.pS = pS;
         this.fS = fS;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Metodos
@@ -120,30 +123,37 @@ public class UserController {
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id")Long id, @Validated @RequestBody UserDTOInsert dto){
+    public ResponseEntity<UserDTOInsert> actualizar_usuario(@PathVariable("id") Long id, @Validated @RequestBody UserDTOInsert dto) {
         Users users = uS.listId(id)
-                .orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado"));
-        users.setPassword(dto.getPassword());
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            users.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+
         users.setNomUser(dto.getNomUser());
         users.setLastNameUser(dto.getLastNameUser());
         users.setAge(dto.getAge());
         users.setEmail(dto.getEmail());
 
         Family family = fS.listid(dto.getIdFamily())
-                .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
+                .orElseThrow(() -> new ResourceNotFoundException("No existe la familia"));
         Country country = pS.listid(dto.getIdCountry())
-                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
+                .orElseThrow(() -> new ResourceNotFoundException("No existe el pais"));
 
         List<Role> roles = obtenerRoles(dto.getIdRol());
-        roles.forEach(role -> role.setUser(users));
-        users.setRoles(roles);
+        users.getRoles().clear();
+        for (Role role : roles) {
+            role.setUser(users);
+            users.getRoles().add(role);
+        }
         users.setFamily(family);
         users.setCountry(country);
+
         Users users_actualizado = uS.update(users);
         UserDTOInsert responseDTO = modelMapper.map(users_actualizado, UserDTOInsert.class);
         responseDTO.setIdRol(obtenerIdsRoles(users_actualizado));
         return ResponseEntity.ok(responseDTO);
-
     }
 
     // Eliminar USUARIO
