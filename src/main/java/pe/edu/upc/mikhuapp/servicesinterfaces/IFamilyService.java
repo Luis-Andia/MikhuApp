@@ -1,5 +1,6 @@
 package pe.edu.upc.mikhuapp.servicesinterfaces;
 
+import pe.edu.upc.mikhuapp.dtos.JoinFamilyDTO;
 import pe.edu.upc.mikhuapp.entities.Family;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface IFamilyService {
     public Optional<Family> listid(Long id);
     public Family update(Family f);
     public void delete(Long id);
+    public Optional<Family> findFamiliesByNomFamily(String nameFamily);
 }

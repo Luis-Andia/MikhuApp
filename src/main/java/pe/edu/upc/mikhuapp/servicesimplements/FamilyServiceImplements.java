@@ -1,6 +1,7 @@
 package pe.edu.upc.mikhuapp.servicesimplements;
 
 import org.springframework.stereotype.Service;
+import pe.edu.upc.mikhuapp.dtos.JoinFamilyDTO;
 import pe.edu.upc.mikhuapp.entities.Family;
 import pe.edu.upc.mikhuapp.repositories.IFamilyRepository;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
@@ -39,5 +40,10 @@ public class FamilyServiceImplements implements IFamilyService {
     @Override
     public void delete(Long id) {
         fR.deleteById(id);
+    }
+
+    @Override
+    public Optional<Family> findFamiliesByNomFamily(String nameFamily) {
+        return fR.findFamiliesByNomFamily(nameFamily);
     }
 }

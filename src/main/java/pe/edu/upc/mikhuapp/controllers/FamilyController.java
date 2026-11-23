@@ -4,13 +4,16 @@ import jakarta.persistence.Id;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.mikhuapp.dtos.FamilyDTOInsert;
 import pe.edu.upc.mikhuapp.dtos.FamilyDTOList;
+import pe.edu.upc.mikhuapp.dtos.JoinFamilyDTO;
 import pe.edu.upc.mikhuapp.dtos.UserDTOList;
 import pe.edu.upc.mikhuapp.entities.Family;
+import pe.edu.upc.mikhuapp.entities.Users;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IUserService;
@@ -37,7 +40,7 @@ public class FamilyController {
 
     // HU26: INSERTAR Familiar
     @PostMapping
-    // @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
         public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
         Family nueva_family = modelMapper.map(familia, Family.class);
         fS.insert(nueva_family);
@@ -106,10 +109,7 @@ public class FamilyController {
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
     public ResponseEntity<List<UserDTOList>> listmembers(@PathVariable long idFamilia){
         Family familia = fS.listid(idFamilia)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                                "No existe la familia con el id: " + idFamilia
-                        )
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("No existe la familia con el id: " + idFamilia));
 
         List<UserDTOList> lista_usuarios = uS.listmembers(idFamilia)
                 .stream()
@@ -122,5 +122,23 @@ public class FamilyController {
                 })
                 .toList();
         return ResponseEntity.ok(lista_usuarios);
+    }
+
+    @PostMapping("/joinfamily/{idUser}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+    public ResponseEntity<Void> joinFamily(@PathVariable Long idUser, @RequestBody JoinFamilyDTO dto){
+        Family family = fS.findFamiliesByNomFamily(dto.getNomFamily())
+                .orElseThrow(() -> new ResourceNotFoundException("No existe la familia con el nombre: " + dto.getNomFamily()));
+
+        if (!family.getPasswordFamily().equals(dto.getPasswordFamily())) {
+            throw new ResourceNotFoundException("Credenciales incorrectas");
+        }
+
+        Users user = uS.listId(idUser)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        user.setFamily(family);
+        uS.update(user);
+        return ResponseEntity.ok().build();
     }
 }
