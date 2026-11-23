@@ -12,14 +12,6 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idItem;
 
-    @ManyToOne
-    @JoinColumn(name="idFamily")
-    private Family family;
-
-    @ManyToOne
-    @JoinColumn(name="idIngredient")
-    private Ingredient ingredient;
-
     @Column(name="amountAvailable", nullable = false)
     private int amountAvailable;
 
@@ -31,6 +23,13 @@ public class Item {
 
     @Column(name="minimumStock", nullable = false)
     private int minimumStock;
+    @ManyToOne
+    @JoinColumn(name="idFamily")
+    private Family family;
+
+    @ManyToOne
+    @JoinColumn(name="idIngredient")
+    private Ingredient ingredient;
 
     // Constructores
 

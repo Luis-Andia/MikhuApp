@@ -45,7 +45,7 @@ public class ItemServiceImplements implements IItemService {
     }
 
     @Override
-    public List<Item> listarAlimentoBajoStock(Long idFamily) {
+    public List<Object[]> listarAlimentoBajoStock(Long idFamily) {
         return itemRepository.findAlimentosBajoStock(idFamily);
     }
 
