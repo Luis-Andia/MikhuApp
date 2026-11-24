@@ -102,8 +102,9 @@ public class SecurityConfig {
                         // Login público
                         .requestMatchers("/login").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/countries").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
