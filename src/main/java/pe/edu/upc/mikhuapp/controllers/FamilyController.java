@@ -40,7 +40,7 @@ public class FamilyController {
 
     // HU26: INSERTAR Familiar
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
         public ResponseEntity<FamilyDTOInsert> insertar(@Validated @RequestBody FamilyDTOInsert familia){
         Family nueva_family = modelMapper.map(familia, Family.class);
         fS.insert(nueva_family);
@@ -57,7 +57,7 @@ public class FamilyController {
 
     // HU27: LISTAR Familias
     @GetMapping
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<FamilyDTOList>> listar(){
         List<FamilyDTOList> lista_familias = fS.list()
                 .stream()
@@ -68,7 +68,7 @@ public class FamilyController {
 
     // HU28: ACTUALIZAR FAMILIA
     @PutMapping
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<FamilyDTOInsert> actualizarfamilia(@Validated @RequestBody FamilyDTOInsert dto){
         Optional<Family> existente = fS.listid(dto.getIdFamily());
         if (existente.isEmpty()) {
@@ -86,7 +86,7 @@ public class FamilyController {
 
     // HU29: ELIMINAR FAMILIA
     @DeleteMapping("/{id}")
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public ResponseEntity<Void> eliminar_integrante_familia(@PathVariable Long id){
         Family familia = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
@@ -97,7 +97,7 @@ public class FamilyController {
 
     // HU30: CONSULTAR familia por ID
     @GetMapping("/{id}")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<FamilyDTOInsert> buscarid(@PathVariable Long id){
         Family family = fS.listid(id)
                 .orElseThrow(()->new ResourceNotFoundException("No existe la familia"));
@@ -107,6 +107,7 @@ public class FamilyController {
 
     // HU46: LISTAR INTEGRANTES DE UNA FAMILIA POR ID DE FAMILIA
     @GetMapping("/IntegrantesFamilia/{idFamilia}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<UserDTOList>> listmembers(@PathVariable long idFamilia){
         Family familia = fS.listid(idFamilia)
                 .orElseThrow(() -> new ResourceNotFoundException("No existe la familia con el id: " + idFamilia));
@@ -125,7 +126,7 @@ public class FamilyController {
     }
 
     @PostMapping("/joinfamily/{idUser}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<Void> joinFamily(@PathVariable Long idUser, @RequestBody JoinFamilyDTO dto){
         Family family = fS.findFamiliesByNomFamily(dto.getNomFamily())
                 .orElseThrow(() -> new ResourceNotFoundException("No existe la familia con el nombre: " + dto.getNomFamily()));

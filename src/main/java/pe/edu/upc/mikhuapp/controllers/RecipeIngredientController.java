@@ -71,7 +71,7 @@ public class RecipeIngredientController {
 
     // HU42: LISTAR INGREDIENTES-RECETA
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<RecipeIngredientDTO>>list(){
         List<RecipeIngredientDTO> list = riS.list()
                 .stream()
@@ -82,7 +82,7 @@ public class RecipeIngredientController {
 
     // HU42: LISTAR INGREDIENTES DE UNA RECETA ESPECÍFICA
     @GetMapping("/receta/{recipeId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<RecipeIngredientDTO>> listByRecipe(
             @PathVariable Long recipeId) {
 
@@ -144,7 +144,7 @@ public class RecipeIngredientController {
 
     // HU45: CONSULTAR UN INGREDIENTE DE RECETA POR ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<RecipeIngredientDTO> getById(@PathVariable Long id){
         RecipeIngredient recipeIngredient = riS.listId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No existe el ingrediente de receta"));

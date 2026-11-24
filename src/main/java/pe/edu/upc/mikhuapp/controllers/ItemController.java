@@ -36,7 +36,7 @@ public class ItemController {
 
     // HU16: INSERTAR ITEM
     @PostMapping
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ItemDTOList> insert(@Validated @RequestBody ItemDTOInsert dto) {
 
         Family family = familiaService.listid(dto.getIdFamily())
@@ -67,7 +67,7 @@ public class ItemController {
 
     // HU17: LISTAR ITEM
     @GetMapping
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<ItemDTOList>> list() {
         List<ItemDTOList> lista = itemService.list().stream()
                 .map(item -> {
@@ -111,7 +111,7 @@ public class ItemController {
 //        return ResponseEntity.ok(response);
 //    }
     @PutMapping("/{id}")
-    //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ItemDTOList> update(@PathVariable Long id, @Validated @RequestBody ItemDTOInsert dto) {
 
 
@@ -129,49 +129,23 @@ public class ItemController {
 
 
         Ingredient ingredient = ingredienteService.listId(dto.getIdIngredient())
-
                 .orElseThrow(() -> new ResourceNotFoundException("Ingrediente no encontrado"));
-
-
-
         item.setAmountAvailable((int) dto.getAmountAvailable());
-
         item.setDueDate(dto.getDueDate());
-
         item.setMinimumStock(dto.getMinimumStock());
-
         item.setPurchaseDate(dto.getPurchaseDate());
-
-
-
         item.setFamily(family);
-
         item.setIngredient(ingredient);
-
-
-
         itemService.update(item);
-
-
-
         ItemDTOList response = modelMapper.map(item, ItemDTOList.class);
-
         response.setIdFamily(family.getIdFamily());
-
         response.setIdIngredient(ingredient.getIdIngredient());
-
-
-
         return ResponseEntity.ok(response);
-
     }
-
-
-
 
     // HU19: ELIMINAR ITEM
     @DeleteMapping("/{id}")
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<Void> eliminar_item(@PathVariable("id") Long id) {
         Item item = itemService.listid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Item no encontrado"));
@@ -183,7 +157,7 @@ public class ItemController {
 
         // HU20: CONSULTAR UN ITEM POR ID
         @GetMapping("/{id}")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+        @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
         public ResponseEntity<ItemDTOList> listId (@PathVariable Long id){
 
             Item item = itemService.listid(id)
@@ -198,7 +172,7 @@ public class ItemController {
 
         // LISTAR ITEMS VENCIDOS
         @GetMapping("/Vencidos/{idFamily}")
-        //@PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+        @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
         public ResponseEntity<List<ExpiredDTO>> listarVencidos (@PathVariable Long idFamily){
             Family family = familiaService.listid(idFamily)
                     .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
@@ -216,7 +190,7 @@ public class ItemController {
 
     // HU47: LISTAR ITEMS DEL INVENTARIO FAMILIAR
     @GetMapping("/familia/{idFamily}")
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<FamilyInventoryDTO>> listarItemsPorFamilia(
             @PathVariable("idFamily") Long idFamily) {
 
@@ -244,7 +218,7 @@ public class ItemController {
 
     // HU48: Buscar item por nombre
     @GetMapping("/buscarPorNombre/{nomItem}")
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<ItemDTOList>> buscarPorNombre(@PathVariable("nomItem") String nomItem) {
 
         List<ItemDTOList> lista = itemService.buscarPorNombre(nomItem)
@@ -262,7 +236,7 @@ public class ItemController {
 
     // HU49: LISTAR ALIMENTOS CON BAJO STOCK
     @GetMapping("/bajoStock/{idFamily}")
-// @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<LowStockItemsDTO>> listarAlimentosBajoStock(
             @PathVariable Long idFamily) {
 
@@ -294,7 +268,7 @@ public class ItemController {
     // HU50: ALIMENTOS PROXIMOS A VENCER
 
     @GetMapping("/ProximosVencer/{idFamily}")
-// @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<NearExpirationDTO>> listarProximosVencer(
             @PathVariable Long idFamily) {
 
@@ -322,8 +296,8 @@ public class ItemController {
 
 
     // HU58: LISTAR CANTIDAD DE INGREDIENTES DISPONIBLES POR FAMILIA
-        @GetMapping("/CantidadIngredientesDisponibles/{idFamily}")
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @GetMapping("/CantidadIngredientesDisponibles/{idFamily}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<IngredientAvailableByFamilyDTO>> listarCantidadIngredientesDisponiblesPorFamilia(
             @PathVariable Long idFamily) {
 
@@ -353,6 +327,4 @@ public class ItemController {
 
             return ResponseEntity.ok(list);
         }
-
-
     }

@@ -48,7 +48,7 @@ public class ConsumptionController {
 
     // HU: Listar items consumidos
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<ConsumptionDTO>> list() {
 
         List<ConsumptionDTO> lista = cS.list()
@@ -188,7 +188,7 @@ public class ConsumptionController {
 
     // HU40: CONSULTAR un CONSUMO por ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<ConsumptionDTO> listId(
             @PathVariable Long id) {
 
@@ -217,7 +217,7 @@ public class ConsumptionController {
 
     // HU51: Listar alimentos mas consumidos
     @GetMapping("/alimentos-mas-consumidos/{idFamily}")
-    // @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredients(@PathVariable Long idFamily) {
         List<MostConsumedIngredientsDTO> list =
                 cS.ListMostConsumedIngredients(idFamily)
@@ -236,6 +236,7 @@ public class ConsumptionController {
 
     // Alimentos mas consumidos GLOBAL
     @GetMapping("/alimentos-mas-consumidos-global")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredientsGlobal() {
         List<MostConsumedIngredientsDTO> list =
                 cS.ListMostConsumedIngredientsGlobal()
@@ -312,6 +313,7 @@ public class ConsumptionController {
 
     // HU56: CONSULTAR ITEMS CONSUMIDOS POR FECHA
     @GetMapping("/fecha")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>> consultaritemsconsumidosPorFecha(
             @RequestParam LocalDate fechaInicio,
             @RequestParam LocalDate fechaFin) {
