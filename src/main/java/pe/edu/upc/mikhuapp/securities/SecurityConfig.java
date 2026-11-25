@@ -63,8 +63,11 @@ public class SecurityConfig {
 
         // Permitir el frontend Angular
         configuration.setAllowedOrigins(
-                Arrays.asList("http://localhost:4200")
+                Arrays.asList("http://localhost:4200",
+                        "https://graceful-platypus-9eca2e.netlify.app",
+                                "https://mikhuapp-despliegue.onrender.com")
         );
+
 
         configuration.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"
@@ -102,35 +105,35 @@ public class SecurityConfig {
                         // Login público
                         .requestMatchers("/login").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/users/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/api/countries").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/recipes/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/recipes/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/families").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.GET, "/api/families/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.DELETE, "/api/families/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.PUT, "/api/families/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.GET, "/api/ingredients/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.PUT, "/api/ingredients/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll() // Eliminar dps de probar
-
-
-                        .requestMatchers(HttpMethod.GET, "/api/items/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.POST, "/api/items/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/items/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/items/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/api/consumptions/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.POST, "/api/consumptions/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.DELETE, "/api/consumptions/**").permitAll() // Eliminar dps de probar
-                        .requestMatchers(HttpMethod.PUT, "/api/consumptions/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+//                        .requestMatchers(HttpMethod.PUT, "/api/users/**").permitAll()
+//
+//                        .requestMatchers(HttpMethod.GET, "/api/countries").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/countries/*").permitAll()
+//
+//                        .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/recipes/**").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/api/recipes/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/families").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.GET, "/api/families/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.DELETE, "/api/families/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.PUT, "/api/families/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.GET, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.PUT, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.POST, "/api/ingredients").permitAll() // Eliminar dps de probar
+//
+//
+//                        .requestMatchers(HttpMethod.GET, "/api/items/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.POST, "/api/items/**").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/api/items/**").permitAll()
+//                        .requestMatchers(HttpMethod.PUT, "/api/items/**").permitAll()
+//
+//                        .requestMatchers(HttpMethod.GET, "/api/consumptions/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.POST, "/api/consumptions/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.DELETE, "/api/consumptions/**").permitAll() // Eliminar dps de probar
+//                        .requestMatchers(HttpMethod.PUT, "/api/consumptions/**").permitAll() // Eliminar dps de probar
 
 
                         // Swagger
