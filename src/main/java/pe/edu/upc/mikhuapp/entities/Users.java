@@ -1,16 +1,22 @@
+
 package pe.edu.upc.mikhuapp.entities;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "nom_user")
+        }
+)
 public class Users implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
 
     @OneToMany(
@@ -21,31 +27,35 @@ public class Users implements Serializable {
     )
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name="password", length = 200, nullable = false)
+    @Column(name = "password", length = 200, nullable = false)
     private String password;
 
-    @Column(name="nomUser", length = 40, nullable = false)
+    // Nombre de usuario utilizado para iniciar sesión
+    @Column(name = "nomUser", length = 40, nullable = false)
     private String nomUser;
 
-    @Column(name="lastNameUser", length = 15, nullable = false)
+    // Nombre personal del usuario
+    @Column(name = "first_name", length = 40)
+    private String firstName;
+
+    @Column(name = "lastNameUser", length = 15, nullable = false)
     private String lastNameUser;
 
-    @Column(name="age", nullable = false)
+    @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name="email", length = 30, nullable = false)
+    @Column(name = "email", length = 30, nullable = false)
     private String email;
 
-    // Nueva columna
     @Column(nullable = false)
     private Boolean enabled = true;
 
     @ManyToOne
-    @JoinColumn(name="idFamily")
+    @JoinColumn(name = "idFamily")
     private Family family;
 
     @ManyToOne
-    @JoinColumn(name="idCountry")
+    @JoinColumn(name = "idCountry")
     private Country country;
 
     // Constructores
@@ -53,7 +63,18 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(Long idUser, List<Role> roles, String password, String nomUser, String lastNameUser, int age, String email, Boolean enabled, Family family, Country country) {
+    public Users(
+            Long idUser,
+            List<Role> roles,
+            String password,
+            String nomUser,
+            String lastNameUser,
+            int age,
+            String email,
+            Boolean enabled,
+            Family family,
+            Country country
+    ) {
         this.idUser = idUser;
         this.roles = roles;
         this.password = password;
@@ -65,7 +86,8 @@ public class Users implements Serializable {
         this.family = family;
         this.country = country;
     }
-    // Get an SET
+
+    // Getters y Setters
 
     public Long getIdUser() {
         return idUser;
@@ -97,6 +119,14 @@ public class Users implements Serializable {
 
     public void setNomUser(String nomUser) {
         this.nomUser = nomUser;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastNameUser() {

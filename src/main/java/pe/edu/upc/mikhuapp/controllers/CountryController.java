@@ -1,3 +1,4 @@
+
 package pe.edu.upc.mikhuapp.controllers;
 
 import org.modelmapper.ModelMapper;
@@ -6,9 +7,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import pe.edu.upc.mikhuapp.dtos.CountryDTO;
 import pe.edu.upc.mikhuapp.entities.Country;
-import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.ICountryService;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/countries")
 public class CountryController {
+
     // Inyecciones
     private final ICountryService pS;
     private final ModelMapper modelMapper;
@@ -27,68 +29,93 @@ public class CountryController {
         this.modelMapper = modelMapper;
     }
 
-    // Metodos
-
     // HU31: REGISTRAR NUEVO PAIS
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CountryDTO> registrar(@Validated @RequestBody CountryDTO dto){
+    public ResponseEntity<CountryDTO> registrar(
+            @Validated @RequestBody CountryDTO dto) {
+
         Country nuevo_country = modelMapper.map(dto, Country.class);
         pS.insert(nuevo_country);
 
-        CountryDTO responseDTO = modelMapper.map(nuevo_country, CountryDTO.class);
+        CountryDTO responseDTO = modelMapper.map(
+                nuevo_country, CountryDTO.class
+        );
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("{/id}")
+                .path("/{id}")
                 .buildAndExpand(nuevo_country.getIdCountry())
                 .toUri();
+
         return ResponseEntity
                 .created(location)
                 .body(responseDTO);
     }
 
-    // HU23: LISTAR PAISES
-    @GetMapping // Todos pueden listar los paises
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<List<CountryDTO>> listar_paises(){
+    // HU23: LISTAR PAISES - CONSULTA PUBLICA
+    @GetMapping
+    public ResponseEntity<List<CountryDTO>> listar_paises() {
+
         List<CountryDTO> lista_paises = pS.list()
                 .stream()
                 .map(p -> modelMapper.map(p, CountryDTO.class))
                 .toList();
+
         return ResponseEntity.ok(lista_paises);
     }
 
     // HU33: ACTUALIZAR PAIS
-    @PutMapping()
+    @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CountryDTO> actualizar_pais(@Validated @RequestBody CountryDTO dto){
+    public ResponseEntity<CountryDTO> actualizar_pais(
+            @Validated @RequestBody CountryDTO dto) {
+
         Country pais = pS.listid(dto.getIdCountry())
-                .orElseThrow(() -> new ResourceNotFoundException("Pais no encontrado"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Pais no encontrado")
+                );
+
         Country country = modelMapper.map(dto, Country.class);
         country.setIdCountry(dto.getIdCountry());
+
         pS.update(country);
-        CountryDTO responseDTO = modelMapper.map(country, CountryDTO.class);
+
+        CountryDTO responseDTO = modelMapper.map(
+                country, CountryDTO.class
+        );
+
         return ResponseEntity.ok(responseDTO);
     }
 
     // HU34: ELIMINAR PAIS
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id){
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+
         Country p = pS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("No existe el pais")
+                );
+
         pS.delete(p.getIdCountry());
+
         return ResponseEntity.noContent().build();
     }
 
-    // HU35: CONSULTAR PAIS POR ID
-    @GetMapping("/{id}") // Todos pueden consultar un pais
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
-    public ResponseEntity<CountryDTO> buscar_pais_id(@PathVariable Long id){
+    // HU35: CONSULTAR PAIS POR ID - CONSULTA PUBLICA
+    @GetMapping("/{id}")
+    public ResponseEntity<CountryDTO> buscar_pais_id(@PathVariable Long id) {
+
         Country p = pS.listid(id)
-                .orElseThrow(()->new ResourceNotFoundException("No existe el pais"));
-        CountryDTO responseDTO = modelMapper.map(p, CountryDTO.class);
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("No existe el pais")
+                );
+
+        CountryDTO responseDTO = modelMapper.map(
+                p, CountryDTO.class
+        );
+
         return ResponseEntity.ok(responseDTO);
     }
-
 }
