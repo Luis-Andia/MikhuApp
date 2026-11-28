@@ -55,7 +55,6 @@ public class CountryController {
 
     // HU23: LISTAR PAISES - CONSULTA PUBLICA
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<List<CountryDTO>> listar_paises() {
 
         List<CountryDTO> lista_paises = pS.list()
@@ -106,7 +105,6 @@ public class CountryController {
 
     // HU35: CONSULTAR PAIS POR ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
     public ResponseEntity<CountryDTO> buscar_pais_id(@PathVariable Long id) {
 
         Country p = pS.listid(id)
