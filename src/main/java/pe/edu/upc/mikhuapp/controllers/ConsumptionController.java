@@ -101,7 +101,7 @@ public class ConsumptionController {
 
     // HU36: INSERTAR un CONSUMO
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER', 'GUEST')")
     public ResponseEntity<ConsumptionDTO> insert(@Validated @RequestBody ConsumptionDTO dto) {
 
         Item item = iS.listid(dto.getIdItem())
@@ -213,7 +213,7 @@ public class ConsumptionController {
 
     // HU40: CONSULTAR un CONSUMO por ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER', 'GUEST')")
     public ResponseEntity<ConsumptionDTO> listId(
             @PathVariable Long id) {
 
@@ -242,7 +242,7 @@ public class ConsumptionController {
 
     // HU51: Listar alimentos mas consumidos
     @GetMapping("/alimentos-mas-consumidos/{idFamily}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER', 'GUEST')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredients(@PathVariable Long idFamily) {
         List<MostConsumedIngredientsDTO> list =
                 cS.ListMostConsumedIngredients(idFamily)
@@ -261,7 +261,7 @@ public class ConsumptionController {
 
     // Alimentos mas consumidos GLOBAL
     @GetMapping("/alimentos-mas-consumidos-global")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','MEMBER', 'GUEST')")
     public ResponseEntity<List<MostConsumedIngredientsDTO>> ListMostConsumedIngredientsGlobal() {
         List<MostConsumedIngredientsDTO> list =
                 cS.ListMostConsumedIngredientsGlobal()
@@ -280,7 +280,7 @@ public class ConsumptionController {
 
     // HU55: CONSULTAR HISTORIAL DE CONSUMO POR IdFamily
     @GetMapping("/familia/{idFamily}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER', 'GUEST')")
     public ResponseEntity<List<HistorialConsumoResponseDTO>> consultarPorFamilia(@PathVariable Long idFamily) {
 
         List<Consumption> consumptions =

@@ -129,7 +129,7 @@ public class FamilyController {
 
     // HU30: CONSULTAR FAMILIA POR ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER', 'GUEST')")
     public ResponseEntity<FamilyDTOInsert> buscarid(@PathVariable Long id) {
 
         Family family = fS.listid(id)
@@ -172,7 +172,7 @@ public class FamilyController {
 
     // UNIRSE A UNA FAMILIA
     @PostMapping("/joinfamily/{idUser}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'MODERATOR', 'MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER','GUEST')")
     public ResponseEntity<Void> joinFamily(
             @PathVariable Long idUser,
             @RequestBody JoinFamilyDTO dto) {

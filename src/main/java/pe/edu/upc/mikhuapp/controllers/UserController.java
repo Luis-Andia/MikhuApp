@@ -4,6 +4,7 @@ package pe.edu.upc.mikhuapp.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +60,7 @@ public class UserController {
 
     // LISTAR USUARIOS
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<UserDTOList>> listar() {
 
         List<UserDTOList> listaUsuarios = uS.list()
@@ -149,6 +151,7 @@ public class UserController {
 
     // CONSULTAR USUARIO POR ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<UserDTOList> buscarid(
             @PathVariable("id") Long id) {
 
@@ -166,6 +169,7 @@ public class UserController {
 
     // CONSULTAR USUARIO POR NOMBRE DE USUARIO
     @GetMapping("/username/{username}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER', 'GUEST')")
     public ResponseEntity<UserDTOList> buscarporusername(
             @PathVariable("username") String username) {
 
@@ -183,6 +187,7 @@ public class UserController {
 
     // ACTUALIZAR USUARIO
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'MEMBER', 'GUEST')")
     public ResponseEntity<UserDTOInsert> actualizar_usuario(
             @PathVariable("id") Long id,
             @Validated @RequestBody UserDTOInsert dto) {
@@ -255,6 +260,7 @@ public class UserController {
 
     // ELIMINAR USUARIO
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> delete(
             @PathVariable("id") Long id) {
 
