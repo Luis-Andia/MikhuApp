@@ -24,4 +24,6 @@ public interface IConsumptionService {
     void delete (Long id);
 
     public List<Object[]> IngredientesConsumidosPorFecha(LocalDate fechaInicio, LocalDate fechaFin);
+
+    public List<Object[]> findConsumptionbyFamilyid(Long idFamily);
 }

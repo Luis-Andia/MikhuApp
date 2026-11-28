@@ -55,4 +55,11 @@ public interface IConsumptionRepository extends JpaRepository<Consumption, Long>
             "LIMIT 5", nativeQuery = true)
     List<Object[]> IngredientesConsumidosPorFecha(
             @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
+
+    // Listar consumo por familia
+    @Query(value = "SELECT c.id_consumption, c.consumption_date, c.id_item, c.id_recipe " +
+            "FROM consumptions c INNER JOIN items i " +
+            "ON c.id_item = i.id_item " +
+            "WHERE i.id_family = :idFamily", nativeQuery = true)
+    public List<Object[]> findConsumptionbyFamilyid( @Param("idFamily") Long idFamily);
 }

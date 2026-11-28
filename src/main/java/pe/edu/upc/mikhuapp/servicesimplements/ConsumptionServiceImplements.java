@@ -64,4 +64,9 @@ public class ConsumptionServiceImplements implements IConsumptionService {
     public List<Object[]> IngredientesConsumidosPorFecha(LocalDate fechaInicio, LocalDate fechaFin) {
         return cR.IngredientesConsumidosPorFecha(fechaInicio, fechaFin);
     }
+
+    @Override
+    public List<Object[]> findConsumptionbyFamilyid(Long idFamily) {
+        return cR.findConsumptionbyFamilyid(idFamily);
+    }
 }

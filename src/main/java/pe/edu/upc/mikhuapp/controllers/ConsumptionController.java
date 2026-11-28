@@ -7,15 +7,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import pe.edu.upc.mikhuapp.dtos.ConsumptionDTO;
-import pe.edu.upc.mikhuapp.dtos.ConsumptionDTODate;
-import pe.edu.upc.mikhuapp.dtos.HistorialConsumoResponseDTO;
-import pe.edu.upc.mikhuapp.dtos.MostConsumedIngredientsDTO;
+import pe.edu.upc.mikhuapp.dtos.*;
 import pe.edu.upc.mikhuapp.entities.Consumption;
 import pe.edu.upc.mikhuapp.entities.Item;
 import pe.edu.upc.mikhuapp.entities.Recipe;
 import pe.edu.upc.mikhuapp.exceptions.ResourceNotFoundException;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IConsumptionService;
+import pe.edu.upc.mikhuapp.servicesinterfaces.IFamilyService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IItemService;
 import pe.edu.upc.mikhuapp.servicesinterfaces.IRecipeService;
 
@@ -32,17 +30,19 @@ public class ConsumptionController {
     private final IConsumptionService cS;
     private final IItemService iS;
     private final IRecipeService rS;
+    private final IFamilyService fS;
     private final ModelMapper modelMapper;
 
     public ConsumptionController(
             IConsumptionService cS,
             IItemService iS,
-            IRecipeService rS,
+            IRecipeService rS, IFamilyService fS,
             ModelMapper modelMapper) {
 
         this.cS = cS;
         this.iS = iS;
         this.rS = rS;
+        this.fS = fS;
         this.modelMapper = modelMapper;
     }
 
@@ -68,6 +68,31 @@ public class ConsumptionController {
 
                     return dto;
 
+                })
+                .toList();
+
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/consumo/{idFamily}")
+    @PreAuthorize("hasAnyRole('MODERATOR','MEMBER', 'GUEST')")
+    public ResponseEntity<List<ConsumptionDTO>> listarConsumoPorFamilia(
+            @PathVariable("idFamily") Long idFamily) {
+
+        fS.listid(idFamily)
+                .orElseThrow(() -> new ResourceNotFoundException("Familia no encontrada"));
+
+        List<ConsumptionDTO> lista = cS.findConsumptionbyFamilyid(idFamily)
+                .stream()
+                .map(row -> {
+                    ConsumptionDTO dto = new ConsumptionDTO();
+
+                    dto.setIdConsumption(((Number) row[0]).longValue());
+                    dto.setConsumptionDate(toLocalDate(row[1]));
+                    dto.setIdItem(((Number) row[2]).longValue());
+                    dto.setIdReceta(((Number) row[3]).longValue());
+
+                    return dto;
                 })
                 .toList();
 
@@ -337,5 +362,21 @@ public class ConsumptionController {
                         .toList();
 
         return ResponseEntity.ok(list);
+    }
+
+    private LocalDate toLocalDate(Object value) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof LocalDate localDate) {
+            return localDate;
+        }
+        if (value instanceof java.sql.Date date) {
+            return date.toLocalDate();
+        }
+        if (value instanceof java.sql.Timestamp timestamp) {
+            return timestamp.toLocalDateTime().toLocalDate();
+        }
+        throw new IllegalArgumentException("Formato de fecha de consumo no válido: " + value.getClass().getName());
     }
 }
